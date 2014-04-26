@@ -342,25 +342,28 @@ public class Scene extends Sprite
   {
     var tilesize:int = _tilemap.tilesize;
     var frame:Rectangle = new Rectangle(0, 0, tilesize, tilesize);
-    _player.pos = new Point(1*tilesize, 1*tilesize);
-    _player.frame = frame;
-    _player.skin = createSkin(3);
-    add(_player);
     for (var y:int = 0; y < _tilemap.height; y++) {
       for (var x:int = 0; x < _tilemap.width; x++) {
 	var i:int = _tilemap.getTile(x, y);
 	var actor:Actor = null;
 	switch (i) {
-	default:
+	case Tile.TRAP:
+	  actor = new Actor(this);
+	  actor.skin = createSkin(4);
 	  break;
 	}
 	if (actor != null) {
 	  actor.pos = new Point(x*tilesize, y*tilesize);
-	  actor.skin = createSkin(i);
+	  actor.frame = frame;
 	  add(actor);
 	}
       }
     }
+    // TODO: remove this, player position should be specified in a map
+    _player.pos = new Point(1*tilesize, 1*tilesize);
+    _player.frame = frame;
+    _player.skin = createSkin(3);
+    add(_player);
   }
 }
 

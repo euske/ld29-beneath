@@ -13,7 +13,7 @@ public class Player extends Actor
   // the way the player wants to move.
   public var vx:int;
   public var vy:int;
-
+  // speed by gravity.
   public var vg:int;
 
   private var _jumping:Boolean;
@@ -27,6 +27,7 @@ public class Player extends Actor
   public const speed:int = 8;
   public const gravity:int = 2;
   public const jumpacc:int = -20;
+  public const maxspeed:int = +20;
 
   // Player(scene)
   public function Player(scene:Scene)
@@ -57,7 +58,7 @@ public class Player extends Actor
     if (_grabbing) {
       tdyOfDoom = vy*speed;
     } else {
-      tdyOfDoom = vg+gravity;
+      tdyOfDoom = Math.min(vg+gravity, maxspeed);
     }
     if (_jumping) {
       _jumping = false;
