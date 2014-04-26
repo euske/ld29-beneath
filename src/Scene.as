@@ -38,6 +38,7 @@ public class Scene extends Sprite
     _dirtmap = new DirtMap(tilemap.width, tilemap.height, tilemap.tilesize);
     _tiles = tiles;
     _tilewindow = new Rectangle();
+
     var tw:int = (w+1)*tilemap.tilesize;
     var th:int = (h+1)*tilemap.tilesize;
     _fluidimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
@@ -247,7 +248,7 @@ public class Scene extends Sprite
       for (var dx:int = 0; dx <= r.width; dx++) {
 	var x:int = r.x+dx;
 	var dst:Rectangle = new Rectangle(dx*tilesize, dy*tilesize, tilesize, tilesize);
-	if (!_dirtmap.isOpen(x, y)) {
+	if (_dirtmap.getMask(x, y) <= 0) {
 	  _maskimage.bitmapData.fillRect(dst, 0xff000000);
 	}
       }
@@ -259,7 +260,7 @@ public class Scene extends Sprite
   {
     r = r.clone();
     r.inflate(size, size);
-    _dirtmap.setOpenByRect(r);
+    _dirtmap.setMaskByRect(r, 1);
     _dirtchanged = true;
   }
 

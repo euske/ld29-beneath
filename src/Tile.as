@@ -6,7 +6,15 @@ public class Tile
   public static const LADDER:int = 9;
   public static const LADDER_TOP:int = 10;
 
+  public static const TRAP:int = 11;
+
   public static const LAVA:int = 4;
+
+  // Empty tile.
+  public static function isEmpty(i:int):Boolean
+  { 
+    return (i == NONE || i == LADDER); 
+  }
 
   // Ladder tile.
   public static function isLadder(i:int):Boolean
@@ -17,14 +25,13 @@ public class Tile
   // Tile that you cannot go.
   public static function isObstacle(i:int):Boolean
   { 
-    // TODO: this should be explicit.
-    return !(i == NONE || i == LADDER || i == LADDER_TOP);
+    return !(isEmpty(i) || isLadder(i));
   }
 
   // Tile that you cannot fall into.
   public static function isStoppable(i:int):Boolean 
   { 
-    return !(i == NONE || i == LADDER);
+    return !isEmpty(i);
   }
 
   // getFluid: maps a tile ID to animated tile ID.

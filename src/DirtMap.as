@@ -29,36 +29,36 @@ public class DirtMap
     }
   }
 
-  // isOpen(x, y): returns the tile of a pixel at (x,y).
-  public function isOpen(x:int, y:int):Boolean
+  // getMask(x, y): returns the tile of a pixel at (x,y).
+  public function getMask(x:int, y:int):int
   {
     if (0 <= y && y < _map.length) {
       var row:Array = _map[y];
       if (0 <= x && x < row.length) {
-	return (row[x] != 0);
+	return row[x];
       }
     }
-    return false;
+    return -1;
   }
 
-  // setOpen(x, y): set the tile value of pixel at (x,y).
-  public function setOpen(x:int, y:int):void
+  // setMask(x, y): set the tile value of pixel at (x,y).
+  public function setMask(x:int, y:int, m:int):void
   {
     if (0 <= y && y < _map.length) {
       var row:Array = _map[y];
       if (0 <= x && x < row.length) {
-	row[x] = 1;
+	row[x] = m;
       }
     }
   }
 
-  // setOpenByRect(r): 
-  public function setOpenByRect(r:Rectangle):void
+  // setMaskByRect(r): 
+  public function setMaskByRect(r:Rectangle, m:int):void
   {
     var r:Rectangle = getCoordsByRect(r);
     for (var y:int = r.top; y < r.bottom; y++) {
       for (var x:int = r.left; x < r.right; x++) {
-	setOpen(x, y);
+	setMask(x, y, m);
       }
     }
   }

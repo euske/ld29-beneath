@@ -42,11 +42,8 @@ public class Player extends Actor
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
     var tdyOfDoom:int = 0;
-    var f:Function = Tile.isStoppable;
-
-    if (vx != 0 || vy != 0) {
-      f = Tile.isObstacle;
-    }
+    var fx:Function = (vx == 0)? Tile.isStoppable : Tile.isObstacle;
+    var fy:Function = (vy == 0)? Tile.isStoppable : Tile.isObstacle;
 
     if (vy != 0) {
       if (hasLadder()) {
@@ -73,21 +70,21 @@ public class Player extends Actor
 
     // try moving diagonally first.
     v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 tdxOfDoom, tdyOfDoom, f);
+					 tdxOfDoom, tdyOfDoom, Tile.isStoppable);
     dx += v.x;
     dy += v.y;
     tdxOfDoom -= v.x;
     tdyOfDoom -= v.y;
     // try moving left/right.
     v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 tdxOfDoom, 0, f);
+					 tdxOfDoom, 0, fx);
     dx += v.x;
     dy += v.y;
     tdxOfDoom -= v.x;
     tdyOfDoom -= v.y;
     // try moving up/down.
     v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 0, tdyOfDoom, f);
+					 0, tdyOfDoom, fy);
     dx += v.x;
     dy += v.y;
     tdxOfDoom -= v.x;
@@ -111,7 +108,7 @@ public class Player extends Actor
   // isLanded()
   public function isLanded():Boolean
   {
-    return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isObstacle);
+    return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isStoppable);
   }
 
   // jump()
