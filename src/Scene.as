@@ -13,6 +13,7 @@ public class Scene extends Sprite
 {
   private var _window:Rectangle;
   private var _tilemap:TileMap;
+  private var _dirtmap:DirtMap;
   private var _tilewindow:Rectangle;
   private var _tiles:BitmapData;
   private var _mapimage:Bitmap;
@@ -29,6 +30,7 @@ public class Scene extends Sprite
   {
     _window = new Rectangle(0, 0, w*tilemap.tilesize, h*tilemap.tilesize);
     _tilemap = tilemap;
+    _dirtmap = new DirtMap(tilemap.width, tilemap.height, tilemap.tilesize);
     _tiles = tiles;
     _tilewindow = new Rectangle();
     _mapimage = new Bitmap(new BitmapData((w+1)*tilemap.tilesize, 
@@ -140,9 +142,15 @@ public class Scene extends Sprite
   {
     var tilesize:int = _tilemap.tilesize;
     for (var dy:int = 0; dy <= r.height; dy++) {
+      var y:int = r.y+dy;
       for (var dx:int = 0; dx <= r.width; dx++) {
-	var i:int = _tilemap.getTile(r.x+dx, r.y+dy);
+	var x:int = r.x+dx;
+	var i:int = _tilemap.getTile(x, y);
 	if (0 <= i) {
+	  if (!_dirtmap.isOpen(x, y)) {
+	    // Tile is not open yet.
+	    i = 0;
+	  }
 	  var src:Rectangle = new Rectangle(i*tilesize, 0, tilesize, tilesize);
 	  var dst:Point = new Point(dx*tilesize, dy*tilesize);
 	  _mapimage.bitmapData.copyPixels(_tiles, src, dst);
@@ -150,6 +158,15 @@ public class Scene extends Sprite
       }
     }
     _tilewindow = r;
+  }
+
+  // openMap(r)
+  public function openMap(r:Rectangle, size:int):void
+  {
+    r = r.clone();
+    r.inflate(size, size);
+    _dirtmap.setOpenByRect(r);
+    refreshTiles();
   }
 
   // setCenter(p)

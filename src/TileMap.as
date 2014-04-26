@@ -21,8 +21,6 @@ public class TileMap
 
   // _tilevalue: lookup table from a pixel color to a type number.
   private var _tilevalue:Dictionary;
-  // _rangecache: cache for range query results.
-  private var _rangecache:Dictionary;
 
   // TileMap(bitmap, tilesize)
   public function TileMap(bitmap:BitmapData, 
@@ -69,7 +67,6 @@ public class TileMap
   {
     var c:uint = bitmap.getPixel(i, 0);
     bitmap.setPixel(x, y+1, c);
-    _rangecache = null;
   }
 
   // isTile(x, y, f): true if the tile at (x,y) has a property given by f.

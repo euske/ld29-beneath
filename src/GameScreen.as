@@ -67,7 +67,7 @@ public class GameScreen extends Screen
     _player.pos = _scene.tilemap.getTilePoint(1, 1);
     _player.frame = new Rectangle(0, 0, tilesize, tilesize);
     _player.skin = createSkin(skinsImage.bitmapData, 
-			     new Rectangle(tilesize*3, tilesize*0, tilesize, tilesize));
+			      new Rectangle(tilesize*3, tilesize*0, tilesize, tilesize));
     _scene.add(_player);
     
     if (_music != null) {
@@ -108,6 +108,7 @@ public class GameScreen extends Screen
     Font.renderText(_status.bitmapData, text);
 
     _scene.update();
+    _scene.openMap(_player.bounds, 16);
     _scene.setCenter(_player.pos, 50, 50);
     _scene.paint();
   }
