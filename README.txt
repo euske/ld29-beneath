@@ -13,3 +13,10 @@ TODO:
   Animation/scrolling. (esp. when the character is changed.)
 
   http://videogamena.me/
+
+To Hawk (How to compile the thing):
+  1. Install Java.
+  2. Download Flex SDK 4.6 and unpack on your home directory. (your_home/flex_sdk_4.6)
+  3. Run build.sh
+  4. bin/beneath.swf should be playable.
+  
