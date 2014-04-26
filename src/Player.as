@@ -1,7 +1,5 @@
 package {
 
-import flash.display.Sprite;
-import flash.display.Bitmap;
 import flash.media.Sound;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -48,9 +46,41 @@ public class Player extends Actor
     health = 3;
   }
 
+  // hasLadder()
+  public function hasLadder():Boolean
+  {
+    return scene.tilemap.hasTileByRect(bounds, Tile.isLadder);
+  }
+
+  // isLanded()
+  public function isLanded():Boolean
+  {
+    return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isStoppable);
+  }
+
+  // jump()
+  public function jump():void
+  {
+    if (isLanded()) {
+      _jumping = true;
+      _grabbing = false;
+      jumpSound.play();
+    }
+  }
+
+  // collide(actor)
+  public override function collide(actor:Actor):void
+  {
+    trace("collide: "+actor);
+    if (actor is Enemy) {
+      hurt();
+    }
+  }
+
   // update()
   public override function update():void
   {
+    super.update();
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
     var tdyOfDoom:int = 0;
@@ -119,37 +149,6 @@ public class Player extends Actor
 	var b:Boolean = ((_invincible % 4) < 2);
 	skin.alpha = (b)? 0.0 : 1.0;
       }
-    }
-  }
-
-  // hasLadder()
-  public function hasLadder():Boolean
-  {
-    return scene.tilemap.hasTileByRect(bounds, Tile.isLadder);
-  }
-
-  // isLanded()
-  public function isLanded():Boolean
-  {
-    return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isStoppable);
-  }
-
-  // jump()
-  public function jump():void
-  {
-    if (isLanded()) {
-      _jumping = true;
-      _grabbing = false;
-      jumpSound.play();
-    }
-  }
-
-  // collide(actor)
-  public override function collide(actor:Actor):void
-  {
-    trace("collide: "+actor);
-    if (actor is Enemy) {
-      hurt();
     }
   }
 

@@ -13,8 +13,8 @@ public class Actor extends EventDispatcher
 
   public var pos:Point;
   public var frame:Rectangle;
-  public var skin:DisplayObject;
 
+  private var _skin:DisplayObject;
   private var _active:Boolean;
   private var _scene:Scene;
 
@@ -22,6 +22,7 @@ public class Actor extends EventDispatcher
   public function Actor(scene:Scene)
   {
     _scene = scene;
+    _active = false;
     pos = new Point(0, 0);
   }
 
@@ -30,10 +31,16 @@ public class Actor extends EventDispatcher
   {
     return _active;
   }
-  public function set active(v:Boolean):void
+
+  // skin
+  public function get skin():DisplayObject
   {
-    _active = v;
-    skin.visible = v;
+    return _skin;
+  }
+  public function set skin(v:DisplayObject):void
+  {
+    _skin = v;
+    _skin.visible = _active;
   }
 
   // scene
@@ -70,6 +77,13 @@ public class Actor extends EventDispatcher
   public virtual function isMovable(dx:int, dy:int):Boolean
   {
     return scene.maprect.containsRect(getMovedBounds(dx, dy));
+  }
+
+  // activate
+  public virtual function activate():void
+  {
+    _active = true;
+    _skin.visible = true;
   }
 
   // collide(actor)

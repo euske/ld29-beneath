@@ -310,8 +310,8 @@ public class Scene extends Sprite
     _dirtchanged = true;
     // Activate actors in the uncover part.
     for each (var actor:Actor in _actors) {
-      if (_dirtmap.getMaskByRect(actor.bounds)) {
-	actor.active = true;
+      if (!actor.active && _dirtmap.getMaskByRect(actor.bounds)) {
+	actor.activate();
       }
     }
   }
@@ -365,25 +365,29 @@ public class Scene extends Sprite
 	var i:int = _tilemap.getTile(x, y);
 	var actor:Actor = null;
 	switch (i) {
-	case Tile.TRAP:
+	case Tile.PLAYER:
+	  actor = _player;
+	  actor.skin = createSkin(3);
+	  break;
+
+	case Tile.ENEMY:
 	  actor = new Enemy(this);
 	  actor.skin = createSkin(4);
+	  break;
+
+	case Tile.BOMB:
+	  actor = new Bomb(this);
+	  actor.skin = createSkin(5);
 	  break;
 	}
 	if (actor != null) {
 	  actor.pos = new Point(x*_tilesize, y*_tilesize);
 	  actor.frame = frame;
-	  actor.active = false;
 	  add(actor);
 	}
       }
     }
-    // TODO: remove this, player position should be specified in a map
-    _player.skin = createSkin(3);
-    _player.pos = new Point(1*_tilesize, 1*_tilesize);
-    _player.active = true;
-    _player.frame = frame;
-    add(_player);
+    _player.activate();
   }
 }
 

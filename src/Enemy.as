@@ -27,6 +27,7 @@ public class Enemy extends Actor
 
   public override function update():void
   {
+    super.update();
     if (isMovable(vx, vy)) {
       move(vx, vy);
     } else {
