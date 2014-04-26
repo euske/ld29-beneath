@@ -172,7 +172,7 @@ public class Scene extends Sprite
   private function renderTiles(r:Rectangle):void
   {
     var tilesize:int = _tilemap.tilesize;
-    var area:Rectangle = new Rectangle(0, 0, r.width*tilesize, r.height*tilesize);
+    var area:Rectangle = new Rectangle(0, 0, _mapimage.width, _mapimage.height);
     _mapimage.bitmapData.fillRect(area, 0x00000000);
     for (var dy:int = 0; dy <= r.height; dy++) {
       var y:int = r.y+dy;
@@ -192,7 +192,7 @@ public class Scene extends Sprite
   private function renderFluids(r:Rectangle, phase:int):void
   {
     var tilesize:int = _tilemap.tilesize;
-    var area:Rectangle = new Rectangle(0, 0, r.width*tilesize, r.height*tilesize);
+    var area:Rectangle = new Rectangle(0, 0, _fluidimage.width, _fluidimage.height);
     _fluidimage.bitmapData.fillRect(area, 0x00000000);
     for (var dy:int = 0; dy <= r.height; dy++) {
       var y:int = r.y+dy;
@@ -240,7 +240,7 @@ public class Scene extends Sprite
   private function renderMasks(r:Rectangle):void
   {
     var tilesize:int = _tilemap.tilesize;
-    var area:Rectangle = new Rectangle(0, 0, r.width*tilesize, r.height*tilesize);
+    var area:Rectangle = new Rectangle(0, 0, _maskimage.width, _maskimage.height);
     _maskimage.bitmapData.fillRect(area, 0x00000000);
     for (var dy:int = 0; dy <= r.height; dy++) {
       var y:int = r.y+dy;
