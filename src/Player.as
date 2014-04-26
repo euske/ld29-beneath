@@ -42,6 +42,11 @@ public class Player extends Actor
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
     var tdyOfDoom:int = 0;
+    var f:Function = Tile.isStoppable;
+
+    if (vx != 0 || vy != 0) {
+      f = Tile.isObstacle;
+    }
 
     if (vy != 0) {
       if (hasLadder()) {
@@ -68,21 +73,21 @@ public class Player extends Actor
 
     // try moving diagonally first.
     v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 tdxOfDoom, tdyOfDoom, Tile.isObstacle);
+					 tdxOfDoom, tdyOfDoom, f);
     dx += v.x;
     dy += v.y;
     tdxOfDoom -= v.x;
     tdyOfDoom -= v.y;
     // try moving left/right.
     v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 tdxOfDoom, 0, Tile.isObstacle);
+					 tdxOfDoom, 0, f);
     dx += v.x;
     dy += v.y;
     tdxOfDoom -= v.x;
     tdyOfDoom -= v.y;
     // try moving up/down.
     v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 0, tdyOfDoom, Tile.isObstacle);
+					 0, tdyOfDoom, f);
     dx += v.x;
     dy += v.y;
     tdxOfDoom -= v.x;

@@ -14,7 +14,7 @@ import baseui.ScreenEvent;
 
 //  Main 
 //
-[SWF(width="640", height="480", backgroundColor="#000000", frameRate=24)]
+[SWF(width="640", height="480", backgroundColor="#222222", frameRate=12)]
 public class Main extends Sprite
 {
   private static var _logger:TextField;
