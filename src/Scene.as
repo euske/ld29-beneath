@@ -86,6 +86,8 @@ public class Scene extends Sprite
     _dirtmap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
     _actors = new Array();
     _player = new Player(this);
+    _player.skin = createSkin(3);
+    _player.activate();
     placeActors();
   }
 
@@ -367,7 +369,6 @@ public class Scene extends Sprite
 	switch (i) {
 	case Tile.PLAYER:
 	  actor = _player;
-	  actor.skin = createSkin(3);
 	  break;
 
 	case Tile.ENEMY:
@@ -381,13 +382,13 @@ public class Scene extends Sprite
 	  break;
 	}
 	if (actor != null) {
+	  trace("place: "+actor+" ("+x+","+y+")");
 	  actor.pos = new Point(x*_tilesize, y*_tilesize);
 	  actor.frame = frame;
 	  add(actor);
 	}
       }
     }
-    _player.activate();
   }
 }
 
