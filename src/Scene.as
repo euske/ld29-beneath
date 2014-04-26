@@ -382,7 +382,7 @@ public class Scene extends Sprite
 	  break;
 	}
 	if (actor != null) {
-	  trace("place: "+actor+" ("+x+","+y+")");
+	  trace("spawn tile: "+i+" at ("+x+","+y+")");
 	  actor.pos = new Point(x*_tilesize, y*_tilesize);
 	  actor.frame = frame;
 	  add(actor);

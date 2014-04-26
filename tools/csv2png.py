@@ -14,10 +14,11 @@ def main(argv):
     img = pygame.Surface((w,h+1),0,32)
     colors = [0]
     for i in xrange(m):
-        c = ((i*11)%256, (i*22+33)%256, (i*33+44)%256, 255)
+        (r,g,b,a) = ((i*11)%256, (i*22+33)%256, (i*33+44)%256, 255)
+        c = (r,g,b,a)
         assert c not in colors
         colors.append(c)
-        img.set_at((i,0), c)
+        img.set_at((i+1,0), c)
     for (y,row) in enumerate(rows):
         for (x,v) in enumerate(row):
             c = colors[int(v)]

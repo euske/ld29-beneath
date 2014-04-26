@@ -77,7 +77,7 @@ public class Player extends Actor
   // collide(actor)
   public override function collide(actor:Actor):void
   {
-    trace("collide: "+actor);
+    //trace("collide: "+actor);
     if (actor is Enemy) {
       hurt();
     }

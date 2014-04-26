@@ -161,6 +161,8 @@ public class TileMap
     var v:Point = new Point(vx, vy);
     for each (var p:Point in a) {
       var t:Rectangle = getTileRect(p.x, p.y);
+      t.y += 1;
+      t.height -= 1;
       v = Utils.collideRect(t, r, v);
     }
     return v;
