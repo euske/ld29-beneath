@@ -40,6 +40,7 @@ public class GameScreen extends Screen
   private var _player:Player;
   private var _status:Bitmap;
   private var _music:SoundLoop;
+  private var _phase:int;
 
   public function GameScreen(width:int, height:int)
   {
@@ -110,7 +111,8 @@ public class GameScreen extends Screen
     _scene.update();
     _scene.openMap(_player.bounds, 16);
     _scene.setCenter(_player.pos, 50, 50);
-    _scene.paint();
+    _scene.paint(_phase/2);
+    _phase++;
   }
 
   // keydown(keycode)

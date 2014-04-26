@@ -3,10 +3,17 @@ package {
 public class Tile
 {
   // Ladder tile.
-  public static function isLadder(c:int):Boolean { return (c == 3); }
+  public static function isLadder(i:int):Boolean { return (i == 3); }
 
   // Tile that you cannot go.
-  public static function isObstacle(c:int):Boolean { return (c != 0 && c != 3); }
+  public static function isObstacle(i:int):Boolean { return (i != 0 && i != 3); }
+
+  // getFluid: maps a tile ID to animated tile ID.
+  public static function getFluid(i:int, phase:int):int { 
+    if (i == 2) return (49+(phase/2) % 5);
+    return -1;
+  }
+  
 }
 
 }

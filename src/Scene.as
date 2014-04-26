@@ -14,13 +14,16 @@ public class Scene extends Sprite
   private var _window:Rectangle;
   private var _tilemap:TileMap;
   private var _dirtmap:DirtMap;
-  private var _tilewindow:Rectangle;
   private var _tiles:BitmapData;
   private var _fluidimage:Bitmap;
   private var _mapimage:Bitmap;
   private var _maskimage:Bitmap;
   private var _maprect:Rectangle;
   private var _actors:Array;
+
+  private var _tilewindow:Rectangle;
+  private var _dirtchanged:Boolean;
+  private var _phase:int;
 
   // Background image:
   [Embed(source="../assets/background.png", mimeType="image/png")]
@@ -116,7 +119,7 @@ public class Scene extends Sprite
   }
 
   // paint()
-  public function paint():void
+  public function paint(phase:int):void
   {
     // Render each actor.
     for each (var actor:Actor in _actors) {
@@ -135,8 +138,16 @@ public class Scene extends Sprite
     if (!_tilewindow.equals(r)) {
       renderTiles(r);
     }
-    renderFluids(r);
-    renderMasks(r);
+    if (!_tilewindow.equals(r) || _phase != phase) {
+      renderFluids(r, phase);
+    }
+    if (_dirtchanged) {
+      renderMasks(r);
+    }
+    _tilewindow = r;
+    _phase = phase;
+    _dirtchanged = false;
+
     _mapimage.x = (_tilewindow.x*tilesize)-_window.x;
     _mapimage.y = (_tilewindow.y*tilesize)-_window.y;
     _fluidimage.x = _mapimage.x;
@@ -151,38 +162,75 @@ public class Scene extends Sprite
     _tilewindow = new Rectangle();
   }
 
-  // renderTiles(x, y)
+  private function getTileSrcRect(i:int):Rectangle
+  {
+    var tilesize:int = _tilemap.tilesize;
+    return new Rectangle(i*tilesize, 0, tilesize, tilesize);
+  }
+
+  // renderTiles(r)
   private function renderTiles(r:Rectangle):void
   {
     var tilesize:int = _tilemap.tilesize;
+    var area:Rectangle = new Rectangle(0, 0, r.width*tilesize, r.height*tilesize);
+    _mapimage.bitmapData.fillRect(area, 0x00000000);
     for (var dy:int = 0; dy <= r.height; dy++) {
       var y:int = r.y+dy;
       for (var dx:int = 0; dx <= r.width; dx++) {
 	var x:int = r.x+dx;
 	var i:int = _tilemap.getTile(x, y);
-	if (0 <= i) {
-	  var src:Rectangle = new Rectangle(i*tilesize, 0, tilesize, tilesize);
+	if (0 <= i && Tile.getFluid(i, -1) < 0) {
+	  var src:Rectangle = getTileSrcRect(i);
 	  var dst:Point = new Point(dx*tilesize, dy*tilesize);
 	  _mapimage.bitmapData.copyPixels(_tiles, src, dst);
 	}
       }
     }
-    _tilewindow = r;
   }
 
-  // renderFluids(x, y)
-  private function renderFluids(r:Rectangle):void
+  // renderFluids(r, phase)
+  private function renderFluids(r:Rectangle, phase:int):void
   {
     var tilesize:int = _tilemap.tilesize;
+    var area:Rectangle = new Rectangle(0, 0, r.width*tilesize, r.height*tilesize);
+    _fluidimage.bitmapData.fillRect(area, 0x00000000);
     for (var dy:int = 0; dy <= r.height; dy++) {
       var y:int = r.y+dy;
       for (var dx:int = 0; dx <= r.width; dx++) {
 	var x:int = r.x+dx;
-	var i:int = _tilemap.getTile(x, y);
-	if (i == 123) {
-	  var src:Rectangle = new Rectangle(i*tilesize, 0, tilesize, tilesize);
-	  var dst:Point = new Point(dx*tilesize, dy*tilesize);
-	  _mapimage.bitmapData.copyPixels(_tiles, src, dst);
+	var p:int = phase+(dx*3)+(dy*7); // randomize the phase of each cell.
+	var i:int = Tile.getFluid(_tilemap.getTile(x, y), p);
+	var src:Rectangle;
+	var dst:Point = new Point(dx*tilesize, dy*tilesize);
+	if (0 <= i) {
+	  // whole fluid.
+	  src = getTileSrcRect(i);
+	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
+	  continue;
+	}
+	// partial fluid (left).
+	i = Tile.getFluid(_tilemap.getTile(x-1, y), phase);
+	if (0 <= i) {
+	  src = getTileSrcRect(i);
+	  src.width = tilesize/2;
+	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
+	}
+	// partial fluid (right).
+	i = Tile.getFluid(_tilemap.getTile(x+1, y), phase);
+	if (0 <= i) {
+	  src = getTileSrcRect(i);
+	  src.left += tilesize/2;
+	  src.width = tilesize/2;
+	  dst.x += tilesize/2;
+	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
+	}
+	// partial fluid (up).
+	i = Tile.getFluid(_tilemap.getTile(x, y-1), phase);
+	if (0 <= i) {
+	  src = getTileSrcRect(i);
+	  src.top += 3*tilesize/4;
+	  src.height = tilesize/4;
+	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
 	}
       }
     }
@@ -192,16 +240,16 @@ public class Scene extends Sprite
   private function renderMasks(r:Rectangle):void
   {
     var tilesize:int = _tilemap.tilesize;
+    var area:Rectangle = new Rectangle(0, 0, r.width*tilesize, r.height*tilesize);
+    _maskimage.bitmapData.fillRect(area, 0x00000000);
     for (var dy:int = 0; dy <= r.height; dy++) {
       var y:int = r.y+dy;
       for (var dx:int = 0; dx <= r.width; dx++) {
 	var x:int = r.x+dx;
 	var dst:Rectangle = new Rectangle(dx*tilesize, dy*tilesize, tilesize, tilesize);
-	var c:uint = 0xff000000;
-	if (_dirtmap.isOpen(x, y)) {
-	  c = 0x00000000;
+	if (!_dirtmap.isOpen(x, y)) {
+	  _maskimage.bitmapData.fillRect(dst, 0xff000000);
 	}
-	_maskimage.bitmapData.fillRect(dst, c);
       }
     }
   }
@@ -212,7 +260,7 @@ public class Scene extends Sprite
     r = r.clone();
     r.inflate(size, size);
     _dirtmap.setOpenByRect(r);
-    refreshTiles();
+    _dirtchanged = true;
   }
 
   // setCenter(p)
