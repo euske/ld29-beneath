@@ -52,7 +52,7 @@ public class Actor
   }
 
   // isMovable(dx, dy)
-  public function isMovable(dx:int, dy:int):Boolean
+  public virtual function isMovable(dx:int, dy:int):Boolean
   {
     return scene.maprect.containsRect(getMovedBounds(dx, dy));
   }

@@ -141,7 +141,7 @@ public class GameScreen extends Screen
     case Keyboard.ENTER:
     case 88:			// X
     case 90:			// Z
-      _player.action();
+      _player.jump();
       break;
 
     }

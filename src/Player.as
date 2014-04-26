@@ -4,6 +4,7 @@ import flash.display.Sprite;
 import flash.display.Bitmap;
 import flash.media.Sound;
 import flash.geom.Point;
+import flash.geom.Rectangle;
 
 //  Player
 //
@@ -32,9 +33,18 @@ public class Player extends Actor
     }
   }
 
-  // action()
-  public function action():void
+  // isMovable(dx, dy)
+  public override function isMovable(dx:int, dy:int):Boolean
   {
+    var r:Rectangle = getMovedBounds(dx, dy);
+    return (scene.maprect.containsRect(getMovedBounds(dx, dy)) &&
+	    !scene.tilemap.isTileByRect(r, Tile.isObstacle));
+  }
+
+  // jump()
+  public function jump():void
+  {
+    
   }
 }
 

@@ -141,6 +141,12 @@ public class TileMap
     return scanTile(r.left, r.top, r.right-1, r.bottom-1, f);
   }
 
+  // isTileByRect(r):
+  public function isTileByRect(r:Rectangle, f:Function):Boolean
+  {
+    return (scanTileByRect(r, f).length != 0);
+  }
+
   // getCollisionByRect(r, vx, vy, f): 
   //   adjusts vector (vx,vy) so that the rectangle doesn't collide with a tile specified by f.
   public function getCollisionByRect(r:Rectangle, vx:int, vy:int, f:Function):Point
