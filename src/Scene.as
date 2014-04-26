@@ -16,7 +16,9 @@ public class Scene extends Sprite
   private var _dirtmap:DirtMap;
   private var _tilewindow:Rectangle;
   private var _tiles:BitmapData;
+  private var _fluidimage:Bitmap;
   private var _mapimage:Bitmap;
+  private var _maskimage:Bitmap;
   private var _maprect:Rectangle;
   private var _actors:Array;
 
@@ -33,9 +35,11 @@ public class Scene extends Sprite
     _dirtmap = new DirtMap(tilemap.width, tilemap.height, tilemap.tilesize);
     _tiles = tiles;
     _tilewindow = new Rectangle();
-    _mapimage = new Bitmap(new BitmapData((w+1)*tilemap.tilesize, 
-					  (h+1)*tilemap.tilesize, 
-					  true, 0x00000000));
+    var tw:int = (w+1)*tilemap.tilesize;
+    var th:int = (h+1)*tilemap.tilesize;
+    _fluidimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
+    _mapimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
+    _maskimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _maprect = new Rectangle(0, 0,
 			     tilemap.width*tilemap.tilesize,
 			     tilemap.height*tilemap.tilesize);
@@ -48,11 +52,15 @@ public class Scene extends Sprite
     var clipping:Shape = new Shape();
     clipping.graphics.beginFill(0xffffff);
     clipping.graphics.drawRect(0, 0, _window.width, _window.height);
+    _fluidimage.mask = clipping;
     _mapimage.mask = clipping;
+    _maskimage.mask = clipping;
 
     addChild(clipping);
     addChild(bgimage);
+    addChild(_fluidimage);
     addChild(_mapimage);
+    addChild(_maskimage);
   }
 
   // tilemap
@@ -127,8 +135,14 @@ public class Scene extends Sprite
     if (!_tilewindow.equals(r)) {
       renderTiles(r);
     }
+    renderFluids(r);
+    renderMasks(r);
     _mapimage.x = (_tilewindow.x*tilesize)-_window.x;
     _mapimage.y = (_tilewindow.y*tilesize)-_window.y;
+    _fluidimage.x = _mapimage.x;
+    _fluidimage.y = _mapimage.y;
+    _maskimage.x = _mapimage.x;
+    _maskimage.y = _mapimage.y;
   }
 
   // refreshTiles()
@@ -147,10 +161,6 @@ public class Scene extends Sprite
 	var x:int = r.x+dx;
 	var i:int = _tilemap.getTile(x, y);
 	if (0 <= i) {
-	  if (!_dirtmap.isOpen(x, y)) {
-	    // Tile is not open yet.
-	    i = 0;
-	  }
 	  var src:Rectangle = new Rectangle(i*tilesize, 0, tilesize, tilesize);
 	  var dst:Point = new Point(dx*tilesize, dy*tilesize);
 	  _mapimage.bitmapData.copyPixels(_tiles, src, dst);
@@ -158,6 +168,42 @@ public class Scene extends Sprite
       }
     }
     _tilewindow = r;
+  }
+
+  // renderFluids(x, y)
+  private function renderFluids(r:Rectangle):void
+  {
+    var tilesize:int = _tilemap.tilesize;
+    for (var dy:int = 0; dy <= r.height; dy++) {
+      var y:int = r.y+dy;
+      for (var dx:int = 0; dx <= r.width; dx++) {
+	var x:int = r.x+dx;
+	var i:int = _tilemap.getTile(x, y);
+	if (i == 123) {
+	  var src:Rectangle = new Rectangle(i*tilesize, 0, tilesize, tilesize);
+	  var dst:Point = new Point(dx*tilesize, dy*tilesize);
+	  _mapimage.bitmapData.copyPixels(_tiles, src, dst);
+	}
+      }
+    }
+  }
+
+  // renderMasks(x, y)
+  private function renderMasks(r:Rectangle):void
+  {
+    var tilesize:int = _tilemap.tilesize;
+    for (var dy:int = 0; dy <= r.height; dy++) {
+      var y:int = r.y+dy;
+      for (var dx:int = 0; dx <= r.width; dx++) {
+	var x:int = r.x+dx;
+	var dst:Rectangle = new Rectangle(dx*tilesize, dy*tilesize, tilesize, tilesize);
+	var c:uint = 0xff000000;
+	if (_dirtmap.isOpen(x, y)) {
+	  c = 0x00000000;
+	}
+	_maskimage.bitmapData.fillRect(dst, c);
+      }
+    }
   }
 
   // openMap(r)
