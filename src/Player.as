@@ -17,6 +17,7 @@ public class Player extends Actor
   public var vg:int;
 
   private var _jumping:Boolean;
+  private var _grabbing:Boolean;
 
   // Tile image:
   [Embed(source="../assets/jump.mp3", mimeType="audio/mpeg")]
@@ -40,7 +41,22 @@ public class Player extends Actor
   {
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
-    var tdyOfDoom:int = vg + gravity;
+    var tdyOfDoom:int = 0;
+
+    if (vy != 0) {
+      if (hasLadder()) {
+	// Start grabbing the tile.
+	_grabbing = true;
+      } else {
+	vy = 0;
+      }
+    }
+
+    if (_grabbing) {
+      tdyOfDoom = vy*speed;
+    } else {
+      tdyOfDoom = vg+gravity;
+    }
     if (_jumping) {
       _jumping = false;
       tdyOfDoom += jumpacc;
@@ -49,6 +65,7 @@ public class Player extends Actor
     // (dy,dy): the amount that the character actually moved.
     var dx:int = 0, dy:int = 0;
     var v:Point;
+
     // try moving diagonally first.
     v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
 					 tdxOfDoom, tdyOfDoom, Tile.isObstacle);
@@ -73,6 +90,17 @@ public class Player extends Actor
 
     vg = dy;
     move(dx, dy);
+
+    if (!hasLadder()) {
+      // End grabbing the tile.
+      _grabbing = false;
+    }
+  }
+
+  // hasLadder()
+  public function hasLadder():Boolean
+  {
+    return scene.tilemap.hasTileByRect(bounds, Tile.isLadder);
   }
 
   // isLanded()
@@ -86,6 +114,7 @@ public class Player extends Actor
   {
     if (isLanded()) {
       _jumping = true;
+      _grabbing = false;
       jumpSound.play();
     }
   }
