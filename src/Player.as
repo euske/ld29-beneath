@@ -18,6 +18,11 @@ public class Player extends Actor
 
   private var _jumping:Boolean;
 
+  // Tile image:
+  [Embed(source="../assets/jump.mp3", mimeType="audio/mpeg")]
+  private static const JumpSoundClass:Class;
+  private static const jumpSound:Sound = new JumpSoundClass();
+
   public const speed:int = 8;
   public const gravity:int = 2;
   public const jumpacc:int = -20;
@@ -81,6 +86,7 @@ public class Player extends Actor
   {
     if (isLanded()) {
       _jumping = true;
+      jumpSound.play();
     }
   }
 }
