@@ -7,16 +7,36 @@ Install:
   FlashDevelop: http://www.flashdevelop.org/
 
 TODO:
-  Tweak tiles/skins/map.
-  Convert tunes to MP3.
-  NPC speeds should be varied.
-  Animation/scrolling. (esp. when the character is changed.)
-
   http://videogamena.me/
+
+  Need to tweak physics:
+   - gravity
+   - speed / maximum speed
+   - jump height
+   - enemy speed / enemy gravity
+
+  For enemy/obstacle type:
+   - moving/jumping (affected by grativty)
+   - floating/flying (not affected by gravity)
+   - triggered (bomb, trap, icicle, etc.)
+   We need:
+     - Tile (16x16, if the object is static.)
+     - Sprite (16x16, if the object is animated.)
+
+  For each tile/animated object:
+   Need a predictable way to locate the area in the sprite/tile sheet.
+   Maybe reserve some space for additons?
+   (e.g. 1st row is for enemy, 2nd row is for particle, etc.)
+
+  Need to implement:
+   Rocks
+   Collectibles  
+
+  We need spawn tiles!
+
 
 To Hawk (How to compile the thing):
   1. Install Java.
   2. Download Flex SDK 4.6 and unpack on your home directory. (your_home/flex_sdk_4.6)
   3. Run build.sh
   4. bin/beneath.swf should be playable.
-  

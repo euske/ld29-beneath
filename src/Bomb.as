@@ -52,7 +52,6 @@ public class Bomb extends Actor
   private function explode():void
   {
     // TODO: particle.
-    // TODO: remove itself.
     explosionSound.play();
     scene.remove(this);
   }
