@@ -54,6 +54,7 @@ public class Bomb extends Actor
     // TODO: particle.
     // TODO: remove itself.
     explosionSound.play();
+    scene.remove(this);
   }
 }
 
