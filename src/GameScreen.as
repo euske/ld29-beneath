@@ -19,20 +19,20 @@ public class GameScreen extends Screen
 {
   public static const GAMEOVER:String = "GameScreen.GAMEOVER";
 
-  // Tile image:
-  [Embed(source="../assets/tiles.png", mimeType="image/png")]
-  private static const TilesImageCls:Class;
-  private static const tilesImage:Bitmap = new TilesImageCls();
+  // TileSet image:
+  [Embed(source="../assets/tileset.png", mimeType="image/png")]
+  private static const TilesetImageCls:Class;
+  private static const tilesetImage:Bitmap = new TilesetImageCls();
 
-  // Skin image:
-  [Embed(source="../assets/skins.png", mimeType="image/png")]
-  private static const SkinsImageCls:Class;
-  private static const skinsImage:Bitmap = new SkinsImageCls();
+  // SkinSet image:
+  [Embed(source="../assets/skinset.png", mimeType="image/png")]
+  private static const SkinsetImageCls:Class;
+  private static const skinsetImage:Bitmap = new SkinsetImageCls();
 
-  // Map image:
-  [Embed(source="../assets/map.png", mimeType="image/png")]
-  private static const MapImageCls:Class;
-  private static const mapImage:Bitmap = new MapImageCls();
+  // MapData image:
+  [Embed(source="../assets/mapdata.png", mimeType="image/png")]
+  private static const MapdataImageCls:Class;
+  private static const mapdataImage:Bitmap = new MapdataImageCls();
 
   /// Game-related functions
 
@@ -48,9 +48,9 @@ public class GameScreen extends Screen
 
     var tilesize:int = 16;
     _scene = new Scene(20, 15, tilesize,
-		       mapImage.bitmapData, 
-		       tilesImage.bitmapData,
-		       skinsImage.bitmapData);
+		       mapdataImage.bitmapData, 
+		       tilesetImage.bitmapData,
+		       skinsetImage.bitmapData);
     _scene.width *= 2;
     _scene.height *= 2;
     _scene.y = height-_scene.window.height*2;

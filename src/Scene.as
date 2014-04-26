@@ -13,8 +13,8 @@ public class Scene extends Sprite
 {
   private var _tilesize:int;
   private var _mapdata:BitmapData;
-  private var _tiles:BitmapData;
-  private var _skins:BitmapData;
+  private var _tileset:BitmapData;
+  private var _skinset:BitmapData;
   private var _fluidimage:Bitmap;
   private var _mapimage:Bitmap;
   private var _maskimage:Bitmap;
@@ -36,13 +36,13 @@ public class Scene extends Sprite
   // Scene(w, h, tilemap): set up fixated things.
   public function Scene(w:int, h:int, tilesize:int,
 			mapdata:BitmapData,
-			tiles:BitmapData,
-			skins:BitmapData)
+			tileset:BitmapData,
+			skinset:BitmapData)
   {
     _tilesize = tilesize;
     _mapdata = mapdata;
-    _tiles = tiles;
-    _skins = skins;
+    _tileset = tileset;
+    _skinset = skinset;
     _window = new Rectangle(0, 0, w*tilesize, h*tilesize);
 
     var tw:int = (w+1)*tilesize;
@@ -214,7 +214,7 @@ public class Scene extends Sprite
     // TODO: skin should be cached?
     var src:Rectangle = new Rectangle(i*_tilesize, 0, _tilesize, _tilesize);
     var skin:BitmapData = new BitmapData(src.width, src.height);
-    skin.copyPixels(_skins, src, new Point());
+    skin.copyPixels(_skinset, src, new Point());
     return new Bitmap(skin);
   }
 
@@ -231,7 +231,7 @@ public class Scene extends Sprite
 	if (0 <= i && Tile.getFluid(i, -1) < 0) {
 	  var src:Rectangle = getTileSrcRect(i);
 	  var dst:Point = new Point(dx*_tilesize, dy*_tilesize);
-	  _mapimage.bitmapData.copyPixels(_tiles, src, dst);
+	  _mapimage.bitmapData.copyPixels(_tileset, src, dst);
 	}
       }
     }
@@ -253,7 +253,7 @@ public class Scene extends Sprite
 	if (0 <= i) {
 	  // whole fluid.
 	  src = getTileSrcRect(i);
-	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
+	  _fluidimage.bitmapData.copyPixels(_tileset, src, dst);
 	  continue;
 	}
 	// partial fluid (left).
@@ -261,7 +261,7 @@ public class Scene extends Sprite
 	if (0 <= i) {
 	  src = getTileSrcRect(i);
 	  src.width = _tilesize/2;
-	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
+	  _fluidimage.bitmapData.copyPixels(_tileset, src, dst);
 	}
 	// partial fluid (right).
 	i = Tile.getFluid(_tilemap.getTile(x+1, y), phase);
@@ -270,7 +270,7 @@ public class Scene extends Sprite
 	  src.left += _tilesize/2;
 	  src.width = _tilesize/2;
 	  dst.x += _tilesize/2;
-	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
+	  _fluidimage.bitmapData.copyPixels(_tileset, src, dst);
 	}
 	// partial fluid (up).
 	i = Tile.getFluid(_tilemap.getTile(x, y-1), phase);
@@ -278,7 +278,7 @@ public class Scene extends Sprite
 	  src = getTileSrcRect(i);
 	  src.top += 3*_tilesize/4;
 	  src.height = _tilesize/4;
-	  _fluidimage.bitmapData.copyPixels(_tiles, src, dst);
+	  _fluidimage.bitmapData.copyPixels(_tileset, src, dst);
 	}
       }
     }
