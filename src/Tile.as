@@ -55,7 +55,7 @@ public class Tile
   // getFluid: maps a tile ID to animated tile ID.
   public static function getFluid(i:int, phase:int):int 
   {
-    if (i == LAVA) return (55+Math.floor(phase/2) % 5);
+    if (i == LAVA) return (55+phase % 5);
     return -1;
   }
   

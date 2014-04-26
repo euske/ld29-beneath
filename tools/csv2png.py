@@ -6,7 +6,10 @@ import struct
 
 def main(argv):
     import fileinput
-    rows = list(csv.reader(fileinput.input()))
+    args = argv[1:]
+    csvpath = args.pop(0)
+    pngpath = args.pop(0)
+    rows = list(csv.reader(fileinput.input([csvpath])))
     rows = [ [ int(v) for v in row ] for row in rows ]
     m = max( max(row) for row in rows )
     (w,h) = (len(rows[0]), len(rows))
@@ -23,7 +26,7 @@ def main(argv):
         for (x,v) in enumerate(row):
             c = colors[int(v)]
             img.set_at((x,y+1), c)
-    pygame.image.save(img, 'out.png')
+    pygame.image.save(img, pngpath)
     return 0
 
 if __name__ == '__main__': sys.exit(main(sys.argv))
