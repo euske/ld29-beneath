@@ -52,6 +52,19 @@ public class DirtMap
     }
   }
 
+  // getMaskByRect(r): maximum mask value
+  public function getMaskByRect(r:Rectangle):int
+  {
+    var r:Rectangle = getCoordsByRect(r);
+    var m:int = -1;
+    for (var y:int = r.top; y < r.bottom; y++) {
+      for (var x:int = r.left; x < r.right; x++) {
+	m = Math.max(m, getMask(x, y));
+      }
+    }
+    return m;
+  }
+
   // setMaskByRect(r): 
   public function setMaskByRect(r:Rectangle, m:int):void
   {

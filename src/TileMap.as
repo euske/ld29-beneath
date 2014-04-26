@@ -10,30 +10,38 @@ import flash.utils.Dictionary;
 //
 public class TileMap
 {
+  // tilesize: the size of each tile.
+  public var tilesize:int;
+
   // bitmap: actual bitmap to hold the 2D array.
   // The top row is used as a lookup table for tile types.
   // The color of pixel (0,0) is used as type 0.
   // The color of pixel (1,0) is used as type 1. etc.
-  public var bitmap:BitmapData;
-
-  // tilesize: the size of each tile.
-  public var tilesize:int;
+  private var _bitmap:BitmapData;
 
   // _tilevalue: lookup table from a pixel color to a type number.
   private var _tilevalue:Dictionary;
 
-  // TileMap(bitmap, tilesize)
-  public function TileMap(bitmap:BitmapData, 
-			  tilesize:int)
+  // TileMap(tilesize)
+  public function TileMap(tilesize:int)
   {
-    this.bitmap = bitmap;
     this.tilesize = tilesize;
+  }
+
+  // bitmap:
+  public function get bitmap():BitmapData
+  {
+    return _bitmap;
+  }
+  public function set bitmap(v:BitmapData):void
+  {
+    _bitmap = v.clone();
 
     // Construct a lookup table.
     // The color value at a pixel at (i,0) is used as i-th type.
     _tilevalue = new Dictionary();
-    for (var i:int = 0; i < bitmap.width; i++) {
-      var c:uint = bitmap.getPixel(i, 0);
+    for (var i:int = 0; i < _bitmap.width; i++) {
+      var c:uint = _bitmap.getPixel(i, 0);
       if (_tilevalue[c] === undefined) {
 	_tilevalue[c] = i;
       }
@@ -43,30 +51,30 @@ public class TileMap
   // width: returns the map width.
   public function get width():int
   {
-    return bitmap.width;
+    return _bitmap.width;
   }
   // height: returns the map height.
   public function get height():int
   {
-    return bitmap.height-1;
+    return _bitmap.height-1;
   }
 
   // getTile(x, y): returns the tile of a pixel at (x,y).
   public function getTile(x:int, y:int):int
   {
-    if (x < 0 || bitmap.width <= x || 
-	y < 0 || bitmap.height-1 <= y) {
+    if (x < 0 || _bitmap.width <= x || 
+	y < 0 || _bitmap.height-1 <= y) {
       return -1;
     }
-    var c:uint = bitmap.getPixel(x, y+1);
+    var c:uint = _bitmap.getPixel(x, y+1);
     return _tilevalue[c];
   }
 
   // setTile(x, y, i): set the tile value of pixel at (x,y).
   public function setTile(x:int, y:int, i:int):void
   {
-    var c:uint = bitmap.getPixel(i, 0);
-    bitmap.setPixel(x, y+1, c);
+    var c:uint = _bitmap.getPixel(i, 0);
+    _bitmap.setPixel(x, y+1, c);
   }
 
   // isTile(x, y, f): true if the tile at (x,y) has a property given by f.

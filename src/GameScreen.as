@@ -47,8 +47,8 @@ public class GameScreen extends Screen
     _status = Font.createText("TEXT", 0xffffff, 0, 2);
 
     var tilesize:int = 16;
-    var tilemap:TileMap = new TileMap(mapImage.bitmapData, tilesize);
-    _scene = new Scene(20, 15, tilemap, 
+    _scene = new Scene(20, 15, tilesize,
+		       mapImage.bitmapData, 
 		       tilesImage.bitmapData,
 		       skinsImage.bitmapData);
     _scene.width *= 2;
@@ -105,7 +105,7 @@ public class GameScreen extends Screen
     Font.renderText(_status.bitmapData, text);
 
     _scene.update();
-    _scene.openMap(_player.bounds, 16);
+    _scene.uncoverMap(_player.bounds, 32);
     _scene.setCenter(_player.pos, 50, 50);
     _scene.paint(_phase/2);
     _phase++;

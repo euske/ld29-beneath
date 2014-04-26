@@ -6,14 +6,21 @@ public class Tile
   public static const LADDER:int = 9;
   public static const LADDER_TOP:int = 10;
 
+  public static const PLAYER:int = 12;
   public static const TRAP:int = 11;
 
   public static const LAVA:int = 4;
 
+  // Spawn tile.
+  public static function isSpawn(i:int):Boolean
+  {
+    return (i == TRAP);
+  }
+
   // Empty tile.
   public static function isEmpty(i:int):Boolean
   { 
-    return (i == NONE || i == LADDER); 
+    return (i == NONE || i == LADDER || isSpawn(i)); 
   }
 
   // Ladder tile.

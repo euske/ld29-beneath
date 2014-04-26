@@ -70,7 +70,7 @@ public class Player extends Actor
     var v:Point;
 
     // try moving diagonally first.
-    v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
+    v = scene.tilemap.getCollisionByRect(bounds, //=getMovedBounds(dx,dy), 
 					 tdxOfDoom, tdyOfDoom, Tile.isStoppable);
     dx += v.x;
     dy += v.y;

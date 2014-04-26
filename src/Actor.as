@@ -12,6 +12,7 @@ public class Actor
   public var frame:Rectangle;
   public var skin:DisplayObject;
 
+  private var _active:Boolean;
   private var _scene:Scene;
 
   // Actor(scene)
@@ -19,6 +20,17 @@ public class Actor
   {
     _scene = scene;
     pos = new Point(0, 0);
+  }
+
+  // active
+  public function get active():Boolean
+  {
+    return _active;
+  }
+  public function set active(v:Boolean):void
+  {
+    _active = v;
+    skin.visible = v;
   }
 
   // scene
