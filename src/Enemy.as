@@ -24,7 +24,6 @@ public class Enemy extends Actor
 	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isObstacle));
   }
 
-
   public override function update():void
   {
     super.update();

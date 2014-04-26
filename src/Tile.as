@@ -3,6 +3,7 @@ package {
 public class Tile
 {
   public static const NONE:int = 0;
+  public static const DIRT:int = 1;
   public static const LADDER:int = 9;
   public static const LADDER_TOP:int = 10;
 

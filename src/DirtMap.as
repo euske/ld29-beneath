@@ -55,7 +55,7 @@ public class DirtMap
   // getMaskByRect(r): maximum mask value
   public function getMaskByRect(r:Rectangle):int
   {
-    var r:Rectangle = getCoordsByRect(r);
+    r = getCoordsByRect(r);
     var m:int = -1;
     for (var y:int = r.top; y < r.bottom; y++) {
       for (var x:int = r.left; x < r.right; x++) {
@@ -68,12 +68,19 @@ public class DirtMap
   // setMaskByRect(r): 
   public function setMaskByRect(r:Rectangle, m:int):void
   {
-    var r:Rectangle = getCoordsByRect(r);
+    r = getCoordsByRect(r);
     for (var y:int = r.top; y < r.bottom; y++) {
       for (var x:int = r.left; x < r.right; x++) {
 	setMask(x, y, m);
       }
     }
+  }
+
+  // setMaskByPoint(r): 
+  public function setMaskByPoint(p:Point, m:int):void
+  {
+    p = getCoordsByPoint(p);
+    setMask(p.x, p.y, m);
   }
 
   // getTilePoint(x, y): converts a point in the map to screen space.

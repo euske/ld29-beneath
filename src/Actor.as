@@ -9,9 +9,12 @@ import flash.geom.Rectangle;
 //
 public class Actor extends EventDispatcher
 {
-  public static const DIE:String = "ActorEvent.DIE";
+  // Event types.
+  public static const DIE:String = "Actor.DIE";
 
+  // Topleft position.
   public var pos:Point;
+  // Character boundary (relative to pos).
   public var frame:Rectangle;
 
   private var _skin:DisplayObject;
@@ -26,13 +29,13 @@ public class Actor extends EventDispatcher
     pos = new Point(0, 0);
   }
 
-  // active
+  // active: true if the actor is already uncovered on a map.
   public function get active():Boolean
   {
     return _active;
   }
 
-  // skin
+  // skin: actual Flash object to display.
   public function get skin():DisplayObject
   {
     return _skin;
@@ -43,13 +46,13 @@ public class Actor extends EventDispatcher
     _skin.visible = _active;
   }
 
-  // scene
+  // scene: the container object.
   public function get scene():Scene
   {
     return _scene;
   }
 
-  // bounds
+  // bounds: the character boundary (in the world)
   public function get bounds():Rectangle
   {
     return new Rectangle(pos.x+frame.x, pos.y+frame.y, 
@@ -79,19 +82,19 @@ public class Actor extends EventDispatcher
     return scene.maprect.containsRect(getMovedBounds(dx, dy));
   }
 
-  // activate
+  // activate(): called when the actor is uncovered.
   public virtual function activate():void
   {
     _active = true;
     _skin.visible = true;
   }
 
-  // collide(actor)
+  // collide(actor): called when the actor is colliding with another actor.
   public virtual function collide(actor:Actor):void
   {
   }
 
-  // update()
+  // update(): called at every frame.
   public virtual function update():void
   {
   }

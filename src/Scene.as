@@ -23,6 +23,7 @@ public class Scene extends Sprite
   private var _window:Rectangle;
   private var _tilemap:TileMap;
   private var _tilewindow:Rectangle;
+  private var _covermap:DirtMap;
   private var _dirtmap:DirtMap;
   private var _player:Player;
   private var _actors:Array;
@@ -81,6 +82,7 @@ public class Scene extends Sprite
     _tilemap = new TileMap(_tilesize);
     _tilemap.bitmap = _mapdata;
     _tilewindow = new Rectangle();
+    _covermap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
     _dirtmap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
     _actors = new Array();
     _player = new Player(this);
@@ -105,12 +107,6 @@ public class Scene extends Sprite
   public function get tilemap():TileMap
   {
     return _tilemap;
-  }
-
-  // dirtmap
-  public function get dirtmap():DirtMap
-  {
-    return _dirtmap;
   }
 
   // maprect
@@ -229,6 +225,8 @@ public class Scene extends Sprite
 	var x:int = r.x+dx;
 	var i:int = _tilemap.getTile(x, y);
 	if (0 <= i && Tile.getFluid(i, -1) < 0) {
+	  var m:int = _dirtmap.getMask(x, y);
+	  if (i == 0 && m == 0) { i = Tile.DIRT; }
 	  var src:Rectangle = getTileSrcRect(i);
 	  var dst:Point = new Point(dx*_tilesize, dy*_tilesize);
 	  _mapimage.bitmapData.copyPixels(_tileset, src, dst);
@@ -294,26 +292,28 @@ public class Scene extends Sprite
       for (var dx:int = 0; dx <= r.width; dx++) {
 	var x:int = r.x+dx;
 	var dst:Rectangle = new Rectangle(dx*_tilesize, dy*_tilesize, _tilesize, _tilesize);
-	if (_dirtmap.getMask(x, y) <= 0) {
+	if (_covermap.getMask(x, y) <= 0) {
 	  _maskimage.bitmapData.fillRect(dst, 0xff000000);
 	}
       }
     }
   }
 
-  // uncoverMap(r): open up a part of the map/activate things.
-  public function uncoverMap(r:Rectangle, size:int):void
+  // digMap(r): open up a part of the map/activate things.
+  public function digMap(p:Point, r:Rectangle, size:int):void
   {
     r = r.clone();
     r.inflate(size, size);
-    _dirtmap.setMaskByRect(r, 1);
+    _covermap.setMaskByRect(r, 1);
+    _dirtmap.setMaskByPoint(p, 1);
     _dirtchanged = true;
     // Activate actors in the uncover part.
     for each (var actor:Actor in _actors) {
-      if (!actor.active && _dirtmap.getMaskByRect(actor.bounds)) {
+      if (!actor.active && _covermap.getMaskByRect(actor.bounds)) {
 	actor.activate();
       }
     }
+    refreshTiles();
   }
 
   // setCenter(p)

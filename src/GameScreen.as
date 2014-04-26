@@ -108,7 +108,7 @@ public class GameScreen extends Screen
     Font.renderText(_status.bitmapData, text);
 
     _scene.update();
-    _scene.uncoverMap(_player.bounds, 32);
+    _scene.digMap(_player.pos, _player.bounds, 32);
     _scene.setCenter(_player.pos, 50, 50);
     _scene.paint(_phase/2);
     _phase++;
