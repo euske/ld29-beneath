@@ -72,8 +72,8 @@ public class Scene extends Sprite
     addChild(_maskimage);
   }
 
-  // reset
-  public function reset():void
+  // open()
+  public function open():void
   {
     // initialize things for each gameplay.
     _window.x = 0;
@@ -85,6 +85,14 @@ public class Scene extends Sprite
     _actors = new Array();
     _player = new Player(this);
     placeActors();
+  }
+
+  // close()
+  public function close():void
+  {
+    for each (var actor:Actor in _actors) {
+      removeChild(actor.skin);
+    }
   }
 
   // player
@@ -132,15 +140,6 @@ public class Scene extends Sprite
       _actors.splice(i, 1);
       removeChild(actor.skin);
     }
-  }
-
-  // clear()
-  public function clear():void
-  {
-    for each (var actor:Actor in _actors) {
-      removeChild(actor.skin);
-    }
-    _actors = new Array();
   }
 
   // update()

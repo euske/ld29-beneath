@@ -10,24 +10,34 @@ import flash.geom.Rectangle;
 //
 public class Player extends Actor
 {
+  public var health:int;
+
   // the way the player wants to move.
   public var vx:int;
   public var vy:int;
   // speed by gravity.
   public var vg:int;
 
-  private var _jumping:Boolean;
-  private var _grabbing:Boolean;
-
-  // Tile image:
-  [Embed(source="../assets/jump.mp3", mimeType="audio/mpeg")]
-  private static const JumpSoundClass:Class;
-  private static const jumpSound:Sound = new JumpSoundClass();
-
   public const speed:int = 8;
   public const gravity:int = 2;
   public const jumpacc:int = -20;
   public const maxspeed:int = +20;
+  public const inv_duration:int = 24; // in frames.
+
+  private var _jumping:Boolean;
+  private var _grabbing:Boolean;
+
+  private var _invincible:int;	// >0: temp. invincibility
+
+  // Jump sound
+  [Embed(source="../assets/jump.mp3", mimeType="audio/mpeg")]
+  private static const JumpSoundClass:Class;
+  private static const jumpSound:Sound = new JumpSoundClass();
+
+  // Hurt sound
+  [Embed(source="../assets/hurt.mp3", mimeType="audio/mpeg")]
+  private static const HurtSoundClass:Class;
+  private static const hurtSound:Sound = new HurtSoundClass();
 
   // Player(scene)
   public function Player(scene:Scene)
@@ -35,6 +45,7 @@ public class Player extends Actor
     super(scene);
     vx = 0;
     vy = 0;
+    health = 3;
   }
 
   // update()
@@ -98,6 +109,17 @@ public class Player extends Actor
       // End grabbing the tile.
       _grabbing = false;
     }
+
+    // blinking.
+    if (0 < _invincible) {
+      _invincible--;
+      if (_invincible == 0) {
+	skin.alpha = 1.0;
+      } else {
+	var b:Boolean = ((_invincible % 4) < 2);
+	skin.alpha = (b)? 0.0 : 1.0;
+      }
+    }
   }
 
   // hasLadder()
@@ -126,6 +148,23 @@ public class Player extends Actor
   public override function collide(actor:Actor):void
   {
     trace("collide: "+actor);
+    if (actor is Enemy) {
+      hurt();
+    }
+  }
+
+  // hurt()
+  private function hurt():void
+  {
+    if (0 < _invincible) return;
+    hurtSound.play();
+
+    if (health == 0) {
+      dispatchEvent(new ActorEvent(DIE));
+    } else {
+      health--;
+      _invincible = inv_duration;
+    }
   }
 }
 

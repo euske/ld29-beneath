@@ -44,7 +44,7 @@ public class GameScreen extends Screen
 
   public function GameScreen(width:int, height:int)
   {
-    _status = Font.createText("TEXT", 0xffffff, 0, 2);
+    _status = Font.createText("HEALTH: 00", 0xffffff, 0, 2);
 
     var tilesize:int = 16;
     _scene = new Scene(20, 15, tilesize,
@@ -56,30 +56,33 @@ public class GameScreen extends Screen
     _scene.y = height-_scene.window.height*2;
 
     //_music = new SoundLoop(mainMusic);
-
-    addChild(_scene);
-    addChild(_status);
   }
 
   // open()
   public override function open():void
   {
-    _scene.reset();
+    _scene.open();
     _player = _scene.player;
+    _player.addEventListener(Actor.DIE, onPlayerDead);
 
     if (_music != null) {
       _music.start();
     }
+
+    addChild(_scene);
+    addChild(_status);
   }
 
   // close()
   public override function close():void
   {
+    removeChild(_scene);
+    removeChild(_status);
+
     if (_music != null) {
       _music.stop();
     }
-    removeChild(_scene);
-    _scene.clear();
+    _scene.close();
   }
 
   // pause()
@@ -101,7 +104,7 @@ public class GameScreen extends Screen
   // update()
   public override function update():void
   {
-    var text:String = "TEXT";
+    var text:String = ("HEALTH:"+Utils.format(_player.health));
     Font.renderText(_status.bitmapData, text);
 
     _scene.update();
@@ -171,6 +174,11 @@ public class GameScreen extends Screen
       _player.vy = 0;
       break;
     }
+  }
+
+  private function onPlayerDead(e:ActorEvent):void
+  {
+    dispatchEvent(new ScreenEvent(MenuScreen));
   }
 }
 

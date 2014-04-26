@@ -1,13 +1,16 @@
 package {
 
+import flash.events.EventDispatcher;
 import flash.display.DisplayObject;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
 //  Actor
 //
-public class Actor
+public class Actor extends EventDispatcher
 {
+  public static const DIE:String = "ActorEvent.DIE";
+
   public var pos:Point;
   public var frame:Rectangle;
   public var skin:DisplayObject;
