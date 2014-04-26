@@ -19,6 +19,7 @@ TODO:
    - moving/jumping (affected by grativty)
    - floating/flying (not affected by gravity)
    - triggered (bomb, trap, icicle, etc.)
+   - collectible (coins, items, FOODS, etc.)
    We need:
      - Tile (16x16, if the object is static.)
      - Sprite (16x16, if the object is animated.)
@@ -28,9 +29,12 @@ TODO:
    Maybe reserve some space for additons?
    (e.g. 1st row is for enemy, 2nd row is for particle, etc.)
 
+  What kind of powerups?
+
+  Cooler way of uncovering a map?
+
   Need to implement:
    Rocks
-   Collectibles  
 
   We need spawn tiles!
 

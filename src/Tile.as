@@ -12,31 +12,37 @@ public class Tile
 
   public static const LAVA:int = 4;
 
-  // Spawn tile.
+  // Tiles where things can spawn (treated as empty).
   public static function isSpawn(i:int):Boolean
   {
     return (i == ENEMY || i == BOMB);
   }
 
-  // Empty tile.
-  public static function isEmpty(i:int):Boolean
-  { 
-    return (i == NONE || i == LADDER || isSpawn(i)); 
+  // Deadly tiles (e.g. lava).
+  public static function isDeadly(i:int):Boolean
+  {
+    return (i == LAVA);
   }
 
-  // Ladder tile.
+  // Empty tiles (as air).
+  public static function isEmpty(i:int):Boolean
+  { 
+    return (i == NONE || i == LADDER || isSpawn(i) || isDeadly(i)); 
+  }
+
+  // Ladder tile (you can grab / don't fall down).
   public static function isLadder(i:int):Boolean
   { 
     return (i == LADDER || i == LADDER_TOP); 
   }
 
-  // Tile that you cannot go.
+  // Tiles that you cannot step into.
   public static function isObstacle(i:int):Boolean
   { 
     return !(isEmpty(i) || isLadder(i));
   }
 
-  // Tile that you cannot fall into.
+  // Tile that you cannot fall into, but you can step into if you want.
   public static function isStoppable(i:int):Boolean 
   { 
     return !isEmpty(i);

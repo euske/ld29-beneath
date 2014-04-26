@@ -52,6 +52,12 @@ public class Player extends Actor
     return scene.tilemap.hasTileByRect(bounds, Tile.isLadder);
   }
 
+  // hasDeadly()
+  public function hasDeadly():Boolean
+  {
+    return scene.tilemap.hasTileByRect(bounds, Tile.isDeadly);
+  }
+
   // isLanded()
   public function isLanded():Boolean
   {
@@ -81,6 +87,7 @@ public class Player extends Actor
   public override function update():void
   {
     super.update();
+
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
     var tdyOfDoom:int = 0;
@@ -138,6 +145,11 @@ public class Player extends Actor
     if (!hasLadder()) {
       // End grabbing the tile.
       _grabbing = false;
+    }
+
+    if (hasDeadly()) {
+      // Touching something bad.
+      hurt();
     }
 
     // blinking.
