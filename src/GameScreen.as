@@ -48,7 +48,9 @@ public class GameScreen extends Screen
 
     var tilesize:int = 16;
     var tilemap:TileMap = new TileMap(mapImage.bitmapData, tilesize);
-    _scene = new Scene(20, 15, tilemap, tilesImage.bitmapData);
+    _scene = new Scene(20, 15, tilemap, 
+		       tilesImage.bitmapData,
+		       skinsImage.bitmapData);
     _scene.width *= 2;
     _scene.height *= 2;
     _scene.y = height-_scene.window.height*2;
@@ -62,15 +64,9 @@ public class GameScreen extends Screen
   // open()
   public override function open():void
   {
-    var tilesize:int = _scene.tilemap.tilesize;
+    _scene.reset();
+    _player = _scene.player;
 
-    _player = new Player(_scene);
-    _player.pos = _scene.tilemap.getTilePoint(1, 1);
-    _player.frame = new Rectangle(0, 0, tilesize, tilesize);
-    _player.skin = createSkin(skinsImage.bitmapData, 
-			      new Rectangle(tilesize*3, tilesize*0, tilesize, tilesize));
-    _scene.add(_player);
-    
     if (_music != null) {
       _music.start();
     }
@@ -176,25 +172,6 @@ public class GameScreen extends Screen
       break;
     }
   }
-
-  // createDummySkin(w, h, color): create a placeholder skin.
-  public static function createDummySkin(w:int, h:int, color:uint):Shape
-  {
-    var shape:Shape = new Shape();
-    shape.graphics.beginFill(color);
-    shape.graphics.drawRect(0, 0, w, h);
-    shape.graphics.endFill();
-    return shape;
-  }
-
-  // createSkin(bitmapdata, w, h, x, y)
-  public static function createSkin(src:BitmapData, rect:Rectangle):Bitmap
-  {
-    var dst:BitmapData = new BitmapData(rect.width, rect.height);
-    dst.copyPixels(src, rect, new Point());
-    return new Bitmap(dst);
-  }
-
 }
 
 } // package

@@ -11,17 +11,19 @@ import flash.geom.Rectangle;
 // 
 public class Scene extends Sprite
 {
-  private var _window:Rectangle;
   private var _tilemap:TileMap;
-  private var _dirtmap:DirtMap;
   private var _tiles:BitmapData;
+  private var _skins:BitmapData;
   private var _fluidimage:Bitmap;
   private var _mapimage:Bitmap;
   private var _maskimage:Bitmap;
   private var _maprect:Rectangle;
-  private var _actors:Array;
 
+  private var _window:Rectangle;
   private var _tilewindow:Rectangle;
+  private var _dirtmap:DirtMap;
+  private var _player:Player;
+  private var _actors:Array;
   private var _dirtchanged:Boolean;
   private var _phase:int;
 
@@ -29,15 +31,16 @@ public class Scene extends Sprite
   [Embed(source="../assets/background.png", mimeType="image/png")]
   private static const BackgroundImageCls:Class;
 
-  // Scene(w, h, tilemap)
+  // Scene(w, h, tilemap): set up fixated things.
   public function Scene(w:int, h:int, 
-			tilemap:TileMap, tiles:BitmapData)
+			tilemap:TileMap, 
+			tiles:BitmapData,
+			skins:BitmapData)
   {
-    _window = new Rectangle(0, 0, w*tilemap.tilesize, h*tilemap.tilesize);
     _tilemap = tilemap;
-    _dirtmap = new DirtMap(tilemap.width, tilemap.height, tilemap.tilesize);
     _tiles = tiles;
-    _tilewindow = new Rectangle();
+    _skins = skins;
+    _window = new Rectangle(0, 0, w*tilemap.tilesize, h*tilemap.tilesize);
 
     var tw:int = (w+1)*tilemap.tilesize;
     var th:int = (h+1)*tilemap.tilesize;
@@ -47,7 +50,6 @@ public class Scene extends Sprite
     _maprect = new Rectangle(0, 0,
 			     tilemap.width*tilemap.tilesize,
 			     tilemap.height*tilemap.tilesize);
-    _actors = new Array();
 
     var bgimage:Bitmap = new BackgroundImageCls();
     bgimage.width = _window.width;
@@ -65,6 +67,25 @@ public class Scene extends Sprite
     addChild(_fluidimage);
     addChild(_mapimage);
     addChild(_maskimage);
+  }
+
+  // reset
+  public function reset():void
+  {
+    // initialize things for each gameplay.
+    _window.x = 0;
+    _window.y = 0;
+    _tilewindow = new Rectangle();
+    _dirtmap = new DirtMap(tilemap.width, tilemap.height, tilemap.tilesize);
+    _actors = new Array();
+    _player = new Player(this);
+    placeActors();
+  }
+
+  // player
+  public function get player():Player
+  {
+    return _player;
   }
 
   // tilemap
@@ -163,10 +184,21 @@ public class Scene extends Sprite
     _tilewindow = new Rectangle();
   }
 
+  // getTileSrcRect(i)
   private function getTileSrcRect(i:int):Rectangle
   {
     var tilesize:int = _tilemap.tilesize;
     return new Rectangle(i*tilesize, 0, tilesize, tilesize);
+  }
+
+  // createSkin(i)
+  private function createSkin(i:int):Bitmap
+  {
+    var tilesize:int = _tilemap.tilesize;
+    var src:Rectangle = new Rectangle(i*tilesize, 0, tilesize, tilesize);
+    var skin:BitmapData = new BitmapData(src.width, src.height);
+    skin.copyPixels(_skins, src, new Point());
+    return new Bitmap(skin);
   }
 
   // renderTiles(r)
@@ -303,6 +335,32 @@ public class Scene extends Sprite
     var y1:int = Math.ceil(_window.bottom/tilesize);
     y1 = Math.min(y1+margin, _tilemap.height-1);
     return new Rectangle(x0, y0, x1-x0, y1-y0);
+  }
+
+  // placeActors()
+  private function placeActors():void
+  {
+    var tilesize:int = _tilemap.tilesize;
+    var frame:Rectangle = new Rectangle(0, 0, tilesize, tilesize);
+    _player.pos = new Point(1*tilesize, 1*tilesize);
+    _player.frame = frame;
+    _player.skin = createSkin(3);
+    add(_player);
+    for (var y:int = 0; y < _tilemap.height; y++) {
+      for (var x:int = 0; x < _tilemap.width; x++) {
+	var i:int = _tilemap.getTile(x, y);
+	var actor:Actor = null;
+	switch (i) {
+	default:
+	  break;
+	}
+	if (actor != null) {
+	  actor.pos = new Point(x*tilesize, y*tilesize);
+	  actor.skin = createSkin(i);
+	  add(actor);
+	}
+      }
+    }
   }
 }
 
