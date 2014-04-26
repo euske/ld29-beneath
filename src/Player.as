@@ -121,6 +121,12 @@ public class Player extends Actor
       jumpSound.play();
     }
   }
+
+  // collide(actor)
+  public override function collide(actor:Actor):void
+  {
+    trace("collide: "+actor);
+  }
 }
 
 } // package

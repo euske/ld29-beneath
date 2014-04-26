@@ -146,10 +146,17 @@ public class Scene extends Sprite
   // update()
   public function update():void
   {
-    for each (var actor:Actor in _actors) {
-      if (actor.active) {
-	actor.update();
+    for (var i:int = 0; i < _actors.length; i++) {
+      var actor:Actor = _actors[i];
+      if (!actor.active) continue;
+      for (var j:int = i+1; j < _actors.length; j++) {
+	var a:Actor = _actors[j];
+	if (a.active && actor.bounds.intersects(a.bounds)) {
+	  actor.collide(a);
+	  a.collide(actor);
+	}
       }
+      actor.update();
     }
   }
 

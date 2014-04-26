@@ -31,7 +31,6 @@ public class Enemy extends Actor
       move(vx, vy);
     } else {
       updateDirection();
-      trace("update: "+vx+","+vy);
     }
   }
   

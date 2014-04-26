@@ -69,6 +69,11 @@ public class Actor
     return scene.maprect.containsRect(getMovedBounds(dx, dy));
   }
 
+  // collide(actor)
+  public virtual function collide(actor:Actor):void
+  {
+  }
+
   // update()
   public virtual function update():void
   {
