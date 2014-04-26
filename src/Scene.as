@@ -19,28 +19,38 @@ public class Scene extends Sprite
   private var _maprect:Rectangle;
   private var _actors:Array;
 
-  // Scene(width, height, tilemap)
-  public function Scene(width:int, height:int, 
+  // Background image:
+  [Embed(source="../assets/background.png", mimeType="image/png")]
+  private static const BackgroundImageCls:Class;
+
+  // Scene(w, h, tilemap)
+  public function Scene(w:int, h:int, 
 			tilemap:TileMap, tiles:BitmapData)
   {
-    _window = new Rectangle(0, 0, width, height);
+    _window = new Rectangle(0, 0, w*tilemap.tilesize, h*tilemap.tilesize);
     _tilemap = tilemap;
     _tiles = tiles;
     _tilewindow = new Rectangle();
-    _mapimage = new Bitmap(new BitmapData(width+tilemap.tilesize, 
-					  height+tilemap.tilesize, 
+    _mapimage = new Bitmap(new BitmapData((w+1)*tilemap.tilesize, 
+					  (h+1)*tilemap.tilesize, 
 					  true, 0x00000000));
     _maprect = new Rectangle(0, 0,
 			     tilemap.width*tilemap.tilesize,
 			     tilemap.height*tilemap.tilesize);
     _actors = new Array();
-    addChild(_mapimage);
-    
+
+    var bgimage:Bitmap = new BackgroundImageCls();
+    bgimage.width = _window.width;
+    bgimage.height = _window.height;
+
     var clipping:Shape = new Shape();
     clipping.graphics.beginFill(0xffffff);
-    clipping.graphics.drawRect(0, 0, width, height);
+    clipping.graphics.drawRect(0, 0, _window.width, _window.height);
+    _mapimage.mask = clipping;
+
     addChild(clipping);
-    mask = clipping;
+    addChild(bgimage);
+    addChild(_mapimage);
   }
 
   // tilemap
@@ -148,16 +158,16 @@ public class Scene extends Sprite
     // Center the window position.
     if (_maprect.width < _window.width) {
       _window.x = -(_window.width-_maprect.width)/2;
-    } else if (p.x-hmargin < _window.x) {
+    } else if (p.x-hmargin < _window.left) {
       _window.x = Math.max(_maprect.left, p.x-hmargin);
-    } else if (_window.x+_window.width < p.x+hmargin) {
+    } else if (_window.right < p.x+hmargin) {
       _window.x = Math.min(_maprect.right, p.x+hmargin)-_window.width;
     }
     if (_maprect.height < _window.height) {
       _window.y = -(_window.height-_maprect.height)/2;
-    } else if (p.y-vmargin < _window.y) {
+    } else if (p.y-vmargin < _window.top) {
       _window.y = Math.max(_maprect.top, p.y-vmargin);
-    } else if (_window.y+_window.height < p.y+vmargin) {
+    } else if (_window.bottom < p.y+vmargin) {
       _window.y = Math.min(_maprect.bottom, p.y+vmargin)-_window.height;
     }
   }

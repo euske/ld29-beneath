@@ -44,15 +44,18 @@ public class GameScreen extends Screen
   public function GameScreen(width:int, height:int)
   {
     _status = Font.createText("TEXT", 0xffffff, 0, 2);
-    addChild(_status);
 
-    var tilesize:int = 32;
+    var tilesize:int = 16;
     var tilemap:TileMap = new TileMap(mapImage.bitmapData, tilesize);
-    _scene = new Scene(width, height, tilemap, tilesImage.bitmapData);
-    _scene.y = _status.height;
-    addChild(_scene);
+    _scene = new Scene(20, 15, tilemap, tilesImage.bitmapData);
+    _scene.width *= 2;
+    _scene.height *= 2;
+    _scene.y = height-_scene.window.height*2;
 
     //_music = new SoundLoop(mainMusic);
+
+    addChild(_scene);
+    addChild(_status);
   }
 
   // open()
@@ -105,7 +108,7 @@ public class GameScreen extends Screen
     Font.renderText(_status.bitmapData, text);
 
     _scene.update();
-    _scene.setCenter(_player.pos, 100, 100);
+    _scene.setCenter(_player.pos, 50, 50);
     _scene.paint();
   }
 
