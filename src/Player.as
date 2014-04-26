@@ -10,10 +10,17 @@ import flash.geom.Rectangle;
 //
 public class Player extends Actor
 {
+  // the way the player wants to move.
   public var vx:int;
   public var vy:int;
 
+  public var vg:int;
+
+  private var _jumping:Boolean;
+
   public const speed:int = 8;
+  public const gravity:int = 2;
+  public const jumpacc:int = -20;
 
   // Player(scene)
   public function Player(scene:Scene)
@@ -26,25 +33,55 @@ public class Player extends Actor
   // update()
   public override function update():void
   {
-    var dx:int = vx*speed;
-    var dy:int = vy*speed;
-    if (isMovable(dx, dy)) {
-      move(dx, dy);
+    // (tdx,tdy): the amount that the character should move.
+    var tdxOfDoom:int = vx*speed;
+    var tdyOfDoom:int = vg + gravity;
+    if (_jumping) {
+      _jumping = false;
+      tdyOfDoom += jumpacc;
     }
+
+    // (dy,dy): the amount that the character actually moved.
+    var dx:int = 0, dy:int = 0;
+    var v:Point;
+    // try moving diagonally first.
+    v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
+					 tdxOfDoom, tdyOfDoom, Tile.isObstacle);
+    dx += v.x;
+    dy += v.y;
+    tdxOfDoom -= v.x;
+    tdyOfDoom -= v.y;
+    // try moving left/right.
+    v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
+					 tdxOfDoom, 0, Tile.isObstacle);
+    dx += v.x;
+    dy += v.y;
+    tdxOfDoom -= v.x;
+    tdyOfDoom -= v.y;
+    // try moving up/down.
+    v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
+					 0, tdyOfDoom, Tile.isObstacle);
+    dx += v.x;
+    dy += v.y;
+    tdxOfDoom -= v.x;
+    tdyOfDoom -= v.y;
+
+    vg = dy;
+    move(dx, dy);
   }
 
-  // isMovable(dx, dy)
-  public override function isMovable(dx:int, dy:int):Boolean
+  // isLanded()
+  public function isLanded():Boolean
   {
-    var r:Rectangle = getMovedBounds(dx, dy);
-    return (scene.maprect.containsRect(getMovedBounds(dx, dy)) &&
-	    !scene.tilemap.isTileByRect(r, Tile.isObstacle));
+    return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isObstacle);
   }
 
   // jump()
   public function jump():void
   {
-    
+    if (isLanded()) {
+      _jumping = true;
+    }
   }
 }
 

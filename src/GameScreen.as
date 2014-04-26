@@ -43,7 +43,7 @@ public class GameScreen extends Screen
 
   public function GameScreen(width:int, height:int)
   {
-    _status = Font.createText("TEXT");
+    _status = Font.createText("TEXT", 0xffffff, 0, 2);
     addChild(_status);
 
     var tilesize:int = 32;

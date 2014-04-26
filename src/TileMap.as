@@ -141,8 +141,8 @@ public class TileMap
     return scanTile(r.left, r.top, r.right-1, r.bottom-1, f);
   }
 
-  // isTileByRect(r):
-  public function isTileByRect(r:Rectangle, f:Function):Boolean
+  // hasTileByRect(r):
+  public function hasTileByRect(r:Rectangle, f:Function):Boolean
   {
     return (scanTileByRect(r, f).length != 0);
   }
@@ -159,6 +159,13 @@ public class TileMap
       v = Utils.collideRect(t, r, v);
     }
     return v;
+  }
+
+  // hasCollisionByRect
+  public function hasCollisionByRect(r:Rectangle, vx:int, vy:int, f:Function):Boolean
+  {
+    var v:Point = getCollisionByRect(r, vx, vy, f);
+    return (v.x != vx || v.y != vy);
   }
 
 }
