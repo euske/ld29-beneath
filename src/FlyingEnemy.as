@@ -3,20 +3,18 @@ package {
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-//  Enemy
+//  FlyingEnemy (Maybe ClimingEnemy)
 // 
-public class Enemy extends Actor
+public class FlyingEnemy extends Actor
 {
-  public const speed:int = 8;
+  public const speed:int = 4;
 
-  public var _vx:int;
   public var _vy:int;
 
-  public function Enemy(scene:Scene)
+  public function FlyingEnemy(scene:Scene, vy:int)
   {
     super(scene);
-    _vx = (Utils.rnd(2)*2-1) * speed;
-    _vy = 0;
+    _vy = vy;
   }
 
   public override function isMovable(dx:int, dy:int):Boolean
@@ -28,10 +26,11 @@ public class Enemy extends Actor
   public override function update():void
   {
     super.update();
-    if (isMovable(_vx, _vy)) {
-      move(_vx, _vy);
+    var dy:int = _vy*speed;
+    if (isMovable(0, dy)) {
+      move(0, dy);
     } else {
-      _vx = -_vx;
+      _vy = -_vy;
     }
   }
 }

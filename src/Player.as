@@ -97,7 +97,7 @@ public class Player extends Actor
   public override function collide(actor:Actor):void
   {
     //trace("collide: "+actor);
-    if (actor is Enemy) {
+    if (actor is RunningEnemy) {
       hurt();
     } else if (actor is Grave) {
       (actor as Grave).collect();

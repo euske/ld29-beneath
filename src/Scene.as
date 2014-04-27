@@ -402,7 +402,17 @@ public class Scene extends Sprite
 	  break;
 
 	case Tile.SPAWN_ENEMY:
-	  actor = new Enemy(this);
+	  switch (Utils.rnd(0)) {
+	  case 0:
+	    actor = new RunningEnemy(this, +1);
+	    break;
+	  case 1:
+	    actor = new FlyingEnemy(this, +1);
+	    break;
+	  case 2:
+	    actor = new StickingEnemy(this, +1, 0);
+	    break;
+	  }
 	  break;
 
 	}
