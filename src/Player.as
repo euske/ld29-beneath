@@ -21,6 +21,7 @@ public class Player extends Actor
   public const jumpacc:int = -10;
   public const maxspeed:int = +10;
   public const inv_duration:int = 24; // in frames.
+  public const inset_dig:int = -2; // inset size of bounds for digging.
 
   private var _jumping:Boolean;
   private var _grabbing:Boolean;
@@ -31,6 +32,11 @@ public class Player extends Actor
   [Embed(source="../assets/sounds/jump.mp3", mimeType="audio/mpeg")]
   private static const JumpSoundClass:Class;
   private static const jumpSound:Sound = new JumpSoundClass();
+
+  // Dig sound
+  [Embed(source="../assets/sounds/dig.mp3", mimeType="audio/mpeg")]
+  private static const DigSoundClass:Class;
+  private static const digSound:Sound = new DigSoundClass();
 
   // Hurt sound
   [Embed(source="../assets/sounds/hurt.mp3", mimeType="audio/mpeg")]
@@ -153,6 +159,12 @@ public class Player extends Actor
     if (hasDeadly()) {
       // Touching something bad.
       hurt();
+    }
+
+    var r:Rectangle = bounds.clone();
+    r.inflate(inset_dig, inset_dig);
+    if (scene.tilemap.digTileByRect(r)) {
+      digSound.play();
     }
 
     // blinking.

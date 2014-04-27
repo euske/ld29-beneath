@@ -45,13 +45,16 @@ CSV2PNG=$(PYTHON) tools/csv2png.py
 	$(LAME) $< $@
 
 assets: assets/levels/mapdata.png \
-	assets/sounds/hurt.mp3 \
+	assets/sounds/dig.mp3 \
 	assets/sounds/jump.mp3 \
+	assets/sounds/hurt.mp3 \
 	assets/sounds/bombtick.mp3 \
 	assets/sounds/explosion.mp3
 
 assets/levels/mapdata.png: assets/levels/mapdata.csv
-assets/sounds/hurt.mp3: assets/sounds/hurt.wav
+
+assets/sounds/dig.mp3: assets/sounds/dig.wav
 assets/sounds/jump.mp3: assets/sounds/jump.wav
+assets/sounds/hurt.mp3: assets/sounds/hurt.wav
 assets/sounds/bombtick.mp3: assets/sounds/bombtick.wav
 assets/sounds/explosion.mp3: assets/sounds/explosion.wav

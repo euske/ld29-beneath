@@ -23,10 +23,10 @@ public class Scene extends Sprite
   private var _window:Rectangle;
   private var _tilemap:TileMap;
   private var _tilewindow:Rectangle;
-  private var _covermap:DirtMap;
+  private var _maskmap:DirtMap;
+  private var _maskchanged:Boolean;
   private var _player:Player;
   private var _actors:Array;
-  private var _dirtchanged:Boolean;
   private var _phase:int;
 
   // Background image:
@@ -81,7 +81,7 @@ public class Scene extends Sprite
     _tilemap = new TileMap(_tilesize);
     _tilemap.bitmap = _mapdata;
     _tilewindow = new Rectangle();
-    _covermap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
+    _maskmap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
     _actors = new Array();
     _player = new Player(this);
     _player.frame = new Rectangle(0, 0, _tilesize, _tilesize);
@@ -179,12 +179,12 @@ public class Scene extends Sprite
     if (!_tilewindow.equals(r) || _phase != phase) {
       renderFluids(r, phase);
     }
-    if (_dirtchanged) {
+    if (_maskchanged) {
       renderMasks(r);
     }
     _tilewindow = r;
     _phase = phase;
-    _dirtchanged = false;
+    _maskchanged = false;
 
     _mapimage.x = (_tilewindow.x*_tilesize)-_window.x;
     _mapimage.y = (_tilewindow.y*_tilesize)-_window.y;
@@ -292,27 +292,23 @@ public class Scene extends Sprite
       for (var dx:int = 0; dx <= r.width; dx++) {
 	var x:int = r.x+dx;
 	var dst:Rectangle = new Rectangle(dx*_tilesize, dy*_tilesize, _tilesize, _tilesize);
-	if (_covermap.getMask(x, y) <= 0) {
+	if (_maskmap.getMask(x, y) <= 0) {
 	  _maskimage.bitmapData.fillRect(dst, 0xff000000);
 	}
       }
     }
   }
 
-  // digMap(r): open up a part of the map/activate things.
-  public function digMap(bounds:Rectangle, size_dig:int, size_uncover:int):void
+  // uncoverMap(r): open up a part of the map/activate things.
+  public function uncoverMap(bounds:Rectangle, size:int):void
   {
-    var r:Rectangle;
-    r = bounds.clone();
-    r.inflate(size_dig, size_dig);
-    _tilemap.digTileByRect(r);
-    r = bounds.clone();
-    r.inflate(size_uncover, size_uncover);
-    _covermap.setMaskByRect(r, 1);
-    _dirtchanged = true;
+    var r:Rectangle = bounds.clone();
+    r.inflate(size, size);
+    _maskmap.setMaskByRect(r, 1);
+    _maskchanged = true;
     // Activate actors in the uncover part.
     for each (var actor:Actor in _actors) {
-      if (!actor.active && _covermap.getMaskByRect(actor.bounds)) {
+      if (!actor.active && _maskmap.getMaskByRect(actor.bounds)) {
 	actor.activate();
       }
     }

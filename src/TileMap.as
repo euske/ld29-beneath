@@ -91,25 +91,31 @@ public class TileMap
   }
 
   // digTile(x, y): set the tile value of pixel at (x,y).
-  public function digTile(x:int, y:int):void
+  public function digTile(x:int, y:int):Boolean
   {
     if (x < 0 || _bitmap.width <= x || 
 	y < 0 || _bitmap.height-1 <= y) {
-      return;
+      return false;
     }
     var row:Array = _dirtmap[y];
-    row[x] = 0;
+    if (row[x]) {
+      row[x] = 0;
+      return true;
+    }
+    return false;
   }
 
   // digTileByRect(r)
-  public function digTileByRect(r:Rectangle):void
+  public function digTileByRect(r:Rectangle):Boolean
   {
+    var dug:Boolean = false;
     r = getCoordsByRect(r);
     for (var y:int = r.top; y < r.bottom; y++) {
       for (var x:int = r.left; x < r.right; x++) {
-	digTile(x, y);
+	dug = dug || digTile(x, y);
       }
     }
+    return dug;
   }
 
   // isTile(x, y, f): true if the tile at (x,y) has a property given by f.
