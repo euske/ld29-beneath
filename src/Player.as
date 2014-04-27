@@ -196,25 +196,28 @@ public class Player extends Actor
       digSound.play();
     }
 
+    // skin animation.
+    _phase++;
+    if (0 < _invincible) {
+      skinId = Skin.playerHurting(_phase) + ((vx<0)? 1 : 0);
+    } else if (_digging) {
+      skinId = Skin.playerDigging(_phase) + ((vx<0)? 1 : 0);
+    } else if (vx != 0) {
+      skinId = Skin.playerWalking(_phase) + ((vx<0)? 1 : 0);
+    } else if (vy != 0) {
+      skinId = Skin.playerClimbing(_phase);
+    }
+
     // blinking.
     if (0 < _invincible) {
       _invincible--;
       if (_invincible == 0) {
 	skin.alpha = 1.0;
+	skinId = 0;
       } else {
 	var b:Boolean = ((_invincible % 4) < 2);
 	skin.alpha = (b)? 0.0 : 1.0;
       } 
-    }
-
-    // skin animation.
-    _phase++;
-    if (0 < _invincible) {
-      skinId = Skin.playerHurting(_phase) + ((vx<0)? 1 : 0);
-    } else if (vx != 0) {
-      skinId = Skin.playerWalking(_phase) + ((vx<0)? 1 : 0);
-    } else if (vy != 0) {
-      skinId = Skin.playerClimbing(_phase);
     }
   }
 

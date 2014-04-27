@@ -12,11 +12,7 @@ TODO:
 ! Switch from mapdata.png to mapdata.csv !!IMPORTANT!!
 
   Need to tweak digging:
-   - All undug tiles should have collisions
-   - No masking non-solid tiles with dirt
-   - Maybe hold a button while moving to dig?
-   - When dug, change dug tile to 0...
-   - ...and surrounding tiles to what they need to be (after higher priority stuff)
+   - Change surrounding tiles to what they need to be after digging (after higher priority stuff)
    - Digging should slow movement
 
   Need to tweak physics: (While Euske is at work)
@@ -26,9 +22,9 @@ TODO:
    - enemy speed / enemy gravity
 
   For enemy/obstacle type:
-   - moving/jumping (affected by grativty)
+   - moving/jumping (affected by grativty) 	[TOO COMPLEX]
    - floating/flying (not affected by gravity)
-   - triggered (bomb, trap, icicle, etc.)
+   - triggered (bomb, trap, icicle, etc.) 	[NO TIME TO IMPLEMENT]
    - collectible (coins, items, FOODS, etc.)
    We need:
      - Tile (16x16, if the object is static.)		// Does this mean lava should be
@@ -39,14 +35,14 @@ TODO:
    Maybe reserve some space for additons?
    (e.g. 1st row is for enemy, 2nd row is for particle, etc.)
 
-  What kind of powerups? [!PROBABLY NO TIME TO IMPLEMENT POWERUPS!]
+  What kind of powerups?	[!DEFINITELY NO TIME TO IMPLEMENT POWERUPS!]
 	- See further into solid tiles
 	- See all hazard tiles that are behind fog of war
 	- Faster run, higher jump, faster dig.
 
   Cooler way of uncovering a map?
 
-  Need to implement:
+  Need to implement:	[NO TIME]
     Falling Rocks
 
 =======================================================================================
