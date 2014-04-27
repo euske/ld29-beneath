@@ -13,8 +13,6 @@ public class Player extends Actor
   // the way the player wants to move.
   public var vx:int;
   public var vy:int;
-  // speed by gravity.
-  public var vg:int;
   // digging
   public var digging:Boolean;
 
@@ -25,6 +23,8 @@ public class Player extends Actor
   public const inv_duration:int = 24; // in frames.
   public const inset_dig:int = -2; // inset size of bounds for digging.
 
+
+  private var _vg:int;		// speed by gravity.
   private var _jumping:Boolean;
   private var _grabbing:Boolean;
 
@@ -97,7 +97,7 @@ public class Player extends Actor
 
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
-    var tdyOfDoom:int = vg+gravity;
+    var tdyOfDoom:int = _vg+gravity;
     var fx:Function = (digging && vx != 0)? Tile.isBlockingAlways : Tile.isBlockingNormally;
     var fy:Function = null;
 
@@ -156,7 +156,7 @@ public class Player extends Actor
     tdxOfDoom -= v.x;
     tdyOfDoom -= v.y;
 
-    vg = dy;
+    _vg = (_grabbing)? 0 : dy;
     move(dx, dy);
 
     if (!canGrabLadder()) {

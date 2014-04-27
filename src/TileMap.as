@@ -13,6 +13,8 @@ public class TileMap
   // tilesize: the size of each tile.
   public var tilesize:int;
 
+  public var changed:Boolean;
+
   // bitmap: actual bitmap to hold the 2D array.
   private var _bitmap:BitmapData;
   // dirtmap:
@@ -51,6 +53,7 @@ public class TileMap
   {
     _bitmap = bitmap.clone();
     _dirtmap = dirtmap.clone();
+    changed = true;
   }
 
   // getRawTile(x, y): returns the tile of a pixel at (x,y).
@@ -64,6 +67,18 @@ public class TileMap
     return _mapvalue[c];
   }
 
+  // getDirt(x, y)
+  public function getDirt(x:int, y:int):int
+  {
+    if (x < 0 || _dirtmap.width <= x || 
+	y < 0 || _dirtmap.height <= y) {
+      return -1;
+    }
+    var c:uint = _dirtmap.getPixel(x, y);
+    var i:int = (c == 0)? 0 : _mapvalue[c];
+    return i;
+  }
+
   // digTile(x, y): set the tile value of pixel at (x,y).
   public function digTile(x:int, y:int):Boolean
   {
@@ -75,6 +90,7 @@ public class TileMap
     var i:int = (c == 0)? 0 : _mapvalue[c];
     if (i != 0) {
       _dirtmap.setPixel(x, y, 0);
+      changed = true;
       return true;
     }
     return false;
@@ -96,14 +112,11 @@ public class TileMap
   // getTile(x, y)
   public function getTile(x:int, y:int):int
   {
-    if (x < 0 || _dirtmap.width <= x || 
-	y < 0 || _dirtmap.height <= y) {
-      return -1;
+    var i:int = getDirt(x, y);
+    if (i == 0) {
+      i = getRawTile(x, y);
     }
-    var c:uint = _dirtmap.getPixel(x, y);
-    var i:int = (c == 0)? 0 : _mapvalue[c];
-    if (i != 0) return i;
-    return getRawTile(x, y);
+    return i;
   }
 
   // isTile(x, y, f): true if the tile at (x,y) has a property given by f.
