@@ -14,7 +14,7 @@ PROJECT=beneath
 DROPBOXBASE=$$HOME/Dropbox/ld29
 WWWBASE=tabesugi:public/file/ludumdare.tabesugi.net/$(PROJECT)
 
-all: assets/mapdata.png
+all: assets/levels/mapdata.png
 
 clean:
 
@@ -34,5 +34,5 @@ get_f:
 ##
 PYTHON=python
 CSV2PNG=$(PYTHON) tools/csv2png.py
-assets/mapdata.png: assets/levels/mapdata.csv
+assets/levels/mapdata.png: assets/levels/mapdata.csv
 	$(CSV2PNG) assets/levels/mapdata.csv $@

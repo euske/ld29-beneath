@@ -2,46 +2,46 @@
 <project>
   <version>3.0.4</version>
   <bgColor>0x777777</bgColor>
-  <viewPos x="-21" y="-54"/>
+  <viewPos x="32" y="-50"/>
   <firstLayersTop>false</firstLayersTop>
-  <spriteEntries currentId="1" selected="true"/>
+  <spriteEntries currentId="1"/>
   <layers>
     <group name="Group1" id="0" xScroll="1" yScroll="1" visible="true" open="true" locked="false" exports="true">
-      <maplayer name="BG" id="1" xScroll="1" yScroll="1" x="0" y="0" width="1" height="1" tileset="tilemap.png" tileWidth="16" tileHeight="16" visible="true" hasHits="false" drawIdx="1" collideIdx="1" eraseIdx="0" locked="false" exports="true" tileSpacingX="16" tileSpacingY="16" xStagger="0" tileOffsetX="0" tileOffsetY="0" isMaster="false" mapType="2d" hasHeight="false" repeatX="true" repeatY="true">
+      <maplayer name="BG" id="0" xScroll="1" yScroll="1" x="0" y="0" width="1" height="1" tileset="../tilemap.png" tileWidth="16" tileHeight="16" visible="true" hasHits="false" drawIdx="1" collideIdx="1" eraseIdx="0" locked="false" exports="true" tileSpacingX="16" tileSpacingY="16" xStagger="0" tileOffsetX="0" tileOffsetY="0" isMaster="false" mapType="2d" hasHeight="false" repeatX="true" repeatY="true">
         <row>1</row>
         <tileProperties>
           <properties/>
         </tileProperties>
       </maplayer>
-      <maplayer name="Map1" id="2" xScroll="1" yScroll="1" x="0" y="0" width="64" height="64" tileset="tilemap.png" tileWidth="16" tileHeight="16" visible="true" hasHits="false" drawIdx="1" collideIdx="1" eraseIdx="0" locked="false" exports="true" tileSpacingX="16" tileSpacingY="16" xStagger="0" tileOffsetX="0" tileOffsetY="0" isMaster="false" mapType="2d" hasHeight="false" repeatX="false" repeatY="false" selected="true">
+      <maplayer name="Map1" id="1" xScroll="1" yScroll="1" x="0" y="0" width="64" height="64" tileset="../tilemap.png" tileWidth="16" tileHeight="16" visible="true" hasHits="false" drawIdx="1" collideIdx="1" eraseIdx="0" locked="false" exports="true" tileSpacingX="16" tileSpacingY="16" xStagger="0" tileOffsetX="0" tileOffsetY="0" isMaster="false" mapType="2d" hasHeight="false" repeatX="false" repeatY="false" selected="true">
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,0,0,0,0,0,0,0,0,74,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,0,0,0,0,0,0,0,0,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,68,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,21,20,2,24,0,0,0,0,14,6,2,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,76,0,0,0,0,0,4,5,2,2,24,0,0,0,0,4,10,0,0,0,0,0,0,0,0,0,0,0,0,66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,21,19,22,64,64,63,32,3,0,4,2,3,0,0,0,0,13,0,76,0,11,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,77,0,0,0,0,0,4,5,2,2,24,0,0,0,0,4,10,0,0,0,0,0,0,0,0,0,0,0,0,66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,21,19,22,64,64,63,32,3,0,4,2,3,0,0,0,0,13,0,77,0,11,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,9,5,10,0,0,62,0,9,29,2,2,5,33,63,0,0,0,0,7,6,2,8,0,0,0,0,0,0,0,0,4,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,0,0,0,0,62,0,0,0,4,10,0,0,62,0,0,0,0,4,2,2,10,0,0,0,0,0,0,0,7,2,3,76,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,0,0,0,0,62,0,0,0,4,10,0,0,62,0,0,0,0,4,2,2,10,0,0,0,0,0,0,0,7,2,3,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,70,67,68,71,72,62,0,0,32,10,0,0,0,65,64,64,63,14,5,5,10,0,0,0,0,0,0,0,7,2,2,2,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,21,19,19,19,22,62,0,0,0,0,0,34,0,0,0,0,62,0,0,0,0,0,0,0,0,0,0,72,4,2,2,2,2,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,4,5,2,2,5,33,0,0,0,0,0,13,0,35,0,0,62,0,0,0,0,0,0,0,0,0,0,7,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,12,61,4,3,0,0,0,0,0,0,0,0,0,0,0,0,65,64,63,0,0,0,0,0,0,0,7,2,2,2,2,2,2,2,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,4,15,5,5,24,0,0,63,64,34,61,34,63,64,0,0,0,0,62,0,0,0,0,0,0,0,4,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,12,0,75,0,12,0,0,62,0,12,54,12,62,0,0,0,0,0,62,0,0,0,0,0,0,7,2,2,2,2,2,2,2,2,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,12,0,76,0,12,0,0,62,0,12,54,12,62,0,0,0,0,0,62,0,0,0,0,0,0,7,2,2,2,2,2,2,2,2,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,9,26,27,28,5,33,64,65,0,4,15,10,62,0,0,63,64,64,65,64,64,64,63,14,6,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,0,0,0,0,0,0,0,0,13,0,0,62,75,0,62,0,0,0,52,0,0,62,0,9,5,2,2,2,2,2,2,2,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,64,65,63,64,52,76,52,0,12,0,0,62,0,0,0,9,5,5,2,2,2,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,39,45,45,49,0,0,0,76,52,62,52,0,62,0,4,43,3,0,53,0,0,62,0,0,0,0,0,0,9,5,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,13,0,75,0,0,0,0,41,2,43,2,42,62,0,4,5,10,0,0,0,0,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,0,0,0,0,0,0,0,0,13,0,0,62,76,0,62,0,0,0,52,0,0,62,0,9,5,2,2,2,2,2,2,2,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,64,65,63,64,52,77,52,0,12,0,0,62,0,0,0,9,5,5,2,2,2,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,39,45,45,49,0,0,0,77,52,62,52,0,62,0,4,43,3,0,53,0,0,62,0,0,0,0,0,0,9,5,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,13,0,76,0,0,0,0,41,2,43,2,42,62,0,4,5,10,0,0,0,0,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,53,0,0,0,50,2,2,2,2,2,51,0,13,0,0,0,0,0,0,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,4,5,5,5,3,0,0,0,0,0,0,63,30,28,15,29,15,15,27,27,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
-        <row>0,0,0,0,0,0,0,0,0,0,0,0,12,0,75,73,12,0,0,0,0,0,0,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
+        <row>0,0,0,0,0,0,0,0,0,0,0,0,12,0,76,73,12,0,0,0,0,0,0,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>0,0,0,0,0,0,0,0,0,0,0,0,4,36,37,38,3,0,0,0,0,0,64,65,64,48,45,46,15,26,27,31,63,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>6,6,8,0,0,0,0,0,0,0,0,0,9,5,5,5,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</row>
         <row>2,2,2,8,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61</row>
@@ -81,7 +81,7 @@
       </maplayer>
     </group>
   </layers>
-  <tileMatrix currentMatrix="0" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="tilemap.png">
+  <tileMatrix currentMatrix="0" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="../tilemap.png">
     <row>
       <tile>21</tile>
       <tile>19</tile>
@@ -204,7 +204,7 @@
       </rows>
     </specialConnections>
   </tileMatrix>
-  <tileMatrixData name="Grass-Green" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="tilemap.png">
+  <tileMatrixData name="Grass-Green" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="../tilemap.png">
     <tiles>21,19,22,4,2,3,9,5,10</tiles>
     <connections set="7">
       <tiles>34,30,13,31</tiles>
@@ -222,7 +222,7 @@
       <tiles>26,28,35,19</tiles>
     </connections>
   </tileMatrixData>
-  <tileMatrixData name="Grass-Blue" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="tilemap.png">
+  <tileMatrixData name="Grass-Blue" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="../tilemap.png">
     <tiles>39,37,40,4,2,3,9,5,10</tiles>
     <connections set="7">
       <tiles>52,48,13,49</tiles>
@@ -240,7 +240,7 @@
       <tiles>44,46,53,37</tiles>
     </connections>
   </tileMatrixData>
-  <tileMatrixData name="Grass-NONE" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="true" allowSpecialTiles="true" tileset="tilemap.png">
+  <tileMatrixData name="Grass-NONE" rows="3" cols="3" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="true" allowSpecialTiles="true" tileset="../tilemap.png">
     <tiles>7,6,8,4,2,3,9,5,10</tiles>
     <connections set="6">
       <tiles>11,16,13,14</tiles>
@@ -249,7 +249,7 @@
       <tiles>12,15,17,0</tiles>
     </connections>
   </tileMatrixData>
-  <tileMatrixData name="Ladder" rows="2" cols="1" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="tilemap.png">
+  <tileMatrixData name="Ladder" rows="2" cols="1" randomizeMiddle="false" ignoreClear="false" ignoreMapEdges="false" allowSpecialTiles="true" tileset="../tilemap.png">
     <tiles>63,62</tiles>
     <connections set="2">
       <tiles>64,64,64,65</tiles>
@@ -307,7 +307,7 @@
     <gridcolour>0x77ff0000</gridcolour>
     <snaptype>Anchor</snaptype>
     <paintcontinuous>false</paintcontinuous>
-    <showgameregion>true</showgameregion>
+    <showgameregion>false</showgameregion>
     <gameregionwidth>400</gameregionwidth>
     <gameregionheight>400</gameregionheight>
     <gameregionopacity>0.5</gameregionopacity>
