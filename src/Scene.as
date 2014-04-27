@@ -77,7 +77,7 @@ public class Scene extends Sprite
     addChild(_fluidimage);
     addChild(_tileimage);
     addChild(_dirtimage);
-    //addChild(_maskimage);
+    addChild(_maskimage);
   }
 
   // open()

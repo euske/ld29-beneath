@@ -7,42 +7,33 @@ import flash.geom.Rectangle;
 // 
 public class Enemy extends Actor
 {
-  public var vx:int;
-  public var vy:int;
-
   public const speed:int = 8;
+
+  public var _vx:int;
+  public var _vy:int;
 
   public function Enemy(scene:Scene)
   {
     super(scene);
-    updateDirection();
+    _vx = (Utils.rnd(2)*2-1) * speed;
+    _vy = 0;
   }
 
   public override function isMovable(dx:int, dy:int):Boolean
   {
     return (super.isMovable(dx, dy) &&
-	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingAlways));
+	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingNormally));
   }
 
   public override function update():void
   {
     super.update();
-    if (isMovable(vx, vy)) {
-      move(vx, vy);
+    if (isMovable(_vx, _vy)) {
+      move(_vx, _vy);
     } else {
-      updateDirection();
+      _vx = -_vx;
     }
   }
-  
-  private function updateDirection():void
-  {
-    // randomoo!
-    vx = vy = 0;
-    while (vx == 0 && vy == 0) {
-      vx = (Utils.rnd(3)-1)*speed;
-    }
-  }
-  
 }
 
 } // package

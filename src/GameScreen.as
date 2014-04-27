@@ -121,23 +121,27 @@ public class GameScreen extends Screen
     case 65:			// A
     case 72:			// H
       _player.vx = -1;
+      _player.vy = 0;
       break;
 
     case Keyboard.RIGHT:
     case 68:			// D
     case 76:			// L
       _player.vx = +1;
+      _player.vy = 0;
       break;
 
     case Keyboard.UP:
     case 87:			// W
     case 75:			// K
+      _player.vx = 0;
       _player.vy = -1;
       break;
 
     case Keyboard.DOWN:
     case 83:			// S
     case 74:			// J
+      _player.vx = 0;
       _player.vy = +1;
       break;
 

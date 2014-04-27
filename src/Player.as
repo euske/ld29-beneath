@@ -108,41 +108,50 @@ public class Player extends Actor
   public override function update():void
   {
     super.update();
+    //trace("v="+vx+","+vy);
 
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
-    var tdyOfDoom:int = _vg+gravity;
+    var tdyOfDoom:int = 0;
     var fx:Function = (_digging && vx != 0)? Tile.isBlockingAlways : Tile.isBlockingNormally;
     var fy:Function = null;
 
+    // turn on/off the Ladder behavoir.
     if (canGrabLadder()) {
       if (vy != 0) {
 	// Start grabbing the tile.
 	_grabbing = true;
-	fy = (_digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
-	tdyOfDoom = vy*speed;
       }
     } else {
-      if (0 < vy) {
-	tdyOfDoom = Math.max(tdyOfDoom, vy*speed);
+      // End grabbing the tile.
+      _grabbing = false;
+    }
+
+    // grabbing
+    if (_grabbing) {
+      // grabbing.
+      if (vy != 0) {
 	fy = (_digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
-      }
-    }
-
-    if (_jumping) {
-      _jumping = false;
-      tdyOfDoom = jumpacc;
-    }
-    tdyOfDoom = Math.min(tdyOfDoom, maxspeed);
-    if (fy == null) {
-      if (_grabbing) {
-      	fy = Tile.isBlockingOnLadder;
       } else {
-	fy = (tdyOfDoom < 0)? Tile.isBlockingNormally : Tile.isBlockingOnTop;
+      	fy = Tile.isBlockingOnLadder;
       }
+      tdyOfDoom = vy*speed;
+    } else if (_jumping) {
+      // jumping.
+      _jumping = false;
+      fy = Tile.isBlockingNormally;
+      tdyOfDoom = jumpacc;
+    } else {
+      // free fall.
+      if (0 < vy) {
+	fy = (_digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
+      } else {
+	fy = Tile.isBlockingOnTop;
+      }
+      tdyOfDoom = Math.min(_vg+gravity, maxspeed);
     }
 
-    //trace("v="+vx+","+vy+", t="+tdxOfDoom+","+tdyOfDoom+", grabbing="+_grabbing);
+    //trace("t="+tdxOfDoom+","+tdyOfDoom+", grabbing="+_grabbing);
 
     // (dy,dy): the amount that the character actually moved.
     var dx:int = 0, dy:int = 0;
@@ -173,11 +182,6 @@ public class Player extends Actor
     _vg = (_grabbing)? 0 : dy;
     move(dx, dy);
 
-    if (!canGrabLadder()) {
-      // End grabbing the tile.
-      _grabbing = false;
-    }
-
     if (hasDeadly()) {
       // Touching something bad.
       hurt();
@@ -206,6 +210,8 @@ public class Player extends Actor
       skinId = Skin.playerHurting(_phase) + ((vx<0)? 1 : 0);
     } else if (vx != 0) {
       skinId = Skin.playerWalking(_phase) + ((vx<0)? 1 : 0);
+    } else if (vy != 0) {
+      skinId = Skin.playerClimbing(_phase);
     }
   }
 
