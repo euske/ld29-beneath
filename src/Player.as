@@ -51,10 +51,10 @@ public class Player extends Actor
     vy = 0;
   }
 
-  // hasLadder()
-  public function hasLadder():Boolean
+  // canGrabLadder()
+  public function canGrabLadder():Boolean
   {
-    return scene.tilemap.hasTileByRect(bounds, Tile.isLadder);
+    return scene.tilemap.hasTileByRect(bounds, Tile.isGrabbable);
   }
 
   // hasDeadly()
@@ -66,13 +66,13 @@ public class Player extends Actor
   // isLanded()
   public function isLanded():Boolean
   {
-    return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isStoppable);
+    return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isBlockingOnTop);
   }
 
   // jump()
   public function jump():void
   {
-    if (isLanded()) {
+    if (isLanded() || _grabbing) {
       _jumping = true;
       _grabbing = false;
       jumpSound.play();
@@ -95,36 +95,38 @@ public class Player extends Actor
 
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
-    var tdyOfDoom:int = 0;
-    var fx:Function = (vx == 0)? Tile.isStoppable : Tile.isObstacle;
-    var fy:Function = Tile.isStoppable;
+    var tdyOfDoom:int = vg+gravity;
+    var fx:Function = (vx == 0)? Tile.isBlockingNormally : Tile.isBlockingAlways;
+    var fy:Function = null;
 
-    if (hasLadder()) {
+    if (canGrabLadder()) {
       if (vy != 0) {
 	// Start grabbing the tile.
 	_grabbing = true;
-	fy = Tile.isObstacle;
+	fy = Tile.isBlockingAlways;
 	tdyOfDoom = vy*speed;
-      } 
+      }
     } else {
       if (0 < vy) {
 	tdyOfDoom = Math.max(tdyOfDoom, vy*speed);
-	fy = Tile.isObstacle;
-      } else {
-	tdyOfDoom = vg+gravity;
+	fy = Tile.isBlockingAlways;
       }
     }
 
     if (_jumping) {
       _jumping = false;
-      tdyOfDoom += jumpacc;
+      tdyOfDoom = jumpacc;
     }
     tdyOfDoom = Math.min(tdyOfDoom, maxspeed);
-    if (tdyOfDoom < 0) {
-      fy = Tile.isObstacle;
+    if (fy == null) {
+      if (_grabbing) {
+      	fy = Tile.isBlockingOnLadder;
+      } else {
+	fy = (tdyOfDoom < 0)? Tile.isBlockingNormally : Tile.isBlockingOnTop;
+      }
     }
 
-    //trace("v="+tdxOfDoom+","+tdyOfDoom);
+    trace("v="+vx+","+vy+", t="+tdxOfDoom+","+tdyOfDoom+", grabbing="+_grabbing);
 
     // (dy,dy): the amount that the character actually moved.
     var dx:int = 0, dy:int = 0;
@@ -155,7 +157,7 @@ public class Player extends Actor
     vg = dy;
     move(dx, dy);
 
-    if (!hasLadder()) {
+    if (!canGrabLadder()) {
       // End grabbing the tile.
       _grabbing = false;
     }

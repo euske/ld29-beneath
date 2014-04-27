@@ -41,33 +41,45 @@ public class Tile
   }
 
   // Ladder tile (you can grab / don't fall down).
-  public static function isLadder(i:int):Boolean
+  public static function isGrabbable(i:int):Boolean
   { 
-    return (i == LADDER || i == LADDER_TOP || i == LADDER_SIDE || i == LADDER_BOTTOM); 
+    return (i == LADDER || i == LADDER_TOP);
   }
 
   // Tiles that are diggable.
-  public static function isDirt(i:int):Boolean
+  public static function isDiggable(i:int):Boolean
   {
     return (DIRT_BEGIN <= i && i <= DIRT_END);
   }
 
-  // Empty tiles (as air).
-  public static function isEmpty(i:int):Boolean
-  { 
-    return (i == NONE || i == LADDER || isSpawn(i) || isDeadly(i)); 
+  // Tiles that are standable on top.
+  public static function isStandable(i:int):Boolean
+  {
+    return (i == LADDER_TOP || i == LADDER_SIDE || i == LADDER_BOTTOM);
   }
 
-  // Tiles that you cannot step into.
-  public static function isObstacle(i:int):Boolean
+  // Tiles that have no resistance.
+  public static function isNonBlockingAlways(i:int):Boolean
   { 
-    return !(isEmpty(i) || isLadder(i) || isDirt(i));
+    return (i == NONE || i == LADDER || isSpawn(i) || isDeadly(i));
+  }
+  public static function isBlockingAlways(i:int):Boolean
+  {
+    return !(isNonBlockingAlways(i) || isStandable(i) || isDiggable(i));
   }
 
-  // Tiles that stop you from falling, but you can overlap if you force.
-  public static function isStoppable(i:int):Boolean 
+  // Tiles that blocks your way no matter how.
+  public static function isBlockingNormally(i:int):Boolean
   { 
-    return !isEmpty(i);
+    return (isBlockingAlways(i) || isDiggable(i));
+  }
+  public static function isBlockingOnTop(i:int):Boolean
+  { 
+    return (isBlockingNormally(i) || isStandable(i));
+  }
+  public static function isBlockingOnLadder(i:int):Boolean
+  { 
+    return (isBlockingAlways(i) || i == LADDER);
   }
 
   // getFluid: maps a tile ID to animated tile ID.
@@ -75,7 +87,7 @@ public class Tile
   {
     switch (i) {
     case LAVA:
-      return (55+phase % 5);
+      return (55+phase % 6);
     case DEEPLAVA:
       return i;
     default:
@@ -88,7 +100,9 @@ public class Tile
   {
     switch (i) {
     case LADDER_TOP:
-      return new Rectangle(0, 1, tilesize, tilesize-1);
+    case LADDER_SIDE:
+    case LADDER_BOTTOM:
+      return new Rectangle(0, 1, tilesize, 4);
     case LAVA:
       return new Rectangle(0, 2, tilesize, tilesize-2);
     default:

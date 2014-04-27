@@ -11,8 +11,6 @@ TODO:
 ---------------------------------------------------------------------------------------
 ! Switch from mapdata.png to mapdata.csv !!IMPORTANT!!
 
-  http://videogamena.me/
-
   Need to tweak digging:
    - All undug tiles should have collisions
    - No masking non-solid tiles with dirt
@@ -21,7 +19,7 @@ TODO:
    - ...and surrounding tiles to what they need to be (after higher priority stuff)
    - Digging should slow movement
 
-  Need to tweak physics:
+  Need to tweak physics: (While Euske is at work)
    - gravity
    - speed / maximum speed
    - jump height
@@ -41,7 +39,7 @@ TODO:
    Maybe reserve some space for additons?
    (e.g. 1st row is for enemy, 2nd row is for particle, etc.)
 
-  What kind of powerups?
+  What kind of powerups? [!PROBABLY NO TIME TO IMPLEMENT POWERUPS!]
 	- See further into solid tiles
 	- See all hazard tiles that are behind fog of war
 	- Faster run, higher jump, faster dig.
@@ -49,9 +47,7 @@ TODO:
   Cooler way of uncovering a map?
 
   Need to implement:
-   Rocks
-
-  We need spawn tiles!
+    Falling Rocks
 
 =======================================================================================
 To Hawk (How to compile the thing):

@@ -21,7 +21,7 @@ public class Enemy extends Actor
   public override function isMovable(dx:int, dy:int):Boolean
   {
     return (super.isMovable(dx, dy) &&
-	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isObstacle));
+	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingAlways));
   }
 
   public override function update():void
