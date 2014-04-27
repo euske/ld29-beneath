@@ -107,10 +107,11 @@ public class Player extends Actor
 	tdyOfDoom = vy*speed;
       } 
     } else {
-      tdyOfDoom = vg+gravity;
       if (0 < vy) {
 	tdyOfDoom = Math.max(tdyOfDoom, vy*speed);
 	fy = Tile.isObstacle;
+      } else {
+	tdyOfDoom = vg+gravity;
       }
     }
 
@@ -119,8 +120,11 @@ public class Player extends Actor
       tdyOfDoom += jumpacc;
     }
     tdyOfDoom = Math.min(tdyOfDoom, maxspeed);
+    if (tdyOfDoom < 0) {
+      fy = Tile.isObstacle;
+    }
 
-    trace("v="+tdxOfDoom+","+tdyOfDoom);
+    //trace("v="+tdxOfDoom+","+tdyOfDoom);
 
     // (dy,dy): the amount that the character actually moved.
     var dx:int = 0, dy:int = 0;
@@ -128,7 +132,7 @@ public class Player extends Actor
 
     // try moving diagonally first.
     v = scene.tilemap.getCollisionByRect(bounds, //=getMovedBounds(dx,dy), 
-					 tdxOfDoom, tdyOfDoom, Tile.isStoppable);
+					 tdxOfDoom, tdyOfDoom, fy);
     dx += v.x;
     dy += v.y;
     tdxOfDoom -= v.x;
