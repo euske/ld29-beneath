@@ -201,9 +201,10 @@ public class TileMap
     var a:Array = scanTileByRect(src, f);
     var v:Point = new Point(vx, vy);
     for each (var p:Point in a) {
-      var t:Rectangle = getTileRect(p.x, p.y);
-      t.y += 1;
-      t.height -= 1;
+      var i:int = getTile(p.x, p.y);
+      var t:Rectangle = Tile.getRect(i).clone();
+      t.x = p.x*tilesize;
+      t.y = p.y*tilesize;
       v = Utils.collideRect(t, r, v);
     }
     return v;

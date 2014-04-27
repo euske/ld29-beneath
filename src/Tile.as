@@ -1,7 +1,12 @@
 package {
 
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
 public class Tile
 {
+  public static const tilesize:int = 16; // tilesize in pixels.
+
   public static const NONE:int = 0;
   public static const DIRT:int = 2;
 
@@ -67,6 +72,19 @@ public class Tile
   {
     if (i == LAVA) return (55+phase % 5);
     return -1;
+  }
+
+  // getRect: returns a bounds of a give tile.
+  public static function getRect(i:int):Rectangle
+  {
+    switch (i) {
+    case LADDER_TOP:
+      return new Rectangle(0, 1, tilesize, tilesize-1);
+    case LAVA:
+      return new Rectangle(0, 2, tilesize, tilesize-2);
+    default:
+      return new Rectangle(0, 0, tilesize, tilesize);
+    }
   }
   
 }
