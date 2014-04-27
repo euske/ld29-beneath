@@ -55,7 +55,7 @@ public class Player extends Actor
     super(scene);
     vx = 0;
     vy = 0;
-    skinId = 0;
+    skinId = Skin.PLAYER_FRONT;
   }
 
   // canGrabLadder()

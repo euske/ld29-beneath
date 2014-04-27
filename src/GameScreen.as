@@ -21,49 +21,54 @@ public class GameScreen extends Screen
 
   // TileMap image:
   [Embed(source="../assets/levels/tilemap.png", mimeType="image/png")]
-  private static const TilemapImageCls:Class;
-  private static const tilemapImage:Bitmap = new TilemapImageCls();
+  private static const Level1TilemapImageCls:Class;
+
   // DirtMap image:
   [Embed(source="../assets/levels/dirtmap.png", mimeType="image/png")]
-  private static const DirtmapImageCls:Class;
-  private static const dirtmapImage:Bitmap = new DirtmapImageCls();
+  private static const Level1DirtmapImageCls:Class;
 
   // Musics
   [Embed(source="../assets/music/Level1.mp3", mimeType="audio/mpeg")]
   private static const Level1MusicCls:Class;
-  private static const level1Music:Sound = new Level1MusicCls();
+
+  private var _width:int;
+  private var _height:int;
+  private var _status:Bitmap;
 
   /// Game-related functions
 
   private var _scene:Scene;
   private var _player:Player;
-  private var _status:Bitmap;
   private var _music:SoundLoop;
   private var _phase:int;
 
   public function GameScreen(width:int, height:int)
   {
     _status = Font.createText("HEALTH: 00", 0xffffff, 0, 2);
-
-    var tilesize:int = 16;
-    _scene = new Scene(20, 15, tilesize,
-		       tilemapImage.bitmapData, 
-		       dirtmapImage.bitmapData);
-    _scene.width *= 2;
-    _scene.height *= 2;
-    _scene.y = height-_scene.window.height*2;
-
-    _music = new SoundLoop(level1Music);
+    _width = width;
+    _height = height;
   }
 
   // open()
   public override function open():void
   {
+    var tilemapImage:Bitmap = new Level1TilemapImageCls();
+    var dirtmapImage:Bitmap = new Level1DirtmapImageCls();
+    var music:Sound = new Level1MusicCls();
+
+    _scene = new Scene(20, 15, 16,
+		       tilemapImage.bitmapData, 
+		       dirtmapImage.bitmapData);
+    _scene.width *= 2;
+    _scene.height *= 2;
+    _scene.y = _height-_scene.window.height*2;
     _scene.open();
+
     _player = _scene.player;
     _player.health = 3;
     _player.addEventListener(Actor.DIE, onPlayerDead);
 
+    _music = new SoundLoop(music);
     if (_music != null) {
       _music.start();
     }

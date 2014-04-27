@@ -61,6 +61,7 @@ assets/levels/dirtmap.png: assets/levels/dirtmap.csv
 assets/skinset.png: assets/characters/necrobot_*.png
 	$(MKSKIN) $@ assets/characters/necrobot_front.png \
 		assets/characters/necrobot_walk.png \
+		assets/characters/necrobot_ladder.png \
 		assets/characters/necrobot_damage.png \
 		assets/characters/necrobot_cheer.png \
 		assets/characters/robocake_blink.png
