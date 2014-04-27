@@ -26,6 +26,7 @@ public class Player extends Actor
   private var _jumping:Boolean;
   private var _grabbing:Boolean;
 
+  private var _phase:int;
   private var _invincible:int;	// >0: temp. invincibility
 
   // Jump sound
@@ -54,6 +55,7 @@ public class Player extends Actor
     super(scene);
     vx = 0;
     vy = 0;
+    skinId = 0;
   }
 
   // canGrabLadder()
@@ -195,7 +197,15 @@ public class Player extends Actor
       } else {
 	var b:Boolean = ((_invincible % 4) < 2);
 	skin.alpha = (b)? 0.0 : 1.0;
-      }
+      } 
+    }
+
+    // skin animation.
+    _phase++;
+    if (0 < _invincible) {
+      skinId = Skin.playerHurting(_phase) + ((vx<0)? 1 : 0);
+    } else if (vx != 0) {
+      skinId = Skin.playerWalking(_phase) + ((vx<0)? 1 : 0);
     }
   }
 

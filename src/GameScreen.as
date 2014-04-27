@@ -28,6 +28,11 @@ public class GameScreen extends Screen
   private static const DirtmapImageCls:Class;
   private static const dirtmapImage:Bitmap = new DirtmapImageCls();
 
+  // Musics
+  [Embed(source="../assets/music/Level1.mp3", mimeType="audio/mpeg")]
+  private static const Level1MusicCls:Class;
+  private static const level1Music:Sound = new Level1MusicCls();
+
   /// Game-related functions
 
   private var _scene:Scene;
@@ -48,7 +53,7 @@ public class GameScreen extends Screen
     _scene.height *= 2;
     _scene.y = height-_scene.window.height*2;
 
-    //_music = new SoundLoop(mainMusic);
+    _music = new SoundLoop(level1Music);
   }
 
   // open()
@@ -104,7 +109,7 @@ public class GameScreen extends Screen
     _scene.update();
     _scene.uncoverMap(_player.bounds, 32);
     _scene.setCenter(_player.pos, 50, 50);
-    _scene.paint(_phase/2);
+    _scene.paint(_phase);
     _phase++;
   }
 

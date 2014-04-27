@@ -35,6 +35,7 @@ get_f:
 PYTHON=python
 LAME=lame
 CSV2PNG=$(PYTHON) tools/csv2png.py
+MKSKIN=$(PYTHON) tools/mkskin.py
 
 .SUFFIXES: .png .csv .wav .mp3
 
@@ -46,6 +47,7 @@ CSV2PNG=$(PYTHON) tools/csv2png.py
 
 assets: assets/levels/tilemap.png \
 	assets/levels/dirtmap.png \
+	assets/skinset.png \
 	assets/sounds/dig.mp3 \
 	assets/sounds/jump.mp3 \
 	assets/sounds/hurt.mp3 \
@@ -55,6 +57,13 @@ assets: assets/levels/tilemap.png \
 
 assets/levels/tilemap.png: assets/levels/tilemap.csv
 assets/levels/dirtmap.png: assets/levels/dirtmap.csv
+
+assets/skinset.png: assets/characters/necrobot_*.png
+	$(MKSKIN) $@ assets/characters/necrobot_front.png \
+		assets/characters/necrobot_walk.png \
+		assets/characters/necrobot_damage.png \
+		assets/characters/necrobot_cheer.png \
+		assets/characters/robocake_blink.png
 
 assets/sounds/dig.mp3: assets/sounds/dig.wav
 assets/sounds/jump.mp3: assets/sounds/jump.wav

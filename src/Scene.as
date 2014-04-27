@@ -187,7 +187,7 @@ public class Scene extends Sprite
     var y1:int = Math.ceil(_window.bottom/_tilesize);
     var r:Rectangle = new Rectangle(x0, y0, x1-x0+1, y1-y0+1);
     if (!_tilewindow.equals(r) || _phase != phase) {
-      renderFluids(r, phase);
+      renderFluids(r, Math.floor(phase/2));
     }
     if (!_tilewindow.equals(r) || _tilemap.changed) {
       renderTiles(r);

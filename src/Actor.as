@@ -55,6 +55,13 @@ public class Actor extends EventDispatcher
     _skin.bitmapData.copyPixels(v.bitmapData, src, new Point());
   }
 
+  // skinId
+  public function set skinId(i:int):void
+  {
+    var src:Rectangle = new Rectangle(i*scene.tilesize, 0, scene.tilesize, scene.tilesize);
+    _skin.bitmapData.copyPixels(skinsetImage.bitmapData, src, new Point());
+  }
+
   // scene: the container object.
   public function get scene():Scene
   {
