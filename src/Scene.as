@@ -300,11 +300,14 @@ public class Scene extends Sprite
   }
 
   // digMap(r): open up a part of the map/activate things.
-  public function digMap(r:Rectangle, size:int):void
+  public function digMap(bounds:Rectangle, size_dig:int, size_uncover:int):void
   {
+    var r:Rectangle;
+    r = bounds.clone();
+    r.inflate(size_dig, size_dig);
     _tilemap.digTileByRect(r);
-    r = r.clone();
-    r.inflate(size, size);
+    r = bounds.clone();
+    r.inflate(size_uncover, size_uncover);
     _covermap.setMaskByRect(r, 1);
     _dirtchanged = true;
     // Activate actors in the uncover part.

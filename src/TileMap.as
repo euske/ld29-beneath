@@ -82,13 +82,12 @@ public class TileMap
 
   public function getTile(x:int, y:int):int
   {
-    if (x < 0 || _bitmap.width <= x || 
-	y < 0 || _bitmap.height-1 <= y) {
-      return -1;
+    var i:int = getRawTile(x, y);
+    if (i == Tile.NONE) {
+      var row:Array = _dirtmap[y];
+      if (row[x]) i = Tile.DIRT;
     }
-    var row:Array = _dirtmap[y];
-    if (row[x]) return Tile.DIRT;
-    return getRawTile(x, y);
+    return i;
   }
 
   // digTile(x, y): set the tile value of pixel at (x,y).
@@ -106,8 +105,8 @@ public class TileMap
   public function digTileByRect(r:Rectangle):void
   {
     r = getCoordsByRect(r);
-    for (var y:int = r.top; y <= r.bottom; y++) {
-      for (var x:int = r.left; x <= r.right; x++) {
+    for (var y:int = r.top; y < r.bottom; y++) {
+      for (var x:int = r.left; x < r.right; x++) {
 	digTile(x, y);
       }
     }
