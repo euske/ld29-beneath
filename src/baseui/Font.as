@@ -10,7 +10,7 @@ import flash.geom.ColorTransform;
 // 
 public class Font
 {
-  [Embed(source="../../assets/font.png", mimeType="image/png")]
+  [Embed(source="../../assets/hud/font.png", mimeType="image/png")]
   private static const FontGlyphsCls:Class;
 
   private static var _glyphs:BitmapData = new FontGlyphsCls().bitmapData;
