@@ -21,7 +21,6 @@ public class Player extends Actor
   public const inv_duration:int = 24; // in frames.
   public const inset_dig:int = -2; // inset size of bounds for digging.
 
-
   private var _vg:int;		// speed by gravity.
   private var _digging:Boolean;
   private var _jumping:Boolean;
@@ -38,6 +37,11 @@ public class Player extends Actor
   [Embed(source="../assets/sounds/dig.mp3", mimeType="audio/mpeg")]
   private static const DigSoundClass:Class;
   private static const digSound:Sound = new DigSoundClass();
+
+  // Collect sound
+  [Embed(source="../assets/sounds/collect.mp3", mimeType="audio/mpeg")]
+  private static const CollectSoundClass:Class;
+  private static const collectSound:Sound = new CollectSoundClass();
 
   // Hurt sound
   [Embed(source="../assets/sounds/hurt.mp3", mimeType="audio/mpeg")]
@@ -92,6 +96,9 @@ public class Player extends Actor
     //trace("collide: "+actor);
     if (actor is Enemy) {
       hurt();
+    } else if (actor is Grave) {
+      (actor as Grave).collect();
+      collectSound.play();
     }
   }
 
@@ -176,7 +183,7 @@ public class Player extends Actor
 
     var r:Rectangle = bounds.clone();
     r.inflate(inset_dig, inset_dig);
-    if (scene.tilemap.digTileByRect(r)) {
+    if (0 < scene.tilemap.digTileByRect(r)) {
       digSound.play();
     }
 

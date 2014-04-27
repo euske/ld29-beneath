@@ -101,20 +101,22 @@ public class TileMap
   public function digTile(x:int, y:int):Boolean
   {
     var i:int = getDirt(x, y);
-    if (i == 0) return false;
+    if (!Tile.isDiggable(i)) return false;
     _dirtmap.setPixel(x, y, 0);
     changed = true;
     return true;
   }
 
   // digTileByRect(r)
-  public function digTileByRect(r:Rectangle):Boolean
+  public function digTileByRect(r:Rectangle):int
   {
-    var dug:Boolean = false;
+    var dug:int = 0;
     r = getCoordsByRect(r);
     for (var y:int = r.top; y < r.bottom; y++) {
       for (var x:int = r.left; x < r.right; x++) {
-	dug = dug || digTile(x, y);
+	if (digTile(x, y)) {
+	  dug++;
+	}
       }
     }
     return dug;
@@ -123,11 +125,10 @@ public class TileMap
   // getTile(x, y)
   public function getTile(x:int, y:int):int
   {
-    var i:int = getDirt(x, y);
-    if (i == 0) {
-      i = getRawTile(x, y);
-    }
-    return i;
+    var i:int = getRawTile(x, y);
+    if (Tile.isUndiggable(i)) return Tile.STOP_SIGN;
+    var j:int = getDirt(x, y);
+    return (j != 0)? j : i;
   }
 
   // isTile(x, y, f): true if the tile at (x,y) has a property given by f.

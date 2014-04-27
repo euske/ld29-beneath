@@ -1,7 +1,8 @@
 package {
 
 import flash.events.EventDispatcher;
-import flash.display.DisplayObject;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
@@ -17,33 +18,41 @@ public class Actor extends EventDispatcher
   // Character boundary (relative to pos).
   public var frame:Rectangle;
 
-  private var _skin:DisplayObject;
+  private var _skin:Bitmap;
   private var _active:Boolean;
   private var _scene:Scene;
+
+  // SkinSet image:
+  [Embed(source="../assets/skinset.png", mimeType="image/png")]
+  private static const SkinsetImageCls:Class;
+  private static const skinsetImage:Bitmap = new SkinsetImageCls();
 
   // Actor(scene)
   public function Actor(scene:Scene)
   {
     _scene = scene;
     _active = false;
+    _skin = new Bitmap(new BitmapData(scene.tilesize, scene.tilesize));
+    _skin.visible = false;
     pos = new Point(0, 0);
+    frame = new Rectangle(0, 0, scene.tilesize, scene.tilesize);
   }
 
   // active: true if the actor is already uncovered on a map.
-  public function get active():Boolean
+  public function get active():Boolean // 
   {
     return _active;
   }
 
   // skin: actual Flash object to display.
-  public function get skin():DisplayObject
+  public function get skin():Bitmap
   {
     return _skin;
   }
-  public function set skin(v:DisplayObject):void
+  public function set skin(v:Bitmap):void
   {
-    _skin = v;
-    _skin.visible = _active;
+    var src:Rectangle = new Rectangle(0, 0, v.width, v.height);
+    _skin.bitmapData.copyPixels(v.bitmapData, src, new Point());
   }
 
   // scene: the container object.

@@ -19,16 +19,6 @@ public class GameScreen extends Screen
 {
   public static const GAMEOVER:String = "GameScreen.GAMEOVER";
 
-  // TileSet image:
-  [Embed(source="../assets/tileset.png", mimeType="image/png")]
-  private static const TilesetImageCls:Class;
-  private static const tilesetImage:Bitmap = new TilesetImageCls();
-
-  // SkinSet image:
-  [Embed(source="../assets/skinset.png", mimeType="image/png")]
-  private static const SkinsetImageCls:Class;
-  private static const skinsetImage:Bitmap = new SkinsetImageCls();
-
   // TileMap image:
   [Embed(source="../assets/levels/tilemap.png", mimeType="image/png")]
   private static const TilemapImageCls:Class;
@@ -53,9 +43,7 @@ public class GameScreen extends Screen
     var tilesize:int = 16;
     _scene = new Scene(20, 15, tilesize,
 		       tilemapImage.bitmapData, 
-		       dirtmapImage.bitmapData, 
-		       tilesetImage.bitmapData,
-		       skinsetImage.bitmapData);
+		       dirtmapImage.bitmapData);
     _scene.width *= 2;
     _scene.height *= 2;
     _scene.y = height-_scene.window.height*2;

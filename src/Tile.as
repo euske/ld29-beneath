@@ -73,6 +73,12 @@ public class Tile
     return (GRAVE_BEGIN <= i && i <= GRAVE_END);
   }
 
+  public static function isCollectible(i:int):Boolean
+  {
+    return (i == GRAVE_TRACE ||
+	    (ITEM_BEGIN <= i && i <= ITEM_END));
+  }
+
   // Deadly tiles (e.g. lava).
   public static function isDeadly(i:int):Boolean
   {
@@ -93,6 +99,12 @@ public class Tile
   {
     return (DIRT_BEGIN <= i && i <= DIRT_END);
   }
+  // Tiles that are NOT diggable IF it's in tilemap.
+  public static function isUndiggable(i:int):Boolean
+  {
+    return (i == STOP_SIGN ||
+	    (DIRT_BEGIN <= i && i <= DIRT_END));
+  }
 
   // Tiles that are standable on top.
   public static function isStandable(i:int):Boolean
@@ -109,6 +121,7 @@ public class Tile
 	    i == LADDER || 
 	    isGrave(i) ||
 	    isSpawn(i) || 
+	    isCollectible(i) ||
 	    isDeadly(i));
   }
   public static function isBlockingAlways(i:int):Boolean

@@ -49,6 +49,7 @@ assets: assets/levels/tilemap.png \
 	assets/sounds/dig.mp3 \
 	assets/sounds/jump.mp3 \
 	assets/sounds/hurt.mp3 \
+	assets/sounds/collect.mp3 \
 	assets/sounds/bombtick.mp3 \
 	assets/sounds/explosion.mp3
 
@@ -58,5 +59,6 @@ assets/levels/dirtmap.png: assets/levels/dirtmap.csv
 assets/sounds/dig.mp3: assets/sounds/dig.wav
 assets/sounds/jump.mp3: assets/sounds/jump.wav
 assets/sounds/hurt.mp3: assets/sounds/hurt.wav
+assets/sounds/collect.mp3: assets/sounds/collect.wav
 assets/sounds/bombtick.mp3: assets/sounds/bombtick.wav
 assets/sounds/explosion.mp3: assets/sounds/explosion.wav

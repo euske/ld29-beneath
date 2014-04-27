@@ -15,7 +15,6 @@ public class Scene extends Sprite
   private var _tiledata:BitmapData;
   private var _dirtdata:BitmapData;
   private var _tileset:BitmapData;
-  private var _skinset:BitmapData;
   private var _fluidimage:Bitmap;
   private var _tileimage:Bitmap;
   private var _dirtimage:Bitmap;
@@ -29,24 +28,27 @@ public class Scene extends Sprite
   private var _maskchanged:Boolean;
   private var _player:Player;
   private var _actors:Array;
+  private var _collectibles:int;
   private var _phase:int;
 
   // Background image:
   [Embed(source="../assets/background.png", mimeType="image/png")]
   private static const BackgroundImageCls:Class;
 
+  // TileSet image:
+  [Embed(source="../assets/tileset.png", mimeType="image/png")]
+  private static const TilesetImageCls:Class;
+  private static const tilesetImage:Bitmap = new TilesetImageCls();
+
   // Scene(w, h, tilemap): set up fixated things.
   public function Scene(w:int, h:int, tilesize:int,
 			tiledata:BitmapData,
-			dirtdata:BitmapData,
-			tileset:BitmapData,
-			skinset:BitmapData)
+			dirtdata:BitmapData)
   {
     _tilesize = tilesize;
     _tiledata = tiledata;
     _dirtdata = dirtdata;
-    _tileset = tileset;
-    _skinset = skinset;
+    _tileset = tilesetImage.bitmapData;
     _window = new Rectangle(0, 0, w*tilesize, h*tilesize);
 
     var tw:int = (w+1)*tilesize;
@@ -90,10 +92,9 @@ public class Scene extends Sprite
     _maskmap = new MaskMap(_tilemap.width, _tilemap.height, _tilesize);
     _actors = new Array();
     _player = new Player(this);
-    _player.frame = new Rectangle(0, 0, _tilesize, _tilesize);
-    _player.skin = createSkin(3);
     _player.activate();
     add(_player);
+    _collectibles = 0;
     placeActors();
   }
 
@@ -103,6 +104,12 @@ public class Scene extends Sprite
     for each (var actor:Actor in _actors) {
       removeChild(actor.skin);
     }
+  }
+  
+  // tilesize
+  public function get tilesize():int
+  {
+    return _tilesize;
   }
 
   // player
@@ -217,12 +224,12 @@ public class Scene extends Sprite
     return new Rectangle(i*_tilesize, 0, _tilesize, _tilesize);
   }
 
-  // createSkin(i)
-  private function createSkin(i:int):Bitmap
+  // createTileSkin(i)
+  private function createTileSkin(i:int):Bitmap
   {
     var src:Rectangle = new Rectangle(i*_tilesize, 0, _tilesize, _tilesize);
     var skin:BitmapData = new BitmapData(src.width, src.height);
-    skin.copyPixels(_skinset, src, new Point());
+    skin.copyPixels(_tileset, src, new Point());
     return new Bitmap(skin);
   }
 
@@ -384,19 +391,20 @@ public class Scene extends Sprite
 
 	case Tile.SPAWN_GRAVE:
 	  i = Utils.rnd(Tile.GRAVE_BEGIN, Tile.GRAVE_END+1);
-	  _tilemap.setDirt(x, y, i);
+	  actor = new Grave(this, createTileSkin(Tile.GRAVE_TRACE));
+	  actor.skin = createTileSkin(i);
+	  _tilemap.setDirt(x, y, Tile.GRAVE_TRACE);
+	  _collectibles++;
 	  break;
 
 	case Tile.SPAWN_ENEMY:
 	  actor = new Enemy(this);
-	  actor.skin = createSkin(4);
 	  break;
 
 	}
 	if (actor != null) {
 	  trace("spawn tile: "+i+" at ("+x+","+y+")");
 	  actor.pos = p;
-	  actor.frame = new Rectangle(0, 0, _tilesize, _tilesize);
 	  add(actor);
 	}
       }
