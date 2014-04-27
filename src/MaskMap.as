@@ -4,7 +4,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
-public class DirtMap
+public class MaskMap
 {
   public var width:int;
   public var height:int;
@@ -12,8 +12,8 @@ public class DirtMap
 
   private var _map:Array;
 
-  // DirtMap(width, height)
-  public function DirtMap(width:int, height:int, tilesize:int)
+  // MaskMap(width, height)
+  public function MaskMap(width:int, height:int, tilesize:int)
   {
     this.width = width;
     this.height = height;
@@ -74,33 +74,6 @@ public class DirtMap
 	setMask(x, y, m);
       }
     }
-  }
-
-  // setMaskByPoint(r): 
-  public function setMaskByPoint(p:Point, m:int):void
-  {
-    p = getCoordsByPoint(p);
-    setMask(p.x, p.y, m);
-  }
-
-  // getTilePoint(x, y): converts a point in the map to screen space.
-  public function getTilePoint(x:int, y:int):Point
-  {
-    return new Point(x*tilesize+tilesize/2, y*tilesize+tilesize/2);
-  }
-
-  // getTileRect(x, y): converts an area in the map to screen space.
-  public function getTileRect(x:int, y:int, w:int=1, h:int=1):Rectangle
-  {
-    return new Rectangle(x*tilesize, y*tilesize, w*tilesize, h*tilesize);
-  }
-
-  // getCoordsByPoint(p): converts a screen position to map coordinates.
-  public function getCoordsByPoint(p:Point):Point
-  {
-    var x:int = Math.floor(p.x/tilesize);
-    var y:int = Math.floor(p.y/tilesize);
-    return new Point(x, y);
   }
 
   // getCoordsByRect(r): converts a screen area to a map range.

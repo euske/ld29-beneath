@@ -17,6 +17,7 @@ public class Bomb extends Actor
   [Embed(source="../assets/sounds/bombtick.mp3", mimeType="audio/mpeg")]
   private static const BombtickSoundClass:Class;
   private static const bombtickSound:Sound = new BombtickSoundClass();
+
   // Explosion sound
   [Embed(source="../assets/sounds/explosion.mp3", mimeType="audio/mpeg")]
   private static const ExplosionSoundClass:Class;

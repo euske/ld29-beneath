@@ -23,7 +23,7 @@ public class Scene extends Sprite
   private var _window:Rectangle;
   private var _tilemap:TileMap;
   private var _tilewindow:Rectangle;
-  private var _maskmap:DirtMap;
+  private var _maskmap:MaskMap;
   private var _maskchanged:Boolean;
   private var _player:Player;
   private var _actors:Array;
@@ -81,7 +81,7 @@ public class Scene extends Sprite
     _tilemap = new TileMap(_tilesize);
     _tilemap.bitmap = _mapdata;
     _tilewindow = new Rectangle();
-    _maskmap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
+    _maskmap = new MaskMap(_tilemap.width, _tilemap.height, _tilesize);
     _actors = new Array();
     _player = new Player(this);
     _player.frame = new Rectangle(0, 0, _tilesize, _tilesize);
@@ -209,7 +209,6 @@ public class Scene extends Sprite
   // createSkin(i)
   private function createSkin(i:int):Bitmap
   {
-    // TODO: skin should be cached?
     var src:Rectangle = new Rectangle(i*_tilesize, 0, _tilesize, _tilesize);
     var skin:BitmapData = new BitmapData(src.width, src.height);
     skin.copyPixels(_skinset, src, new Point());
