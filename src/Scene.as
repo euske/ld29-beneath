@@ -17,6 +17,7 @@ public class Scene extends Sprite
   private var _tileset:BitmapData;
   private var _fluidimage:Bitmap;
   private var _tileimage:Bitmap;
+  private var _actorlayer:Sprite;
   private var _dirtimage:Bitmap;
   private var _maskimage:Bitmap;
   private var _maprect:Rectangle;
@@ -55,6 +56,7 @@ public class Scene extends Sprite
     var th:int = (h+1)*tilesize;
     _fluidimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _tileimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
+    _actorlayer = new Sprite();
     _dirtimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _maskimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _maprect = new Rectangle(0, 0,
@@ -70,12 +72,15 @@ public class Scene extends Sprite
     clipping.graphics.drawRect(0, 0, _window.width, _window.height);
     _fluidimage.mask = clipping;
     _tileimage.mask = clipping;
+    _actorlayer.mask = clipping;
+    _dirtimage.mask = clipping;
     _maskimage.mask = clipping;
 
     addChild(clipping);
     addChild(bgimage);
     addChild(_fluidimage);
     addChild(_tileimage);
+    addChild(_actorlayer);
     addChild(_dirtimage);
     addChild(_maskimage);
   }
@@ -102,7 +107,7 @@ public class Scene extends Sprite
   public function close():void
   {
     for each (var actor:Actor in _actors) {
-      removeChild(actor.skin);
+      _actorlayer.removeChild(actor.skin);
     }
   }
   
@@ -140,7 +145,7 @@ public class Scene extends Sprite
   public function add(actor:Actor):void
   {
     _actors.push(actor);
-    addChild(actor.skin);
+    _actorlayer.addChild(actor.skin);
   }
 
   // remove(actor)
@@ -149,7 +154,7 @@ public class Scene extends Sprite
     var i:int = _actors.indexOf(actor);
     if (0 <= i) {
       _actors.splice(i, 1);
-      removeChild(actor.skin);
+      _actorlayer.removeChild(actor.skin);
     }
   }
 
@@ -393,7 +398,6 @@ public class Scene extends Sprite
 	  i = Utils.rnd(Tile.GRAVE_BEGIN, Tile.GRAVE_END+1);
 	  actor = new Grave(this, createTileSkin(Tile.GRAVE_TRACE));
 	  actor.skin = createTileSkin(i);
-	  _tilemap.setDirt(x, y, Tile.GRAVE_TRACE);
 	  _collectibles++;
 	  break;
 
