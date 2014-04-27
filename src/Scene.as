@@ -382,15 +382,16 @@ public class Scene extends Sprite
 	  _player.pos = p;
 	  break;
 
+	case Tile.SPAWN_GRAVE:
+	  i = Utils.rnd(Tile.GRAVE_BEGIN, Tile.GRAVE_END+1);
+	  _tilemap.setDirt(x, y, i);
+	  break;
+
 	case Tile.SPAWN_ENEMY:
 	  actor = new Enemy(this);
 	  actor.skin = createSkin(4);
 	  break;
 
-	  //case Tile.BOMB:
-	  // actor = new Bomb(this);
-	  //actor.skin = createSkin(5);
-	  //break;
 	}
 	if (actor != null) {
 	  trace("spawn tile: "+i+" at ("+x+","+y+")");

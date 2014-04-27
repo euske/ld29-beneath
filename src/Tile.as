@@ -68,6 +68,11 @@ public class Tile
 	    i == SPAWN_GRAVE);
   }
 
+  public static function isGrave(i:int):Boolean
+  {
+    return (GRAVE_BEGIN <= i && i <= GRAVE_END);
+  }
+
   // Deadly tiles (e.g. lava).
   public static function isDeadly(i:int):Boolean
   {
@@ -102,6 +107,7 @@ public class Tile
   { 
     return (i == NONE || 
 	    i == LADDER || 
+	    isGrave(i) ||
 	    isSpawn(i) || 
 	    isDeadly(i));
   }

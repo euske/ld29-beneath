@@ -13,8 +13,6 @@ public class Player extends Actor
   // the way the player wants to move.
   public var vx:int;
   public var vy:int;
-  // digging
-  public var digging:Boolean;
 
   public const speed:int = 4;
   public const gravity:int = 1;
@@ -25,6 +23,7 @@ public class Player extends Actor
 
 
   private var _vg:int;		// speed by gravity.
+  private var _digging:Boolean;
   private var _jumping:Boolean;
   private var _grabbing:Boolean;
 
@@ -71,6 +70,12 @@ public class Player extends Actor
     return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isBlockingOnTop);
   }
 
+  // digging
+  public function set digging(v:Boolean):void
+  {
+    _digging = v;
+  }
+
   // jump()
   public function jump():void
   {
@@ -98,20 +103,20 @@ public class Player extends Actor
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
     var tdyOfDoom:int = _vg+gravity;
-    var fx:Function = (digging && vx != 0)? Tile.isBlockingAlways : Tile.isBlockingNormally;
+    var fx:Function = (_digging && vx != 0)? Tile.isBlockingAlways : Tile.isBlockingNormally;
     var fy:Function = null;
 
     if (canGrabLadder()) {
       if (vy != 0) {
 	// Start grabbing the tile.
 	_grabbing = true;
-	fy = (digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
+	fy = (_digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
 	tdyOfDoom = vy*speed;
       }
     } else {
       if (0 < vy) {
 	tdyOfDoom = Math.max(tdyOfDoom, vy*speed);
-	fy = (digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
+	fy = (_digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
       }
     }
 

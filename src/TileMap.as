@@ -22,6 +22,17 @@ public class TileMap
 
   // _mapvalue: lookup table from a pixel color to a type number.
   private var _mapvalue:Dictionary;
+  private function convertValues(bitmap:BitmapData):BitmapData
+  {
+    bitmap = bitmap.clone();
+    for (var y:int = 0; y < bitmap.height; y++) {
+      for (var x:int = 0; x < bitmap.width; x++) {
+	var c:uint = bitmap.getPixel(x, y);
+	bitmap.setPixel(x, y, _mapvalue[c]);
+      }
+    }
+    return bitmap;
+  }
 
   // TileMap(tilesize)
   public function TileMap(tilesize:int)
@@ -51,8 +62,8 @@ public class TileMap
   // setBitmap(bitmap, dirtmap)
   public function setBitmap(bitmap:BitmapData, dirtmap:BitmapData):void
   {
-    _bitmap = bitmap.clone();
-    _dirtmap = dirtmap.clone();
+    _bitmap = convertValues(bitmap);
+    _dirtmap = convertValues(dirtmap);
     changed = true;
   }
 
@@ -63,8 +74,7 @@ public class TileMap
 	y < 0 || _bitmap.height <= y) {
       return -1;
     }
-    var c:uint = _bitmap.getPixel(x, y);
-    return _mapvalue[c];
+    return _bitmap.getPixel(x, y);
   }
 
   // getDirt(x, y)
@@ -74,26 +84,27 @@ public class TileMap
 	y < 0 || _dirtmap.height <= y) {
       return -1;
     }
-    var c:uint = _dirtmap.getPixel(x, y);
-    var i:int = (c == 0)? 0 : _mapvalue[c];
-    return i;
+    return _dirtmap.getPixel(x, y);
+  }
+
+  // setDirt(x, y)
+  public function setDirt(x:int, y:int, i:int):void
+  {
+    if (x < 0 || _dirtmap.width <= x || 
+	y < 0 || _dirtmap.height <= y) {
+      return;
+    }
+    _dirtmap.setPixel(x, y, i);
   }
 
   // digTile(x, y): set the tile value of pixel at (x,y).
   public function digTile(x:int, y:int):Boolean
   {
-    if (x < 0 || _dirtmap.width <= x || 
-	y < 0 || _dirtmap.height <= y) {
-      return false;
-    }
-    var c:uint = _dirtmap.getPixel(x, y);
-    var i:int = (c == 0)? 0 : _mapvalue[c];
-    if (i != 0) {
-      _dirtmap.setPixel(x, y, 0);
-      changed = true;
-      return true;
-    }
-    return false;
+    var i:int = getDirt(x, y);
+    if (i == 0) return false;
+    _dirtmap.setPixel(x, y, 0);
+    changed = true;
+    return true;
   }
 
   // digTileByRect(r)
