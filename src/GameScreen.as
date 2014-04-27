@@ -30,7 +30,7 @@ public class GameScreen extends Screen
   private static const skinsetImage:Bitmap = new SkinsetImageCls();
 
   // MapData image:
-  [Embed(source="../assets/mapdata.png", mimeType="image/png")]
+  [Embed(source="../assets/levels/mapdata.png", mimeType="image/png")]
   private static const MapdataImageCls:Class;
   private static const mapdataImage:Bitmap = new MapdataImageCls();
 

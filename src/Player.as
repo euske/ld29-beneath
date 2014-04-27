@@ -28,12 +28,12 @@ public class Player extends Actor
   private var _invincible:int;	// >0: temp. invincibility
 
   // Jump sound
-  [Embed(source="../assets/jump.mp3", mimeType="audio/mpeg")]
+  [Embed(source="../assets/sounds/jump.mp3", mimeType="audio/mpeg")]
   private static const JumpSoundClass:Class;
   private static const jumpSound:Sound = new JumpSoundClass();
 
   // Hurt sound
-  [Embed(source="../assets/hurt.mp3", mimeType="audio/mpeg")]
+  [Embed(source="../assets/sounds/hurt.mp3", mimeType="audio/mpeg")]
   private static const HurtSoundClass:Class;
   private static const hurtSound:Sound = new HurtSoundClass();
 

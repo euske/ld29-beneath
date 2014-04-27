@@ -14,11 +14,11 @@ public class Bomb extends Actor
   private var _ticks:int;
 
   // Ticking sound
-  [Embed(source="../assets/bombtick.mp3", mimeType="audio/mpeg")]
+  [Embed(source="../assets/sounds/bombtick.mp3", mimeType="audio/mpeg")]
   private static const BombtickSoundClass:Class;
   private static const bombtickSound:Sound = new BombtickSoundClass();
   // Explosion sound
-  [Embed(source="../assets/explosion.mp3", mimeType="audio/mpeg")]
+  [Embed(source="../assets/sounds/explosion.mp3", mimeType="audio/mpeg")]
   private static const ExplosionSoundClass:Class;
   private static const explosionSound:Sound = new ExplosionSoundClass();
 
