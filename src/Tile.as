@@ -140,7 +140,7 @@ public class Tile
   }
   public static function isBlockingOnLadder(i:int):Boolean
   { 
-    return (isBlockingAlways(i) || i == LADDER);
+    return (isBlockingNormally(i) || i == LADDER);
   }
 
   // getFluid: maps a tile ID to animated tile ID.

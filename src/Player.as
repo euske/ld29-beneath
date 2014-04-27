@@ -14,7 +14,8 @@ public class Player extends Actor
   public var vx:int;
   public var vy:int;
 
-  public const speed:int = 4;
+  public const speed_walking:int = 4;
+  public const speed_digging:int = 1;
   public const gravity:int = 1;
   public const jumpacc:int = -10;
   public const maxspeed:int = +10;
@@ -109,6 +110,8 @@ public class Player extends Actor
   {
     super.update();
     //trace("v="+vx+","+vy);
+
+    var speed:int = (_digging)? speed_digging : speed_walking;
 
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
