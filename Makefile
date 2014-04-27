@@ -14,7 +14,7 @@ PROJECT=beneath
 DROPBOXBASE=$$HOME/Dropbox/ld29
 WWWBASE=tabesugi:public/file/ludumdare.tabesugi.net/$(PROJECT)
 
-all: assets/levels/mapdata.png
+all: 
 
 clean:
 
@@ -33,6 +33,25 @@ get_f:
 
 ##
 PYTHON=python
+LAME=lame
 CSV2PNG=$(PYTHON) tools/csv2png.py
+
+.SUFFIXES: .png .csv .wav .mp3
+
+.csv.png:
+	$(CSV2PNG) $< $@
+
+.wav.mp3:
+	$(LAME) $< $@
+
+assets: assets/levels/mapdata.png \
+	assets/sounds/hurt.mp3 \
+	assets/sounds/jump.mp3 \
+	assets/sounds/bombtick.mp3 \
+	assets/sounds/explosion.mp3
+
 assets/levels/mapdata.png: assets/levels/mapdata.csv
-	$(CSV2PNG) assets/levels/mapdata.csv $@
+assets/sounds/hurt.mp3: assets/sounds/hurt.wav
+assets/sounds/jump.mp3: assets/sounds/jump.wav
+assets/sounds/bombtick.mp3: assets/sounds/bombtick.wav
+assets/sounds/explosion.mp3: assets/sounds/explosion.wav
