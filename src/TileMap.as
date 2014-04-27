@@ -21,13 +21,21 @@ public class TileMap
   // dirtmap:
   private var _dirtmap:Array;
 
-  // _tilevalue: lookup table from a pixel color to a type number.
-  private var _tilevalue:Dictionary;
+  // _mapvalue: lookup table from a pixel color to a type number.
+  private var _mapvalue:Dictionary;
 
   // TileMap(tilesize)
   public function TileMap(tilesize:int)
   {
     this.tilesize = tilesize;
+
+    // Construct a lookup table.
+    // The color value at a pixel at (i,0) is used as i-th type.
+    _mapvalue = new Dictionary();
+    for (var i:uint = 0; i < 256; i++) {
+      var c:uint = (((i*11)%256) << 16) | (((i*22+33)%256) << 8) | ((i*33+44)%256);
+      _mapvalue[c] = i;
+    }
   }
 
   // bitmap:
@@ -46,16 +54,6 @@ public class TileMap
       }
       _dirtmap[y] = row;
     }
-
-    // Construct a lookup table.
-    // The color value at a pixel at (i,0) is used as i-th type.
-    _tilevalue = new Dictionary();
-    for (var i:int = 0; i < _bitmap.width; i++) {
-      var c:uint = _bitmap.getPixel(i, 0);
-      if (_tilevalue[c] === undefined) {
-	_tilevalue[c] = i;
-      }
-    }
   }
 
   // width: returns the map width.
@@ -66,35 +64,30 @@ public class TileMap
   // height: returns the map height.
   public function get height():int
   {
-    return _bitmap.height-1;
+    return _bitmap.height;
   }
 
   // getRawTile(x, y): returns the tile of a pixel at (x,y).
   public function getRawTile(x:int, y:int):int
   {
     if (x < 0 || _bitmap.width <= x || 
-	y < 0 || _bitmap.height-1 <= y) {
+	y < 0 || _bitmap.height <= y) {
       return -1;
     }
-    var c:uint = _bitmap.getPixel(x, y+1);
-    return _tilevalue[c];
+    var c:uint = _bitmap.getPixel(x, y);
+    return _mapvalue[c];
   }
 
   public function getTile(x:int, y:int):int
   {
-    var i:int = getRawTile(x, y);
-    if (Tile.isCovered(i)) {
-      var row:Array = _dirtmap[y];
-      if (row[x]) i = Tile.DIRT;
-    }
-    return i;
+    return getRawTile(x, y);
   }
 
   // digTile(x, y): set the tile value of pixel at (x,y).
   public function digTile(x:int, y:int):Boolean
   {
     if (x < 0 || _bitmap.width <= x || 
-	y < 0 || _bitmap.height-1 <= y) {
+	y < 0 || _bitmap.height <= y) {
       return false;
     }
     var row:Array = _dirtmap[y];

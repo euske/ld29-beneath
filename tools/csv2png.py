@@ -4,6 +4,13 @@ import csv
 import pygame
 import struct
 
+colors = []
+for i in xrange(256):
+    (r,g,b,a) = ((i*11)%256, (i*22+33)%256, (i*33+44)%256, 255)
+    c = (r,g,b,a)
+    assert c not in colors
+    colors.append(c)
+
 def main(argv):
     import fileinput
     args = argv[1:]
@@ -14,14 +21,7 @@ def main(argv):
     m = max( max(row) for row in rows )
     (w,h) = (len(rows[0]), len(rows))
     w = max(w, m)
-    img = pygame.Surface((w,h+1),0,32)
-    colors = [0]
-    for i in xrange(m):
-        (r,g,b,a) = ((i*11)%256, (i*22+33)%256, (i*33+44)%256, 255)
-        c = (r,g,b,a)
-        assert c not in colors
-        colors.append(c)
-        img.set_at((i+1,0), c)
+    img = pygame.Surface((w,h),0,32)
     for (y,row) in enumerate(rows):
         for (x,v) in enumerate(row):
             c = colors[int(v)]

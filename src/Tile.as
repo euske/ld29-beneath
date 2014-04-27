@@ -8,7 +8,10 @@ public class Tile
   public static const tilesize:int = 16; // tilesize in pixels.
 
   public static const NONE:int = 0;
-  public static const DIRT:int = 2;
+
+  // Dirt tiles.
+  public static const DIRT_BEGIN:int = 2;
+  public static const DIRT_END:int = 53;
 
   // Ladder tiles.
   public static const LADDER:int = 62;
@@ -43,25 +46,25 @@ public class Tile
     return (i == LADDER || i == LADDER_TOP || i == LADDER_SIDE || i == LADDER_BOTTOM); 
   }
 
+  // Tiles that are diggable.
+  public static function isDirt(i:int):Boolean
+  {
+    return (DIRT_BEGIN <= i && i <= DIRT_END);
+  }
+
   // Empty tiles (as air).
   public static function isEmpty(i:int):Boolean
   { 
     return (i == NONE || i == LADDER || isSpawn(i) || isDeadly(i)); 
   }
 
-  // Tiles that are initially covered with dirt.
-  public static function isCovered(i:int):Boolean
-  {
-    return isEmpty(i);
-  }
-
   // Tiles that you cannot step into.
   public static function isObstacle(i:int):Boolean
   { 
-    return !(i == DIRT || isEmpty(i) || isLadder(i));
+    return !(isEmpty(i) || isLadder(i) || isDirt(i));
   }
 
-  // Tile that you cannot fall into, but you can step into if you want.
+  // Tiles that stop you from falling, but you can overlap if you force.
   public static function isStoppable(i:int):Boolean 
   { 
     return !isEmpty(i);
@@ -70,8 +73,14 @@ public class Tile
   // getFluid: maps a tile ID to animated tile ID.
   public static function getFluid(i:int, phase:int):int 
   {
-    if (i == LAVA) return (55+phase % 5);
-    return -1;
+    switch (i) {
+    case LAVA:
+      return (55+phase % 5);
+    case DEEPLAVA:
+      return i;
+    default:
+      return -1;
+    }
   }
 
   // getRect: returns a bounds of a give tile.
