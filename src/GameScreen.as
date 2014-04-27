@@ -29,10 +29,14 @@ public class GameScreen extends Screen
   private static const SkinsetImageCls:Class;
   private static const skinsetImage:Bitmap = new SkinsetImageCls();
 
-  // MapData image:
-  [Embed(source="../assets/levels/mapdata.png", mimeType="image/png")]
-  private static const MapdataImageCls:Class;
-  private static const mapdataImage:Bitmap = new MapdataImageCls();
+  // TileMap image:
+  [Embed(source="../assets/levels/tilemap.png", mimeType="image/png")]
+  private static const TilemapImageCls:Class;
+  private static const tilemapImage:Bitmap = new TilemapImageCls();
+  // DirtMap image:
+  [Embed(source="../assets/levels/dirtmap.png", mimeType="image/png")]
+  private static const DirtmapImageCls:Class;
+  private static const dirtmapImage:Bitmap = new DirtmapImageCls();
 
   /// Game-related functions
 
@@ -48,7 +52,8 @@ public class GameScreen extends Screen
 
     var tilesize:int = 16;
     _scene = new Scene(20, 15, tilesize,
-		       mapdataImage.bitmapData, 
+		       tilemapImage.bitmapData, 
+		       dirtmapImage.bitmapData, 
 		       tilesetImage.bitmapData,
 		       skinsetImage.bitmapData);
     _scene.width *= 2;

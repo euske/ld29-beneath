@@ -14,12 +14,9 @@ public class TileMap
   public var tilesize:int;
 
   // bitmap: actual bitmap to hold the 2D array.
-  // The top row is used as a lookup table for tile types.
-  // The color of pixel (0,0) is used as type 0.
-  // The color of pixel (1,0) is used as type 1. etc.
   private var _bitmap:BitmapData;
   // dirtmap:
-  private var _dirtmap:Array;
+  private var _dirtmap:BitmapData;
 
   // _mapvalue: lookup table from a pixel color to a type number.
   private var _mapvalue:Dictionary;
@@ -38,24 +35,6 @@ public class TileMap
     }
   }
 
-  // bitmap:
-  public function get bitmap():BitmapData
-  {
-    return _bitmap;
-  }
-  public function set bitmap(v:BitmapData):void
-  {
-    _bitmap = v.clone();
-    _dirtmap = new Array(height);
-    for (var y:int = 0; y < _dirtmap.length; y++) {
-      var row:Array = new Array(width);
-      for (var x:int = 0; x < row.length; x++) {
-	row[x] = 1;
-      }
-      _dirtmap[y] = row;
-    }
-  }
-
   // width: returns the map width.
   public function get width():int
   {
@@ -65,6 +44,13 @@ public class TileMap
   public function get height():int
   {
     return _bitmap.height;
+  }
+
+  // setBitmap(bitmap, dirtmap)
+  public function setBitmap(bitmap:BitmapData, dirtmap:BitmapData):void
+  {
+    _bitmap = bitmap.clone();
+    _dirtmap = dirtmap.clone();
   }
 
   // getRawTile(x, y): returns the tile of a pixel at (x,y).
@@ -78,21 +64,17 @@ public class TileMap
     return _mapvalue[c];
   }
 
-  public function getTile(x:int, y:int):int
-  {
-    return getRawTile(x, y);
-  }
-
   // digTile(x, y): set the tile value of pixel at (x,y).
   public function digTile(x:int, y:int):Boolean
   {
-    if (x < 0 || _bitmap.width <= x || 
-	y < 0 || _bitmap.height <= y) {
+    if (x < 0 || _dirtmap.width <= x || 
+	y < 0 || _dirtmap.height <= y) {
       return false;
     }
-    var row:Array = _dirtmap[y];
-    if (row[x]) {
-      row[x] = 0;
+    var c:uint = _dirtmap.getPixel(x, y);
+    var i:int = (c == 0)? 0 : _mapvalue[c];
+    if (i != 0) {
+      _dirtmap.setPixel(x, y, 0);
       return true;
     }
     return false;
@@ -109,6 +91,19 @@ public class TileMap
       }
     }
     return dug;
+  }
+
+  // getTile(x, y)
+  public function getTile(x:int, y:int):int
+  {
+    if (x < 0 || _dirtmap.width <= x || 
+	y < 0 || _dirtmap.height <= y) {
+      return -1;
+    }
+    var c:uint = _dirtmap.getPixel(x, y);
+    var i:int = (c == 0)? 0 : _mapvalue[c];
+    if (i != 0) return i;
+    return getRawTile(x, y);
   }
 
   // isTile(x, y, f): true if the tile at (x,y) has a property given by f.

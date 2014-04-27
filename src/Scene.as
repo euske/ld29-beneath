@@ -12,7 +12,8 @@ import flash.geom.Rectangle;
 public class Scene extends Sprite
 {
   private var _tilesize:int;
-  private var _mapdata:BitmapData;
+  private var _tiledata:BitmapData;
+  private var _dirtdata:BitmapData;
   private var _tileset:BitmapData;
   private var _skinset:BitmapData;
   private var _fluidimage:Bitmap;
@@ -35,12 +36,14 @@ public class Scene extends Sprite
 
   // Scene(w, h, tilemap): set up fixated things.
   public function Scene(w:int, h:int, tilesize:int,
-			mapdata:BitmapData,
+			tiledata:BitmapData,
+			dirtdata:BitmapData,
 			tileset:BitmapData,
 			skinset:BitmapData)
   {
     _tilesize = tilesize;
-    _mapdata = mapdata;
+    _tiledata = tiledata;
+    _dirtdata = dirtdata;
     _tileset = tileset;
     _skinset = skinset;
     _window = new Rectangle(0, 0, w*tilesize, h*tilesize);
@@ -51,8 +54,8 @@ public class Scene extends Sprite
     _mapimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _maskimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _maprect = new Rectangle(0, 0,
-			     mapdata.width*tilesize,
-			     mapdata.height*tilesize);
+			     _tiledata.width*tilesize,
+			     _tiledata.height*tilesize);
 
     var bgimage:Bitmap = new BackgroundImageCls();
     bgimage.width = _window.width;
@@ -79,7 +82,7 @@ public class Scene extends Sprite
     _window.x = 0;
     _window.y = 0;
     _tilemap = new TileMap(_tilesize);
-    _tilemap.bitmap = _mapdata;
+    _tilemap.setBitmap(_tiledata, _dirtdata);
     _tilewindow = new Rectangle();
     _maskmap = new MaskMap(_tilemap.width, _tilemap.height, _tilesize);
     _actors = new Array();
