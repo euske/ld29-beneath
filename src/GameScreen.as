@@ -148,6 +148,11 @@ public class GameScreen extends Screen
       _player.vy = +1;
       break;
 
+    case Keyboard.SHIFT:
+    case Keyboard.CONTROL:
+      _player.digging = true;
+      break;
+
     case Keyboard.SPACE:
     case Keyboard.ENTER:
     case 88:			// X
@@ -178,6 +183,11 @@ public class GameScreen extends Screen
     case 83:			// S
     case 74:			// J
       _player.vy = 0;
+      break;
+
+    case Keyboard.SHIFT:
+    case Keyboard.CONTROL:
+      _player.digging = false;
       break;
     }
   }

@@ -15,6 +15,8 @@ public class Player extends Actor
   public var vy:int;
   // speed by gravity.
   public var vg:int;
+  // digging
+  public var digging:Boolean;
 
   public const speed:int = 4;
   public const gravity:int = 1;
@@ -96,20 +98,20 @@ public class Player extends Actor
     // (tdx,tdy): the amount that the character should move.
     var tdxOfDoom:int = vx*speed;
     var tdyOfDoom:int = vg+gravity;
-    var fx:Function = (vx == 0)? Tile.isBlockingNormally : Tile.isBlockingAlways;
+    var fx:Function = (digging && vx != 0)? Tile.isBlockingAlways : Tile.isBlockingNormally;
     var fy:Function = null;
 
     if (canGrabLadder()) {
       if (vy != 0) {
 	// Start grabbing the tile.
 	_grabbing = true;
-	fy = Tile.isBlockingAlways;
+	fy = (digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
 	tdyOfDoom = vy*speed;
       }
     } else {
       if (0 < vy) {
 	tdyOfDoom = Math.max(tdyOfDoom, vy*speed);
-	fy = Tile.isBlockingAlways;
+	fy = (digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
       }
     }
 
@@ -126,7 +128,7 @@ public class Player extends Actor
       }
     }
 
-    trace("v="+vx+","+vy+", t="+tdxOfDoom+","+tdyOfDoom+", grabbing="+_grabbing);
+    //trace("v="+vx+","+vy+", t="+tdxOfDoom+","+tdyOfDoom+", grabbing="+_grabbing);
 
     // (dy,dy): the amount that the character actually moved.
     var dx:int = 0, dy:int = 0;
