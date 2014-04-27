@@ -63,6 +63,7 @@ public class GameScreen extends Screen
   {
     _scene.open();
     _player = _scene.player;
+    _player.health = 3;
     _player.addEventListener(Actor.DIE, onPlayerDead);
 
     if (_music != null) {

@@ -83,7 +83,7 @@ public class TileMap
   public function getTile(x:int, y:int):int
   {
     var i:int = getRawTile(x, y);
-    if (i == Tile.NONE) {
+    if (Tile.isCovered(i)) {
       var row:Array = _dirtmap[y];
       if (row[x]) i = Tile.DIRT;
     }

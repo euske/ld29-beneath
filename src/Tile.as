@@ -32,16 +32,22 @@ public class Tile
     return (i == LAVA || i == DEEPLAVA);
   }
 
+  // Ladder tile (you can grab / don't fall down).
+  public static function isLadder(i:int):Boolean
+  { 
+    return (i == LADDER || i == LADDER_TOP || i == LADDER_SIDE || i == LADDER_BOTTOM); 
+  }
+
   // Empty tiles (as air).
   public static function isEmpty(i:int):Boolean
   { 
     return (i == NONE || i == LADDER || isSpawn(i) || isDeadly(i)); 
   }
 
-  // Ladder tile (you can grab / don't fall down).
-  public static function isLadder(i:int):Boolean
-  { 
-    return (i == LADDER || i == LADDER_TOP || i == LADDER_SIDE || i == LADDER_BOTTOM); 
+  // Tiles that are initially covered with dirt.
+  public static function isCovered(i:int):Boolean
+  {
+    return isEmpty(i);
   }
 
   // Tiles that you cannot step into.

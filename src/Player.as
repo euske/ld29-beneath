@@ -16,10 +16,10 @@ public class Player extends Actor
   // speed by gravity.
   public var vg:int;
 
-  public const speed:int = 8;
-  public const gravity:int = 2;
-  public const jumpacc:int = -20;
-  public const maxspeed:int = +20;
+  public const speed:int = 4;
+  public const gravity:int = 1;
+  public const jumpacc:int = -10;
+  public const maxspeed:int = +10;
   public const inv_duration:int = 24; // in frames.
 
   private var _jumping:Boolean;
@@ -43,7 +43,6 @@ public class Player extends Actor
     super(scene);
     vx = 0;
     vy = 0;
-    health = 3;
   }
 
   // hasLadder()
@@ -92,26 +91,30 @@ public class Player extends Actor
     var tdxOfDoom:int = vx*speed;
     var tdyOfDoom:int = 0;
     var fx:Function = (vx == 0)? Tile.isStoppable : Tile.isObstacle;
-    var fy:Function = (vy == 0)? Tile.isStoppable : Tile.isObstacle;
+    var fy:Function = Tile.isStoppable;
 
-    if (vy != 0) {
-      if (hasLadder()) {
+    if (hasLadder()) {
+      if (vy != 0) {
 	// Start grabbing the tile.
 	_grabbing = true;
-      } else {
-	vy = 0;
+	fy = Tile.isObstacle;
+	tdyOfDoom = vy*speed;
+      } 
+    } else {
+      tdyOfDoom = vg+gravity;
+      if (0 < vy) {
+	tdyOfDoom = Math.max(tdyOfDoom, vy*speed);
+	fy = Tile.isObstacle;
       }
     }
 
-    if (_grabbing) {
-      tdyOfDoom = vy*speed;
-    } else {
-      tdyOfDoom = Math.min(vg+gravity, maxspeed);
-    }
     if (_jumping) {
       _jumping = false;
       tdyOfDoom += jumpacc;
     }
+    tdyOfDoom = Math.min(tdyOfDoom, maxspeed);
+
+    trace("v="+tdxOfDoom+","+tdyOfDoom);
 
     // (dy,dy): the amount that the character actually moved.
     var dx:int = 0, dy:int = 0;
