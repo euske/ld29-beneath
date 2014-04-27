@@ -18,6 +18,8 @@ public class TileMap
   // The color of pixel (0,0) is used as type 0.
   // The color of pixel (1,0) is used as type 1. etc.
   private var _bitmap:BitmapData;
+  // dirtmap:
+  private var _dirtmap:Array;
 
   // _tilevalue: lookup table from a pixel color to a type number.
   private var _tilevalue:Dictionary;
@@ -36,6 +38,14 @@ public class TileMap
   public function set bitmap(v:BitmapData):void
   {
     _bitmap = v.clone();
+    _dirtmap = new Array(height);
+    for (var y:int = 0; y < _dirtmap.length; y++) {
+      var row:Array = new Array(width);
+      for (var x:int = 0; x < row.length; x++) {
+	row[x] = 1;
+      }
+      _dirtmap[y] = row;
+    }
 
     // Construct a lookup table.
     // The color value at a pixel at (i,0) is used as i-th type.
@@ -59,8 +69,8 @@ public class TileMap
     return _bitmap.height-1;
   }
 
-  // getTile(x, y): returns the tile of a pixel at (x,y).
-  public function getTile(x:int, y:int):int
+  // getRawTile(x, y): returns the tile of a pixel at (x,y).
+  public function getRawTile(x:int, y:int):int
   {
     if (x < 0 || _bitmap.width <= x || 
 	y < 0 || _bitmap.height-1 <= y) {
@@ -70,11 +80,37 @@ public class TileMap
     return _tilevalue[c];
   }
 
-  // setTile(x, y, i): set the tile value of pixel at (x,y).
-  public function setTile(x:int, y:int, i:int):void
+  public function getTile(x:int, y:int):int
   {
-    var c:uint = _bitmap.getPixel(i, 0);
-    _bitmap.setPixel(x, y+1, c);
+    if (x < 0 || _bitmap.width <= x || 
+	y < 0 || _bitmap.height-1 <= y) {
+      return -1;
+    }
+    var row:Array = _dirtmap[y];
+    if (row[x]) return Tile.DIRT;
+    return getRawTile(x, y);
+  }
+
+  // digTile(x, y): set the tile value of pixel at (x,y).
+  public function digTile(x:int, y:int):void
+  {
+    if (x < 0 || _bitmap.width <= x || 
+	y < 0 || _bitmap.height-1 <= y) {
+      return;
+    }
+    var row:Array = _dirtmap[y];
+    row[x] = 0;
+  }
+
+  // digTileByRect(r)
+  public function digTileByRect(r:Rectangle):void
+  {
+    r = getCoordsByRect(r);
+    for (var y:int = r.top; y <= r.bottom; y++) {
+      for (var x:int = r.left; x <= r.right; x++) {
+	digTile(x, y);
+      }
+    }
   }
 
   // isTile(x, y, f): true if the tile at (x,y) has a property given by f.

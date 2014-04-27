@@ -24,7 +24,6 @@ public class Scene extends Sprite
   private var _tilemap:TileMap;
   private var _tilewindow:Rectangle;
   private var _covermap:DirtMap;
-  private var _dirtmap:DirtMap;
   private var _player:Player;
   private var _actors:Array;
   private var _dirtchanged:Boolean;
@@ -83,11 +82,12 @@ public class Scene extends Sprite
     _tilemap.bitmap = _mapdata;
     _tilewindow = new Rectangle();
     _covermap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
-    _dirtmap = new DirtMap(_tilemap.width, _tilemap.height, _tilesize);
     _actors = new Array();
     _player = new Player(this);
+    _player.frame = new Rectangle(0, 0, _tilesize, _tilesize);
     _player.skin = createSkin(3);
     _player.activate();
+    add(_player);
     placeActors();
   }
 
@@ -227,8 +227,6 @@ public class Scene extends Sprite
 	var x:int = r.x+dx;
 	var i:int = _tilemap.getTile(x, y);
 	if (0 <= i && Tile.getFluid(i, -1) < 0) {
-	  var m:int = _dirtmap.getMask(x, y);
-	  if (i == 0 && m == 0) { i = Tile.DIRT; }
 	  var src:Rectangle = getTileSrcRect(i);
 	  var dst:Point = new Point(dx*_tilesize, dy*_tilesize);
 	  _mapimage.bitmapData.copyPixels(_tileset, src, dst);
@@ -302,12 +300,12 @@ public class Scene extends Sprite
   }
 
   // digMap(r): open up a part of the map/activate things.
-  public function digMap(p:Point, r:Rectangle, size:int):void
+  public function digMap(r:Rectangle, size:int):void
   {
+    _tilemap.digTileByRect(r);
     r = r.clone();
     r.inflate(size, size);
     _covermap.setMaskByRect(r, 1);
-    _dirtmap.setMaskByPoint(p, 1);
     _dirtchanged = true;
     // Activate actors in the uncover part.
     for each (var actor:Actor in _actors) {
@@ -361,14 +359,13 @@ public class Scene extends Sprite
   // placeActors()
   private function placeActors():void
   {
-    var frame:Rectangle = new Rectangle(0, 0, _tilesize, _tilesize);
     for (var y:int = 0; y < _tilemap.height; y++) {
       for (var x:int = 0; x < _tilemap.width; x++) {
-	var i:int = _tilemap.getTile(x, y);
+	var i:int = _tilemap.getRawTile(x, y);
 	var actor:Actor = null;
 	switch (i) {
 	case Tile.PLAYER:
-	  actor = _player;
+	  _player.pos = new Point(x*_tilesize, y*_tilesize);
 	  break;
 
 	case Tile.ENEMY:
@@ -384,7 +381,7 @@ public class Scene extends Sprite
 	if (actor != null) {
 	  trace("spawn tile: "+i+" at ("+x+","+y+")");
 	  actor.pos = new Point(x*_tilesize, y*_tilesize);
-	  actor.frame = frame;
+	  actor.frame = new Rectangle(0, 0, _tilesize, _tilesize);
 	  add(actor);
 	}
       }
