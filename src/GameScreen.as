@@ -39,12 +39,19 @@ public class GameScreen extends Screen
   private static const Level3DirtmapImageCls:Class;
 
   // Musics
-  [Embed(source="../assets/music/Level1.mp3", mimeType="audio/mpeg")]
-  private static const Level1MusicCls:Class;
   [Embed(source="../assets/music/Level2.mp3", mimeType="audio/mpeg")]
-  private static const Level2MusicCls:Class;
+  private static const Level1MusicCls:Class;
   [Embed(source="../assets/music/Level3.mp3", mimeType="audio/mpeg")]
+  private static const Level2MusicCls:Class;
+  [Embed(source="../assets/music/Level1.mp3", mimeType="audio/mpeg")]
   private static const Level3MusicCls:Class;
+  
+//[Embed(source="../assets/music/Title_Screen.mp3", mimeType="audio/mpeg")]  
+//private static const TitleScreenMusicCls:Class;
+//[Embed(source="../assets/music/#####.mp3", mimeType="audio/mpeg")]  
+//private static const LoseScreenMusicCls:Class;
+//[Embed(source="../assets/music/#####.mp3", mimeType="audio/mpeg")]  
+//private static const WinScreenMusicCls:Class;
 
   // Winning music
   [Embed(source="../assets/sounds/treasure_pickup.mp3", mimeType="audio/mpeg")]
@@ -76,15 +83,15 @@ public class GameScreen extends Screen
 		      Level0TilemapImageCls,
 		      Level0DirtmapImageCls,
 		      null),
-	new LevelInfo("LEVEL 1\nINTRODUCTION",
+	new LevelInfo("LEVEL 1\nTHE QUEST BEGINS",
 		      Level1TilemapImageCls,
 		      Level1DirtmapImageCls,
 		      Level1MusicCls),
-	new LevelInfo("LEVEL 2\nDERP",
+	new LevelInfo("LEVEL 2\nGRAVEYARD? MORE LIKE CAVEYARD!",
 		      Level2TilemapImageCls,
 		      Level2DirtmapImageCls,
 		      Level2MusicCls),
-	new LevelInfo("LEVEL 3\nGOGGY!",
+	new LevelInfo("LEVEL 3\nHOT N' BOTHERED",
 		      Level3TilemapImageCls,
 		      Level3DirtmapImageCls,
 		      Level3MusicCls),

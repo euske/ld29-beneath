@@ -26,12 +26,15 @@ public class FlyingEnemy extends Actor
   public override function update(phase:int):void
   {
     super.update(phase);
+
     var dy:int = _vy*speed;
     if (isMovable(0, dy)) {
       move(0, dy);
     } else {
       _vy = -_vy;
     }
+
+    skinId = Skin.spinBatFlying(phase);
   }
 }
 

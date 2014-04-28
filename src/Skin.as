@@ -24,6 +24,9 @@ public class Skin
   public static const ROBOCAKE:int = 42;
   public static const ROBOCAKE_PHASES:int = 4;
 
+  public static const SPINBAT:int = 50;
+  public static const SPINBAT_PHASES:int = 4;
+
   public static function playerWalking(phase:int):int
   {
     phase = phase % PLAYER_WALKING_PHASES; // 0->1->2->3->0
@@ -63,6 +66,12 @@ public class Skin
   {
     phase = phase % ROBOCAKE_PHASES;
     return ROBOCAKE + phase*2;
+  }
+
+  public static function spinBatFlying(phase:int):int
+  {
+    phase = phase % SPINBAT_PHASES;
+    return SPINBAT + phase*2;
   }
 
 }

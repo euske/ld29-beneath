@@ -17,6 +17,7 @@ public class Player extends Actor
   // the way the player wants to move.
   public var vx:int;
   public var vy:int;
+  public var jumping:Boolean;
 
   public const max_health:int = 5;
   public const speed_walking:int = 4;
@@ -31,6 +32,7 @@ public class Player extends Actor
   private var _vg:int;		// speed by gravity.
   private var _digging:Boolean;
   private var _jumping:Boolean;
+  private var _jumpstr:int;
   private var _grabbing:Boolean;
 
   private var _skin_adjust:int;	// 0: right, 1: left

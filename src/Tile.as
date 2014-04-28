@@ -57,12 +57,12 @@ public class Tile
   public static const SPAWN_PLAYER:int = 76; // These tiles are drawn in the tilemap for reference...
   public static const SPAWN_ENEMY1:int = 77; // ...but should be invisible in the game.
   public static const SPAWN_ENEMY2:int = 78; // ...but should be invisible in the game.
-  public static const SPAWN_CAKE:int = 79; // ...but should be invisible in the game.
+//  public static const SPAWN_ENEMY3:int = 79; // enemy 3 no longer exists, do not use.
 
   // Unused.
   public static const UNDIGGABLE:int = 80; // unused. (stop sign)
   public static const SPAWN_ITEM:int = 81; // unused. (money bag)
-  public static const SPAWN_FOOD:int = 82; // unused. (the word food)
+  public static const SPAWN_CAKE:int = 82; // unused. (the word food)
 
   // Deadly tiles again.
   public static const SPIKE_BEGIN:int = 83;
