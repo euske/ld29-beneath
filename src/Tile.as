@@ -123,7 +123,7 @@ public class Tile
   public static function isUndiggable(i:int):Boolean
   {
     return (i == UNDIGGABLE ||
-	    (DIRT_BEGIN <= i && i <= DIRT_END));
+	    (ROCK_BEGIN <= i && i <= ROCK_END));
   }
 
   // Tiles that are standable on top.
@@ -143,7 +143,7 @@ public class Tile
 	    isSpawn(i) || 
 	    isCollectible(i) ||
 	    isDeadly(i) ||
-		(DECO_BEGIN <= i && i <= DECO_END));
+	    (DECO_BEGIN <= i && i <= DECO_END));
   }
   public static function isBlockingAlways(i:int):Boolean
   {

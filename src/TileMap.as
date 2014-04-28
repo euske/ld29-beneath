@@ -116,7 +116,7 @@ public class TileMap
   public function getTile(x:int, y:int):int
   {
     var i:int = getRawTile(x, y);
-    if (Tile.isUndiggable(i)) return Tile.UNDIGGABLE;
+    if (Tile.isUndiggable(i)) return i;
     var j:int = getDirtTile(x, y);
     return (j != 0)? j : i;
   }

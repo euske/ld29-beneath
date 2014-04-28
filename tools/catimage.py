@@ -13,7 +13,7 @@ def main(argv):
         print 'usage: %s [-p] [-o output] [file ...]' % argv[0]
         return 100
     try:
-        (opts, args) = getopt.getopt(argv[1:], 'do:')
+        (opts, args) = getopt.getopt(argv[1:], 'po:')
     except getopt.GetoptError:
         return usage()
     flip = False

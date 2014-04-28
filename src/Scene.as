@@ -82,7 +82,6 @@ public class Scene extends Sprite
     addChild(_tileimage);
     addChild(_actorlayer);
     addChild(_dirtimage);
-
     addChild(_maskimage);
     _maskon = true;
   }
@@ -292,7 +291,7 @@ public class Scene extends Sprite
       for (var dx:int = 0; dx <= r.width; dx++) {
 	var x:int = r.x+dx;
 	var p:int = phase+(dx*3)+(dy*7); // randomize the phase of each cell.
-	var i:int = Tile.getFluid(_tilemap.getTile(x, y), p);
+	var i:int = Tile.getFluid(_tilemap.getRawTile(x, y), p);
 	var src:Rectangle;
 	var dst:Point = new Point(dx*_tilesize, dy*_tilesize);
 	if (0 <= i) {
@@ -302,14 +301,14 @@ public class Scene extends Sprite
 	  continue;
 	}
 	// partial fluid (left).
-	i = Tile.getFluid(_tilemap.getTile(x-1, y), phase);
+	i = Tile.getFluid(_tilemap.getRawTile(x-1, y), phase);
 	if (0 <= i) {
 	  src = getTileSrcRect(i);
 	  src.width = _tilesize/2;
 	  _fluidimage.bitmapData.copyPixels(_tileset, src, dst);
 	}
 	// partial fluid (right).
-	i = Tile.getFluid(_tilemap.getTile(x+1, y), phase);
+	i = Tile.getFluid(_tilemap.getRawTile(x+1, y), phase);
 	if (0 <= i) {
 	  src = getTileSrcRect(i);
 	  src.left += _tilesize/2;
@@ -318,7 +317,7 @@ public class Scene extends Sprite
 	  _fluidimage.bitmapData.copyPixels(_tileset, src, dst);
 	}
 	// partial fluid (up).
-	i = Tile.getFluid(_tilemap.getTile(x, y-1), phase);
+	i = Tile.getFluid(_tilemap.getRawTile(x, y-1), phase);
 	if (0 <= i) {
 	  src = getTileSrcRect(i);
 	  src.top += 3*_tilesize/4;
