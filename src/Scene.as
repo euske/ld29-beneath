@@ -82,7 +82,20 @@ public class Scene extends Sprite
     addChild(_tileimage);
     addChild(_actorlayer);
     addChild(_dirtimage);
-    //addChild(_maskimage);
+
+    addChild(_maskimage);
+    _maskon = true;
+  }
+
+  private var _maskon:Boolean;
+  public function toggleMask():void
+  {
+    _maskon = !_maskon;
+    if (_maskon) {
+      addChild(_maskimage);
+    } else {
+      removeChild(_maskimage);
+    }
   }
 
   // open()

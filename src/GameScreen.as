@@ -164,6 +164,9 @@ public class GameScreen extends Screen
       _player.jump();
       break;
 
+    case 77:
+      _scene.toggleMask();
+      break;
     }
   }
 
