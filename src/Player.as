@@ -10,6 +10,7 @@ public class Player extends Actor
 {
   public static const HURT:String = "Player.HURT";
   public static const COLLECT:String = "Player.COLLECT";
+  public static const SCORE:String = "Player.SCORE";
 
   public var health:int;
 
@@ -284,8 +285,7 @@ public class Player extends Actor
   {
     scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
     collectSound.play();
-    // XXX WHAT DO
-    //dispatchEvent(new ActorEvent(SCORE));
+    dispatchEvent(new ActorEvent(SCORE));
   }
 
   // eat(actor): just ate something.

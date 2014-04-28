@@ -90,10 +90,10 @@ public class GameScreen extends Screen
 		      Level3MusicCls),
 	];
 
-    _status = new Status();
-    _status.level = 1;		// initial level (should be 1).
     _width = width;
     _height = height;
+    _status = new Status(_width, _height);
+    _status.level = 1;		// initial level (should be 1).
   }
 
   // open()
@@ -116,9 +116,11 @@ public class GameScreen extends Screen
     _player.health = 3;
     _player.addEventListener(Player.HURT, onPlayerHurt);
     _player.addEventListener(Player.COLLECT, onPlayerCollect);
+    _player.addEventListener(Player.SCORE, onPlayerScore);
 
     _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
     _status.collected = 0;
+    _status.bones = 0;
     _status.time = 0;
     _clock = 0;
 
@@ -315,6 +317,11 @@ public class GameScreen extends Screen
     }
   }
 
+  private function onPlayerScore(e:ActorEvent):void
+  {
+    _status.bones++;
+  }
+
   private function onNextLevel():void
   {
     _status.level++;
@@ -400,6 +407,7 @@ class Status extends Sprite
   public var level:int;
   public var collected:int;
   public var goal:int;
+  public var bones:int;
   public var health:int;
   public var time:int;
 
@@ -410,18 +418,40 @@ class Status extends Sprite
   private static const SymbolsImageCls:Class;
   private static const symbolsImage:Bitmap = new SymbolsImageCls();
 
-  public function Status()
+  public function Status(width:int, height:int)
   {
-    _text = Font.createText("HEALTH: XX  GRAVE: XX/XX  TIME: XXX", 0xffffff, 0, 2);
+    graphics.beginFill(0, 0.5);
+    graphics.drawRect(0, 0, width, 32);
+    //                       012345678901234567890123456789
+    _text = Font.createText("HHHHH  GRAVE:NN/NN  XNN  XNNN", 0xffffff, 0, 2);
+    _text.x = (width-_text.width)/2;
+    _text.y = 8;
     addChild(_text)
   }
 
   public function update():void
   {
-    var text:String = ("HEALTH: "+Utils.format(health, 2)+
-		       "  GRAVE: "+Utils.format(collected, 2)+"/"+Utils.format(goal, 2)+
-		       "  TIME: "+Utils.format(time, 3));
+    var text:String = ("XXXXX  GRAVE:"+Utils.format(collected, 2)+
+		       "/"+Utils.format(goal, 2)+
+		       "  X"+Utils.format(bones, 2)+
+		       "  X"+Utils.format(time, 3));
     Font.renderText(_text.bitmapData, text);
+    
+    for (var x:int = 0; x < 5; x++) {
+      if (x < health) {
+	slapSymbol(x, 1);	// filled heart.
+      } else {
+	slapSymbol(x, 2);	// empty heart.
+      }
+    }
+    slapSymbol(20, 4);		// bone.
+    slapSymbol(25, 5);		// time.
+  }
+
+  private function slapSymbol(x:int, i:int):void
+  {
+    var src:Rectangle = new Rectangle(i*8, 0, 8, 8);
+    var dst:Point = new Point(x*8, 0);
+    _text.bitmapData.copyPixels(symbolsImage.bitmapData, src, dst);
   }
 }
-
