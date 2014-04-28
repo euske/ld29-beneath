@@ -408,7 +408,7 @@ public class Scene extends Sprite
     for (var y:int = 0; y < _tilemap.height; y++) {
       for (var x:int = 0; x < _tilemap.width; x++) {
 	var i:int = _tilemap.getRawTile(x, y);
-	var p:Point = new Point(x*_tilesize, y*_tilesize);
+	var p:Point = _tilemap.getTilePoint(x, y);
 	var actor:Actor = null;
 	switch (i) {
 	case Tile.SPAWN_PLAYER:
@@ -416,10 +416,7 @@ public class Scene extends Sprite
 	  break;
 
 	case Tile.SPAWN_GRAVE:
-	  i = Utils.rnd(Tile.GRAVE_BEGIN, Tile.GRAVE_END+1);
-	  actor = new Grave(this, createTileSkin(Tile.GRAVE_TRACE));
-	  actor.skin = createTileSkin(i);
-	  _collectibles++;
+	  // THIS SHOUNDNT BE USED.
 	  break;
 
 	case Tile.SPAWN_ENEMY1:
@@ -432,6 +429,9 @@ public class Scene extends Sprite
 	  actor = new StickingEnemy(this, +1, 0);
 	  break;
 
+	}
+	if (Tile.isGrave(i)) {
+	  _collectibles++;
 	}
 	if (actor != null) {
 	  trace("spawn tile: "+i+" at ("+x+","+y+")");

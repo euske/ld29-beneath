@@ -10,6 +10,12 @@ import pygame
 import struct
 import random
 
+# SPAWN_GRAVE should be replaced with random graves.
+SPAWN_GRAVE = 75
+GRAVE_BEGIN = 66
+GRAVE_END = 73
+GRAVE_TRACE = 74
+
 # UNDIGGABLE should be replaced with rocks.
 UNDIGGABLE = 80
 DIRT_BEGIN = 2
@@ -66,6 +72,8 @@ def main(argv):
                 # convert tiles
                 if is_undiggable(tv):
                     tv = random.randrange(ROCK_BEGIN, ROCK_END+1)
+                elif tv == SPAWN_GRAVE:
+                    tv = random.randrange(GRAVE_BEGIN, GRAVE_END+1)
                 i = tv
             elif mode == 'D':
                 # convert dirts

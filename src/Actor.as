@@ -35,7 +35,7 @@ public class Actor extends EventDispatcher
     _skin = new Bitmap(new BitmapData(scene.tilesize, scene.tilesize));
     _skin.visible = false;
     pos = new Point(0, 0);
-    frame = new Rectangle(0, 0, scene.tilesize, scene.tilesize);
+    frame = new Rectangle(-scene.tilesize/2, -scene.tilesize/2, scene.tilesize, scene.tilesize);
   }
 
   // active: true if the actor is already uncovered on a map.

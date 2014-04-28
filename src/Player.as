@@ -225,18 +225,19 @@ public class Player extends Actor
 	actor is FlyingEnemy ||
 	actor is StickingEnemy) {
       hurt();
-    } else if (actor is Grave) {
-      collect(actor as Grave);
     }
   }
 
-  // collect(grave)
-  private function collect(grave:Grave):void
+  // collect(): try to open the chest.
+  public function collect():Boolean
   {
-    grave.collect();
-    collectSound.play();
-
-    dispatchEvent(new ActorEvent(SCORE));
+    if (scene.tilemap.isRawTileByPoint(pos, Tile.isGrave)) {
+      scene.tilemap.setRawTileByPoint(pos, Tile.GRAVE_TRACE);
+      collectSound.play();
+      dispatchEvent(new ActorEvent(SCORE));
+      return true;
+    }
+    return false;
   }
 
   // hurt()

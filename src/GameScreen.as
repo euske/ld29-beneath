@@ -143,13 +143,17 @@ public class GameScreen extends Screen
     case Keyboard.UP:
     case 87:			// W
     case 75:			// K
-      _player.vy = -1;
+      if (!_player.collect()) {
+	_player.vy = -1;
+      }
       break;
 
     case Keyboard.DOWN:
     case 83:			// S
     case 74:			// J
-      _player.vy = +1;
+      if (!_player.collect()) {
+	_player.vy = +1;
+      }
       break;
 
     case Keyboard.SHIFT:

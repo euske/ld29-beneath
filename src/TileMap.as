@@ -13,7 +13,7 @@ public class TileMap
   // tilesize: the size of each tile.
   public var tilesize:int;
 
-  public var changed:Boolean;
+  private var _changed:Boolean;
 
   // bitmap: actual bitmap to hold the 2D array.
   private var _bitmap:BitmapData;
@@ -59,12 +59,22 @@ public class TileMap
     return _bitmap.height;
   }
 
+  // true if need to be redrawn.
+  public function get changed():Boolean
+  {
+    return _changed;
+  }
+  public function set changed(v:Boolean):void
+  {
+    _changed = v;
+  }
+
   // setBitmap(bitmap, dirtmap)
   public function setBitmap(bitmap:BitmapData, dirtmap:BitmapData):void
   {
     _bitmap = convertValues(bitmap);
     _dirtmap = convertValues(dirtmap);
-    changed = true;
+    _changed = true;
   }
 
   // getRawTile(x, y): returns the tile of a pixel at (x,y).
@@ -75,6 +85,17 @@ public class TileMap
       return -1;
     }
     return _bitmap.getPixel(x, y);
+  }
+
+  // setRawTile(x, y): returns the tile of a pixel at (x,y).
+  public function setRawTile(x:int, y:int, i:int):void
+  {
+    if (x < 0 || _bitmap.width <= x || 
+	y < 0 || _bitmap.height <= y) {
+      return;
+    }
+    _bitmap.setPixel(x, y, i);
+    _changed = true;
   }
 
   // getDirtTile(x, y)
@@ -93,7 +114,7 @@ public class TileMap
     var i:int = getDirtTile(x, y);
     if (!Tile.isDiggable(i)) return false;
     _dirtmap.setPixel(x, y, 0);
-    changed = true;
+    _changed = true;
     return true;
   }
 
@@ -171,6 +192,24 @@ public class TileMap
     var x:int = Math.floor(p.x/tilesize);
     var y:int = Math.floor(p.y/tilesize);
     return new Point(x, y);
+  }
+
+  // getRawTileByPoint(p)
+  public function getRawTileByPoint(p:Point):int
+  {
+    p = getCoordsByPoint(p);
+    return getRawTile(p.x, p.y);
+  }
+  public function isRawTileByPoint(p:Point, f:Function):Boolean
+  {
+    return f(getRawTileByPoint(p));
+  }
+
+  // setRawTileByPoint(p)
+  public function setRawTileByPoint(p:Point, i:int):void
+  {
+    p = getCoordsByPoint(p);
+    setRawTile(p.x, p.y, i);
   }
 
   // getCoordsByRect(r): converts a screen area to a map range.
