@@ -21,9 +21,10 @@ public class Player extends Actor
   public const speed_digging:int = 1;
   public const gravity:int = 1;
   public const jumpacc:int = -10;
-  public const maxspeed:int = +10;
+  public const maxspeed_normal:int = +10;
+  public const maxspeed_digging:int = +2;
   public const inv_duration:int = 24; // in frames.
-  public const inset_dig:int = -2; // inset size of bounds for digging.
+  public const dig_duration:int = 12; // in frames.
 
   private var _vg:int;		// speed by gravity.
   private var _digging:Boolean;
@@ -31,8 +32,9 @@ public class Player extends Actor
   private var _grabbing:Boolean;
 
   private var _phase:int;
-  private var _skinAdjust:int;	// 0: right, 1: left
-  private var _invincible:int;	// >0: temp. invincibility
+  private var _skin_adjust:int;	// 0: right, 1: left
+  private var _invincible:int;	// >0: invincibility counter.
+  private var _dig_slowness:int; // >0: slowness because of digging.
 
   // Jump sound
   [Embed(source="../assets/sounds/jump.mp3", mimeType="audio/mpeg")]
@@ -74,18 +76,6 @@ public class Player extends Actor
 
   }
 
-  // canGrabLadder()
-  public function canGrabLadder():Boolean
-  {
-    return scene.tilemap.hasTileByRect(bounds, Tile.isGrabbable);
-  }
-
-  // hasDeadly()
-  public function hasDeadly():Boolean
-  {
-    return scene.tilemap.hasTileByRect(bounds, Tile.isDeadly);
-  }
-
   // isLanded()
   public function isLanded():Boolean
   {
@@ -120,16 +110,8 @@ public class Player extends Actor
     super.update();
     //trace("v="+vx+","+vy);
 
-    var speed:int = (_digging)? speed_digging : speed_walking;
-
-    // (tdx,tdy): the amount that the character should move.
-    var tdxOfDoom:int = vx*speed;
-    var tdyOfDoom:int = 0;
-    var fx:Function = (_digging && vx != 0)? Tile.isBlockingAlways : Tile.isBlockingNormally;
-    var fy:Function = null;
-
-    // turn on/off the Ladder behavoir.
-    if (canGrabLadder()) {
+    // Turn on/off the Ladder behavoir.
+    if (scene.tilemap.hasTileByRect(bounds, Tile.isGrabbable)) {
       if (vy != 0) {
 	// Start grabbing the tile.
 	_grabbing = true;
@@ -139,11 +121,27 @@ public class Player extends Actor
       _grabbing = false;
     }
 
-    // grabbing
+    // Moving.
+    var speed:int = (_digging || 0 < _dig_slowness)? speed_digging : speed_walking;
+    var maxspeed:int = (0 < _dig_slowness)? maxspeed_digging : maxspeed_normal;
+    if (0 < _dig_slowness) {
+      _dig_slowness--;
+    }
+
+    // (tdx,tdy): the amount that the character should move.
+    var tdxOfDoom:int = vx*speed;
+    var tdyOfDoom:int = 0;
+    // (dy,dy): the amount that the character actually moved.
+    var dx:int = 0;
+    var dy:int = 0;
+    // (fx,fy): hit detection function.
+    var fx:Function = Tile.isBlockingNormally;
+    var fy:Function = null;
+
     if (_grabbing) {
-      // grabbing.
+      // grabbing a ladder.
       if (vy != 0) {
-	fy = (_digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
+	fy = Tile.isBlockingNormally;
       } else {
       	fy = Tile.isBlockingOnLadder;
       }
@@ -156,19 +154,14 @@ public class Player extends Actor
     } else {
       // free fall.
       if (0 < vy) {
-	fy = (_digging)? Tile.isBlockingAlways : Tile.isBlockingNormally;
+	fy = Tile.isBlockingNormally;
       } else {
 	fy = Tile.isBlockingOnTop;
       }
       tdyOfDoom = Math.min(_vg+gravity, maxspeed);
     }
 
-    //trace("t="+tdxOfDoom+","+tdyOfDoom+", grabbing="+_grabbing);
-
-    // (dy,dy): the amount that the character actually moved.
-    var dx:int = 0, dy:int = 0;
     var v:Point;
-
     // try moving diagonally first.
     v = scene.tilemap.getCollisionByRect(bounds, //=getMovedBounds(dx,dy), 
 					 tdxOfDoom, tdyOfDoom, fy);
@@ -191,49 +184,69 @@ public class Player extends Actor
     tdxOfDoom -= v.x;
     tdyOfDoom -= v.y;
 
+    // Digging.
+    if (_digging && (vx != 0 || vy != 0)) {
+      // Dig stuff.
+      if (vy != 0) {
+	tdxOfDoom = 0;
+      } else {
+	tdyOfDoom = 0;
+      }
+      v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
+					   tdxOfDoom, tdyOfDoom, Tile.isBlockingAlways);
+      dx += v.x;
+      dy += v.y;
+      tdxOfDoom -= v.x;
+      tdyOfDoom -= v.y;
+      var r:Rectangle = getMovedBounds(dx,dy);
+      if (0 < scene.tilemap.digTileByRect(r)) {
+	digSound.play();
+	dx = dy = 0;
+	_dig_slowness = dig_duration;
+      }
+    }
+
+    // Compute vertical velocity.
     _vg = (_grabbing)? 0 : dy;
     move(dx, dy);
-
-    // Hurt if touching something bad.
-    if (hasDeadly()) {
-      hurt();
-    }
 
     // Auto-collect thigns.
     if (scene.tilemap.isRawTileByPoint(pos, Tile.isCollectible)) {
       loot();
     }
 
-    // Dig stuff.
-    var r:Rectangle = bounds.clone();
-    r.inflate(inset_dig, inset_dig);
-    if (0 < scene.tilemap.digTileByRect(r)) {
-      digSound.play();
+    // Hurt if touching something bad.
+    if (scene.tilemap.hasTileByRect(bounds, Tile.isDeadly)) {
+      hurt();
     }
 
-    // skin animation.
-    _phase++;
-    if (0 < _invincible) {
-      skinId = Skin.playerHurting(_phase) + _skinAdjust;
-    } else if (_digging) {
-      skinId = Skin.playerDigging(_phase) + _skinAdjust;
-    } else if (_grabbing && vy != 0) {
-      skinId = Skin.playerClimbing(_phase);
-    } else if (vx != 0) {
-      _skinAdjust = ((0 < vx)? 0 : 1);
-      skinId = Skin.playerWalking(_phase) + _skinAdjust;
-    }
-
-    // blinking.
+    // Invincible blinking after hurting.
     if (0 < _invincible) {
       _invincible--;
       if (_invincible == 0) {
+	// End blinking.
 	skin.alpha = 1.0;
 	skinId = 0;
       } else {
 	var b:Boolean = ((_invincible % 4) < 2);
 	skin.alpha = (b)? 0.0 : 1.0;
       } 
+    }
+
+    // Animate the skin.
+    _phase++;
+    if (0 < _invincible) {
+      skinId = Skin.playerHurting(_phase) + _skin_adjust;
+    } else if (_digging) {
+      if (vx != 0) {
+	_skin_adjust = ((0 < vx)? 0 : 1);
+      }
+      skinId = Skin.playerDigging(_phase) + _skin_adjust;
+    } else if (_grabbing && vy != 0) {
+      skinId = Skin.playerClimbing(_phase);
+    } else if (vx != 0) {
+      _skin_adjust = ((0 < vx)? 0 : 1);
+      skinId = Skin.playerWalking(_phase) + _skin_adjust;
     }
   }
 
@@ -264,7 +277,8 @@ public class Player extends Actor
   public function loot():void
   {
     scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
-    collectSound.play();       // XXX
+    collectSound.play();
+    // XXX WHAT DO
     //dispatchEvent(new ActorEvent(SCORE));
   }
 
