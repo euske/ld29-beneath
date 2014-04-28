@@ -401,18 +401,14 @@ public class Scene extends Sprite
 	  _collectibles++;
 	  break;
 
-	case Tile.SPAWN_ENEMY:
-	  switch (Utils.rnd(0)) {
-	  case 0:
-	    actor = new RunningEnemy(this, +1);
-	    break;
-	  case 1:
-	    actor = new FlyingEnemy(this, +1);
-	    break;
-	  case 2:
-	    actor = new StickingEnemy(this, +1, 0);
-	    break;
-	  }
+	case Tile.SPAWN_ENEMY1:
+	  actor = new RunningEnemy(this, +1);
+	  break;
+	case Tile.SPAWN_ENEMY2:
+	  actor = new FlyingEnemy(this, +1);
+	  break;
+	case Tile.SPAWN_ENEMY3:
+	  actor = new StickingEnemy(this, +1, 0);
 	  break;
 
 	}

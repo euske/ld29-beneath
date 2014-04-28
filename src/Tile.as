@@ -7,9 +7,19 @@ import flash.geom.Rectangle;
 Notable Numbers:
 	Random gravestone sprites: 66 to 73
 	Lava animation: 55 to 60
-	Spikes: 80 & 81 (floor & ceiling)
+	Spikes: 81 & 82 (floor & ceiling)
 	Undiggable rocks: 82 & 83
 	Collectable bones: 84 (+more later)
+	Decorations: NOT YET
+*/
+/*
+Spawn Tiles:
+	Gravestone: 75
+	Player: 76
+	Enemy: 77
+	Undiggable: 78
+	Collectable: 79
+	Food: 80
 */
 
 public class Tile
@@ -42,30 +52,35 @@ public class Tile
   // Spawn tiles.
   public static const SPAWN_GRAVE:int = 75; // Replaced with GRAVE_BEGIN...GRAVE_END tiles.
   public static const SPAWN_PLAYER:int = 76; // These tiles are drawn in the tilemap for reference...
-  public static const SPAWN_ENEMY:int = 77; // ...but should be invisible in the game.
+  public static const SPAWN_ENEMY1:int = 77; // ...but should be invisible in the game.
+  public static const SPAWN_ENEMY2:int = 78; // ...but should be invisible in the game.
+  public static const SPAWN_ENEMY3:int = 79; // ...but should be invisible in the game.
 
   // Unused.
-  public static const STOP_SIGN:int = 78; // unused.
-  public static const MONEY_BAG:int = 79; // unused.
+  public static const UNDIGGABLE:int = 80; // unused. (stop sign)
+  public static const SPAWN_ITEM:int = 81; // unused. (money bag)
+  public static const SPAWN_FOOD:int = 82; // unused. (the word food)
 
   // Deadly tiles again.
-  public static const SPIKE_BEGIN:int = 80;
-  public static const SPIKE_END:int = 81;
+  public static const SPIKE_BEGIN:int = 83;
+  public static const SPIKE_END:int = 84;
 
   // Rock tiles (undiggable).
-  public static const ROCK_BEGIN:int = 82;
-  public static const ROCK_END:int = 83;
+  public static const ROCK_BEGIN:int = 85;
+  public static const ROCK_END:int = 86;
 
   // Colletibles.
-  public static const ITEM_BEGIN:int = 84;
+  public static const ITEM_BEGIN:int = 87;
   public static const ITEM_END:int = 99;
 
   // Tiles where things can spawn (treated as empty).
   public static function isSpawn(i:int):Boolean
   {
     return (i == SPAWN_PLAYER || 
-	    i == SPAWN_ENEMY || 
-	    i == SPAWN_GRAVE);
+	    (SPAWN_ENEMY1 <= i && i <= SPAWN_ENEMY3) ||
+	    i == SPAWN_GRAVE ||
+	    i == SPAWN_ITEM ||
+	    i == SPAWN_FOOD);
   }
 
   public static function isGrave(i:int):Boolean
@@ -102,7 +117,7 @@ public class Tile
   // Tiles that are NOT diggable IF it's in tilemap.
   public static function isUndiggable(i:int):Boolean
   {
-    return (i == STOP_SIGN ||
+    return (i == UNDIGGABLE ||
 	    (DIRT_BEGIN <= i && i <= DIRT_END));
   }
 
