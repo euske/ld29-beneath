@@ -7,6 +7,7 @@ import flash.geom.Point;
 import flash.ui.Keyboard;
 import flash.media.Sound;
 import flash.utils.getTimer;
+import flash.events.Event;
 import baseui.Screen;
 import baseui.ScreenEvent;
 import baseui.SoundLoop;
@@ -20,18 +21,40 @@ public class GameScreen extends Screen
   // TileMap image:
   [Embed(source="../assets/levels/tilemap1.png", mimeType="image/png")]
   private static const Level1TilemapImageCls:Class;
+  [Embed(source="../assets/levels/tilemap2.png", mimeType="image/png")]
+  private static const Level2TilemapImageCls:Class;
+  [Embed(source="../assets/levels/tilemap3.png", mimeType="image/png")]
+  private static const Level3TilemapImageCls:Class;
 
   // DirtMap image:
   [Embed(source="../assets/levels/dirtmap1.png", mimeType="image/png")]
   private static const Level1DirtmapImageCls:Class;
+  [Embed(source="../assets/levels/dirtmap2.png", mimeType="image/png")]
+  private static const Level2DirtmapImageCls:Class;
+  [Embed(source="../assets/levels/dirtmap3.png", mimeType="image/png")]
+  private static const Level3DirtmapImageCls:Class;
 
   // Musics
   [Embed(source="../assets/music/Level1.mp3", mimeType="audio/mpeg")]
   private static const Level1MusicCls:Class;
+  [Embed(source="../assets/music/Level2.mp3", mimeType="audio/mpeg")]
+  private static const Level2MusicCls:Class;
+  [Embed(source="../assets/music/Level3.mp3", mimeType="audio/mpeg")]
+  private static const Level3MusicCls:Class;
+
+  // Winning music
+  [Embed(source="../assets/sounds/treasure_pickup.mp3", mimeType="audio/mpeg")]
+  private static const WinningMusicCls:Class;
+  private static const winningMusic:Sound = new WinningMusicCls();
+
+  private const win_duration:int = 60;
 
   private var _width:int;
   private var _height:int;
   private var _status:Status;
+  private var _splash:Splash;
+
+  private var LEVELS:Array;
 
   /// Game-related functions
 
@@ -39,10 +62,26 @@ public class GameScreen extends Screen
   private var _player:Player;
   private var _music:SoundLoop;
   private var _starttime:uint;
-  private var _phase:int;
+  private var _winning:int;
+  private var _clock:int;
 
   public function GameScreen(width:int, height:int)
   {
+    LEVELS = 
+      [ new LevelInfo("LEVEL 1\nINTRODUCTION",
+		      Level1TilemapImageCls,
+		      Level1DirtmapImageCls,
+		      Level1MusicCls),
+	new LevelInfo("LEVEL 2\nDERP",
+		      Level2TilemapImageCls,
+		      Level2DirtmapImageCls,
+		      Level2MusicCls),
+	new LevelInfo("LEVEL 3\nGOGGY!",
+		      Level3TilemapImageCls,
+		      Level3DirtmapImageCls,
+		      Level3MusicCls),
+	];
+
     _status = new Status();
     _width = width;
     _height = height;
@@ -51,9 +90,10 @@ public class GameScreen extends Screen
   // open()
   public override function open():void
   {
-    var tilemapImage:Bitmap = new Level1TilemapImageCls();
-    var dirtmapImage:Bitmap = new Level1DirtmapImageCls();
-    var music:Sound = new Level1MusicCls();
+    var info:LevelInfo = LEVELS[_status.level];
+    var tilemapImage:Bitmap = new info.tilemap;
+    var dirtmapImage:Bitmap = new info.dirtmap;
+    var music:Sound = new info.music;
 
     _scene = new Scene(20, 15, 16,
 		       tilemapImage.bitmapData, 
@@ -66,26 +106,31 @@ public class GameScreen extends Screen
     _player = _scene.player;
     _player.health = 3;
     _player.addEventListener(Player.HURT, onPlayerHurt);
-    _player.addEventListener(Player.SCORE, onPlayerScore);
+    _player.addEventListener(Player.COLLECT, onPlayerCollect);
 
     _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
-    _status.score = 0;
+    _status.goal = 1;
+    _status.collected = 0;
     _status.health = _player.health;
     _status.time = 0;
-    _starttime = getTimer();
+    _clock = 0;
 
     _music = new SoundLoop(music);
-    if (_music != null) {
-      _music.start();
-    }
+
+    // Create a splash screen.
+    _splash = new Splash(_width, _height);
+    _splash.title = info.name;
+    _splash.addEventListener(Splash.END, onSplashEnd);
 
     addChild(_scene);
     addChild(_status);
+    addChild(_splash);
   }
 
   // close()
   public override function close():void
   {
+    removeChild(_splash);
     removeChild(_scene);
     removeChild(_status);
 
@@ -114,19 +159,38 @@ public class GameScreen extends Screen
   // update()
   public override function update():void
   {
-    _status.time = (getTimer() - _starttime)/1000;
-    _status.update();
+    if (_splash.alive) {
+      _splash.update(_clock);
 
-    _scene.uncoverMap(_player.bounds, 32);
-    _scene.setCenter(_player.pos, 50, 50);
-    _scene.paint(_phase);
-    _scene.update(_phase);
-    _phase++;
+    } else if (0 < _winning) {
+      // In winning situation, only move the player animation.
+      _player.cheer(_clock);
+      _scene.paint(_clock);
+      _winning--;
+      if (_winning == 0) {
+	onNextLevel();
+      }
+    } else {
+      _status.time = (getTimer() - _starttime)/1000;
+      _status.update();
+      
+      _scene.uncoverMap(_player.bounds, 32);
+      _scene.setCenter(_player.pos, 50, 50);
+      _scene.paint(_clock);
+      _scene.update(_clock);
+    }
+
+    _clock++;
   }
 
   // keydown(keycode)
   public override function keydown(keycode:int):void
   {
+    if (_splash.alive) {
+      _splash.alive = false;
+      return;
+    }
+
     switch (keycode) {
     case Keyboard.LEFT:
     case 65:			// A
@@ -173,8 +237,11 @@ public class GameScreen extends Screen
       _player.jump();
       break;
 
-    case 77:
+    case 77:			// M
       _scene.toggleMask();
+      break;
+    case 78:			// N
+      onNextLevel();
       break;
     }
   }
@@ -208,6 +275,15 @@ public class GameScreen extends Screen
     }
   }
 
+  private function onSplashEnd(e:Event):void
+  {
+    _splash.visible = false;	
+    _starttime = getTimer();
+    if (_music != null) {
+      _music.start();
+    }
+  }
+
   private function onPlayerHurt(e:ActorEvent):void
   {
     _status.health = _player.health;
@@ -217,14 +293,35 @@ public class GameScreen extends Screen
     }
   }
 
-  private function onPlayerScore(e:ActorEvent):void
+  private function onPlayerCollect(e:ActorEvent):void
   {
-    _status.score++;
+    _status.collected++;
+    if (_status.goal <= _status.collected) {
+      // WIN
+      _winning = win_duration;
+      if (_music != null) {
+	_music.stop();
+      }
+      winningMusic.play();
+    }
+  }
+
+  private function onNextLevel():void
+  {
+    _status.level++;
+    if (LEVELS.length <= _status.level) {
+      // XXX ENDING
+      dispatchEvent(new ScreenEvent(MenuScreen));
+    } else {
+      close();
+      open();
+    }
   }
 }
 
 } // package
 
+import flash.events.Event;
 import flash.display.Sprite;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
@@ -232,9 +329,67 @@ import flash.geom.Rectangle;
 import flash.geom.Point;
 import baseui.Font;
 
+class LevelInfo extends Object
+{
+  public var name:String;
+  public var tilemap:Class;
+  public var dirtmap:Class;
+  public var music:Class;
+
+  public function LevelInfo(name:String, tilemap:Class, dirtmap:Class, music:Class)
+  {
+    this.name = name;
+    this.tilemap = tilemap;
+    this.dirtmap = dirtmap;
+    this.music = music;
+  }
+}
+
+class Splash extends Sprite
+{
+  public static const END:String = "Splash.END";
+
+  private var _alive:Boolean;
+
+  public function Splash(width:int, height:int)
+  {
+    graphics.beginFill(0);
+    graphics.drawRect(0, 0, width, height);
+    _alive = true;
+  }
+
+  public function set title(v:String):void
+  {
+    var text:Bitmap = Font.createText(v, 0xffffff, 16, 3);
+    text.x = (width-text.width)/2;
+    text.y = (height-text.height)/2;
+    addChild(text);
+  }
+
+  public function get alive():Boolean
+  {
+    return _alive;
+  }
+
+  public function set alive(v:Boolean):void
+  {
+    if (_alive && !v) {
+      dispatchEvent(new Event(END));
+    }
+    _alive = v;
+  }
+
+  public function update(clock:int):void
+  {
+    alive = (clock < 48);
+  }
+
+}
+
 class Status extends Sprite
 {
-  public var score:int;
+  public var level:int;
+  public var collected:int;
   public var goal:int;
   public var health:int;
   public var time:int;
@@ -255,8 +410,9 @@ class Status extends Sprite
   public function update():void
   {
     var text:String = ("HEALTH: "+Utils.format(health, 2)+
-		       "  GRAVE: "+Utils.format(score, 2)+"/"+Utils.format(goal, 2)+
+		       "  GRAVE: "+Utils.format(collected, 2)+"/"+Utils.format(goal, 2)+
 		       "  TIME: "+Utils.format(time, 3));
     Font.renderText(_text.bitmapData, text);
   }
 }
+

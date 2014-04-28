@@ -8,8 +8,8 @@ import flash.geom.Rectangle;
 //
 public class Player extends Actor
 {
-  public static const SCORE:String = "Player.SCORE";
   public static const HURT:String = "Player.HURT";
+  public static const COLLECT:String = "Player.COLLECT";
 
   public var health:int;
 
@@ -266,7 +266,7 @@ public class Player extends Actor
       scene.tilemap.setRawTileByPoint(pos, Tile.GRAVE_TRACE);
       _dig_slowness = dig_duration;
       digGraveSound.play();
-      dispatchEvent(new ActorEvent(SCORE));
+      dispatchEvent(new ActorEvent(COLLECT));
       return true;
     }
     return false;
@@ -290,6 +290,12 @@ public class Player extends Actor
 	scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingAlways)) {
       unbreakableSound.play();
     }
+  }
+
+  // cheer(): cheering dance.
+  public function cheer(phase:int):void
+  {
+    skinId = Skin.playerCheering(phase);
   }
 
   // hurt()

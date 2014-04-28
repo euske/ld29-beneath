@@ -16,6 +16,7 @@ public class Skin
   public static const PLAYER_HURTING:int = 26;
 
   public static const PLAYER_CHEERING:int = 28;
+  public static const PLAYER_CHEERING_PHASES:int = 4;
 
   public static const MOLE_RUNNING:int = 36;
   public static const MOLE_RUNNING_PHASES:int = 3;
@@ -44,6 +45,12 @@ public class Skin
   public static function playerHurting(phase:int):int
   {
     return PLAYER_HURTING;
+  }
+
+  public static function playerCheering(phase:int):int
+  {
+    phase = phase % PLAYER_CHEERING_PHASES;
+    return PLAYER_CHEERING + phase*2;
   }
 
   public static function moleRunning(phase:int):int
