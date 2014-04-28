@@ -412,6 +412,7 @@ public class Scene extends Sprite
 	switch (i) {
 	case Tile.SPAWN_PLAYER:
 	  _player.pos = p;
+	  trace("player: at ("+x+","+y+")");
 	  break;
 
 	case Tile.SPAWN_GRAVE:

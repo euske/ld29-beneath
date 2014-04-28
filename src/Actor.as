@@ -75,8 +75,10 @@ public class Actor extends EventDispatcher
   // bounds: the character hitbox (in the world)
   public virtual function get bounds():Rectangle
   {
-    return new Rectangle(pos.x-_scene.tilesize/2, pos.y+_scene.tilesize/2,
-			 _scene.tilesize, _scene.tilesize);
+    return new Rectangle(pos.x-_scene.tilesize/2, 
+			 pos.y-_scene.tilesize/2,
+			 _scene.tilesize, 
+			 _scene.tilesize);
   }
 
   // move(dx, dy)

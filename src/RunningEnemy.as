@@ -19,10 +19,10 @@ public class RunningEnemy extends Actor
 
   public override function isMovable(dx:int, dy:int):Boolean
   {
-    var r:Rectangle = getMovedBounds(dx, dy);
     return (super.isMovable(dx, dy) &&
 	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingNormally) &&
-	    scene.tilemap.hasCollisionByRect(r, 0, 1, Tile.isBlockingOnTop));
+	    scene.tilemap.hasCollisionByRect(getMovedBounds(dx, dy),
+					     0, 1, Tile.isBlockingOnTop));
   }
 
   public override function update(phase:int):void

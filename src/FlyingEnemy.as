@@ -3,7 +3,7 @@ package {
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-//  FlyingEnemy (Maybe ClimingEnemy)
+//  FlyingEnemy (Maybe ClimbingEnemy)
 // 
 public class FlyingEnemy extends Actor
 {

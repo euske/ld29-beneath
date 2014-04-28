@@ -18,6 +18,7 @@ public class StickingEnemy extends Actor
     super(scene);
     _vx = vx;
     _vy = vy;
+    skinId = Skin.ROBOCAKE;
   }
 
   public override function isMovable(dx:int, dy:int):Boolean

@@ -19,6 +19,8 @@ public class GameScreen extends Screen
   public static const GAMEOVER:String = "GameScreen.GAMEOVER";
 
   // TileMap image:
+  [Embed(source="../assets/levels/tilemap0.png", mimeType="image/png")]
+  private static const Level0TilemapImageCls:Class;
   [Embed(source="../assets/levels/tilemap1.png", mimeType="image/png")]
   private static const Level1TilemapImageCls:Class;
   [Embed(source="../assets/levels/tilemap2.png", mimeType="image/png")]
@@ -27,6 +29,8 @@ public class GameScreen extends Screen
   private static const Level3TilemapImageCls:Class;
 
   // DirtMap image:
+  [Embed(source="../assets/levels/dirtmap0.png", mimeType="image/png")]
+  private static const Level0DirtmapImageCls:Class;
   [Embed(source="../assets/levels/dirtmap1.png", mimeType="image/png")]
   private static const Level1DirtmapImageCls:Class;
   [Embed(source="../assets/levels/dirtmap2.png", mimeType="image/png")]
@@ -60,7 +64,7 @@ public class GameScreen extends Screen
 
   private var _scene:Scene;
   private var _player:Player;
-  private var _music:SoundLoop;
+  private var _musicloop:SoundLoop;
   private var _starttime:uint;
   private var _winning:int;
   private var _clock:int;
@@ -68,7 +72,11 @@ public class GameScreen extends Screen
   public function GameScreen(width:int, height:int)
   {
     LEVELS = 
-      [ new LevelInfo("LEVEL 1\nINTRODUCTION",
+      [ new LevelInfo("TEST\nTEST",
+		      Level0TilemapImageCls,
+		      Level0DirtmapImageCls,
+		      null),
+	new LevelInfo("LEVEL 1\nINTRODUCTION",
 		      Level1TilemapImageCls,
 		      Level1DirtmapImageCls,
 		      Level1MusicCls),
@@ -83,6 +91,7 @@ public class GameScreen extends Screen
 	];
 
     _status = new Status();
+    _status.level = 0;		// initial level (should be 1).
     _width = width;
     _height = height;
   }
@@ -93,7 +102,7 @@ public class GameScreen extends Screen
     var info:LevelInfo = LEVELS[_status.level];
     var tilemapImage:Bitmap = new info.tilemap;
     var dirtmapImage:Bitmap = new info.dirtmap;
-    var music:Sound = new info.music;
+    var music:Sound = (info.music == null)? null : new info.music;
 
     _scene = new Scene(20, 15, 16,
 		       tilemapImage.bitmapData, 
@@ -109,13 +118,14 @@ public class GameScreen extends Screen
     _player.addEventListener(Player.COLLECT, onPlayerCollect);
 
     _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
-    _status.goal = 1;
     _status.collected = 0;
     _status.health = _player.health;
     _status.time = 0;
     _clock = 0;
 
-    _music = new SoundLoop(music);
+    if (music != null) {
+      _musicloop = new SoundLoop(music);
+    }
 
     // Create a splash screen.
     _splash = new Splash(_width, _height);
@@ -134,8 +144,8 @@ public class GameScreen extends Screen
     removeChild(_scene);
     removeChild(_status);
 
-    if (_music != null) {
-      _music.stop();
+    if (_musicloop != null) {
+      _musicloop.stop();
     }
     _scene.close();
   }
@@ -143,16 +153,16 @@ public class GameScreen extends Screen
   // pause()
   public override function pause():void
   {
-    if (_music != null) {
-      _music.pause();
+    if (_musicloop != null) {
+      _musicloop.pause();
     }
   }
 
   // resume()
   public override function resume():void
   {
-    if (_music != null) {
-      _music.resume();
+    if (_musicloop != null) {
+      _musicloop.resume();
     }
   }
 
@@ -279,8 +289,8 @@ public class GameScreen extends Screen
   {
     _splash.visible = false;	
     _starttime = getTimer();
-    if (_music != null) {
-      _music.start();
+    if (_musicloop != null) {
+      _musicloop.start();
     }
   }
 
@@ -299,8 +309,8 @@ public class GameScreen extends Screen
     if (_status.goal <= _status.collected) {
       // WIN
       _winning = win_duration;
-      if (_music != null) {
-	_music.stop();
+      if (_musicloop != null) {
+	_musicloop.stop();
       }
       winningMusic.play();
     }
