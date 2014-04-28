@@ -11,7 +11,7 @@ Notable Numbers:
 	Spikes: 83 & 84 (floor & ceiling)
 	Undiggable rocks: 85 & 86
 	Collectable bones: 87 to 93
-	Decorations: 94 to 106
+	Decorations: 94 to 105
 */
 /*
 Spawn Tiles:
@@ -78,7 +78,10 @@ public class Tile
   
   // Decorations.
   public static const DECO_BEGIN:int = 94;
-  public static const DECO_END:int = 106;
+  public static const DECO_END:int = 105;
+  
+  // Easter Egg sound cue
+  public static const EASTER_EGG:int = 106;
 
   // Tiles where things can spawn (treated as empty).
   public static function isSpawn(i:int):Boolean
@@ -145,7 +148,8 @@ public class Tile
 	    isSpawn(i) || 
 	    isCollectible(i) ||
 	    isDeadly(i) ||
-	    (DECO_BEGIN <= i && i <= DECO_END));
+	    (DECO_BEGIN <= i && i <= DECO_END) ||
+		i == EASTER_EGG);
   }
   public static function isBlockingAlways(i:int):Boolean
   {

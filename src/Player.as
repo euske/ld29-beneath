@@ -22,7 +22,7 @@ public class Player extends Actor
   public const speed_walking:int = 4;
   public const speed_digging:int = 1;
   public const gravity:int = 1;
-  public const jumpdur_long:int = 4;
+  public const jumpdur_long:int = 3;
   public const jumpacc_long:int = -10;
   public const jumpacc_short:int = -6;
   public const maxspeed_normal:int = +10;

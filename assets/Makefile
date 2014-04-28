@@ -13,6 +13,7 @@ CATIMAGE=$(PYTHON) ../tools/catimage.py
 ASSETS=levels/tilemap1.png \
 	levels/dirtmap1.png \
 	skinset.png \
+	sounds/beep.mp3 \
 	sounds/dig.mp3 \
 	sounds/jump.mp3 \
 	sounds/hurt.mp3 \
@@ -39,6 +40,7 @@ skinset.png: characters/necrobot_*.png
 		characters/robocake_blink.png \
 		characters/spinbat.png
 
+sounds/beep.mp3: sounds/beep.wav
 sounds/dig.mp3: sounds/dig.wav
 sounds/jump.mp3: sounds/jump.wav
 sounds/hurt.mp3: sounds/hurt.wav

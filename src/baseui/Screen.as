@@ -6,6 +6,8 @@ import flash.display.Sprite;
 //
 public class Screen extends Sprite
 {
+  public var sharedInfo:Object;
+
   // open()
   public virtual function open():void
   {

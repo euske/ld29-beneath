@@ -87,7 +87,7 @@ public class GameScreen extends Screen
 		      Level1TilemapImageCls,
 		      Level1DirtmapImageCls,
 		      Level1MusicCls),
-	new LevelInfo("LEVEL 2\nGRAVEYARD? MORE LIKE CAVEYARD!",
+	new LevelInfo("LEVEL 2\nGRAVEYARD?\n MORE LIKE CAVEYARD!",
 		      Level2TilemapImageCls,
 		      Level2DirtmapImageCls,
 		      Level2MusicCls),
@@ -100,13 +100,13 @@ public class GameScreen extends Screen
     _width = width;
     _height = height;
     _status = new Status(_width, _height);
-    _status.level = 1;		// initial level (should be 1).
   }
 
   // open()
   public override function open():void
   {
-    var info:LevelInfo = LEVELS[_status.level];
+    var level:int = sharedInfo.level+1;
+    var info:LevelInfo = LEVELS[level];
     var tilemapImage:Bitmap = new info.tilemap;
     var dirtmapImage:Bitmap = new info.dirtmap;
     var music:Sound = (info.music == null)? null : new info.music;
@@ -125,6 +125,7 @@ public class GameScreen extends Screen
     _player.addEventListener(Player.COLLECT, onPlayerCollect);
     _player.addEventListener(Player.SCORE, onPlayerScore);
 
+    _status.level = level;
     _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
     _status.collected = 0;
     _status.bones = 0;

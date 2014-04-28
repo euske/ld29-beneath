@@ -85,15 +85,18 @@ public class Main extends Sprite
   // setScreen(screen)
   private function setScreen(screen:Screen):void
   {
+    var info:Object = null;
     if (_screen != null) {
       log("close: "+_screen);
       _screen.close();
       _screen.removeEventListener(ScreenEvent.CHANGED, onScreenChanged);
+      info = _screen.sharedInfo;
       removeChild(_screen);
     }
     _screen = screen;
     if (_screen != null) {
       log("open: "+_screen);
+      _screen.sharedInfo = info;
       _screen.open();
       _screen.addEventListener(ScreenEvent.CHANGED, onScreenChanged);
       addChild(_screen);

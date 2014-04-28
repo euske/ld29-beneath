@@ -323,6 +323,14 @@ public class Scene extends Sprite
 	  src.height = _tilesize/4;
 	  _fluidimage.bitmapData.copyPixels(_tileset, src, dst);
 	}
+	// partial fluid (down).
+	i = Tile.getFluid(_tilemap.getRawTile(x, y + 1), phase);
+	if (0 <= i && i == 54) {
+		src = getTileSrcRect(i);
+		src.top += 3*_tilesize/4;
+		src.height = tilesize/4;
+		_fluidimage.bitmapData.copyPixels(_tileset, src, dst);
+	}
       }
     }
   }
