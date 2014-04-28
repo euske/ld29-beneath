@@ -1,6 +1,5 @@
 package {
 
-import flash.display.Shape;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.geom.Rectangle;
@@ -8,7 +7,6 @@ import flash.geom.Point;
 import flash.ui.Keyboard;
 import flash.media.Sound;
 import flash.utils.getTimer;
-import baseui.Font;
 import baseui.Screen;
 import baseui.ScreenEvent;
 import baseui.SoundLoop;
@@ -20,11 +18,11 @@ public class GameScreen extends Screen
   public static const GAMEOVER:String = "GameScreen.GAMEOVER";
 
   // TileMap image:
-  [Embed(source="../assets/levels/tilemap.png", mimeType="image/png")]
+  [Embed(source="../assets/levels/tilemap1.png", mimeType="image/png")]
   private static const Level1TilemapImageCls:Class;
 
   // DirtMap image:
-  [Embed(source="../assets/levels/dirtmap.png", mimeType="image/png")]
+  [Embed(source="../assets/levels/dirtmap1.png", mimeType="image/png")]
   private static const Level1DirtmapImageCls:Class;
 
   // Musics
@@ -33,7 +31,7 @@ public class GameScreen extends Screen
 
   private var _width:int;
   private var _height:int;
-  private var _status:Bitmap;
+  private var _status:Status;
 
   /// Game-related functions
 
@@ -41,10 +39,11 @@ public class GameScreen extends Screen
   private var _player:Player;
   private var _music:SoundLoop;
   private var _phase:int;
+  private var _starttime:uint;
 
   public function GameScreen(width:int, height:int)
   {
-    _status = Font.createText("HEALTH: 00", 0xffffff, 0, 2);
+    _status = new Status();
     _width = width;
     _height = height;
   }
@@ -66,7 +65,14 @@ public class GameScreen extends Screen
 
     _player = _scene.player;
     _player.health = 3;
-    _player.addEventListener(Actor.DIE, onPlayerDead);
+    _player.addEventListener(Player.HURT, onPlayerHurt);
+    _player.addEventListener(Player.SCORE, onPlayerScore);
+
+    _status.collectibles = _scene.collectibles;
+    _status.score = 0;
+    _status.health = _player.health;
+    _status.time = 0;
+    _starttime = getTimer();
 
     _music = new SoundLoop(music);
     if (_music != null) {
@@ -108,8 +114,8 @@ public class GameScreen extends Screen
   // update()
   public override function update():void
   {
-    var text:String = ("HEALTH:"+Utils.format(_player.health));
-    Font.renderText(_status.bitmapData, text);
+    _status.time = (getTimer() - _starttime)/1000;
+    _status.update();
 
     _scene.update();
     _scene.uncoverMap(_player.bounds, 32);
@@ -190,10 +196,55 @@ public class GameScreen extends Screen
     }
   }
 
-  private function onPlayerDead(e:ActorEvent):void
+  private function onPlayerHurt(e:ActorEvent):void
   {
-    dispatchEvent(new ScreenEvent(MenuScreen));
+    _status.health = _player.health;
+    if (_player.health == 0) {
+      // DEAD
+      dispatchEvent(new ScreenEvent(MenuScreen));
+    }
+  }
+
+  private function onPlayerScore(e:ActorEvent):void
+  {
+    _status.score++;
   }
 }
 
 } // package
+
+import flash.display.Sprite;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.geom.Rectangle;
+import flash.geom.Point;
+import baseui.Font;
+
+class Status extends Sprite
+{
+  public var score:int;
+  public var collectibles:int;
+  public var health:int;
+  public var time:int;
+
+  private var _text:Bitmap;
+
+  // Symbols image:
+  [Embed(source="../assets/hud/symbols.png", mimeType="image/png")]
+  private static const SymbolsImageCls:Class;
+  private static const symbolsImage:Bitmap = new SymbolsImageCls();
+
+  public function Status()
+  {
+    _text = Font.createText("HEALTH: XX  SCORE: XX/XX  TIME: XXX", 0xffffff, 0, 2);
+    addChild(_text)
+  }
+
+  public function update():void
+  {
+    var text:String = ("HEALTH: "+Utils.format(health, 2)+
+		       "  SCORE: "+Utils.format(score, 2)+"/"+Utils.format(collectibles, 2)+
+		       "  TIME: "+Utils.format(time, 3));
+    Font.renderText(_text.bitmapData, text);
+  }
+}

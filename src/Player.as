@@ -8,6 +8,9 @@ import flash.geom.Rectangle;
 //
 public class Player extends Actor
 {
+  public static const SCORE:String = "Player.SCORE";
+  public static const HURT:String = "Player.HURT";
+
   public var health:int;
 
   // the way the player wants to move.
@@ -90,18 +93,6 @@ public class Player extends Actor
       _jumping = true;
       _grabbing = false;
       jumpSound.play();
-    }
-  }
-
-  // collide(actor)
-  public override function collide(actor:Actor):void
-  {
-    //trace("collide: "+actor);
-    if (actor is RunningEnemy) {
-      hurt();
-    } else if (actor is Grave) {
-      (actor as Grave).collect();
-      collectSound.play();
     }
   }
 
@@ -221,18 +212,38 @@ public class Player extends Actor
     }
   }
 
+  // collide(actor)
+  public override function collide(actor:Actor):void
+  {
+    //trace("collide: "+actor);
+    if (actor is RunningEnemy ||
+	actor is FlyingEnemy ||
+	actor is StickingEnemy) {
+      hurt();
+    } else if (actor is Grave) {
+      collect(actor as Grave);
+    }
+  }
+
+  // collect(grave)
+  private function collect(grave:Grave):void
+  {
+    grave.collect();
+    collectSound.play();
+
+    dispatchEvent(new ActorEvent(SCORE));
+  }
+
   // hurt()
   private function hurt():void
   {
     if (0 < _invincible) return;
-    hurtSound.play();
 
-    if (health == 0) {
-      dispatchEvent(new ActorEvent(DIE));
-    } else {
-      health--;
-      _invincible = inv_duration;
-    }
+    hurtSound.play();
+    health--;
+    _invincible = inv_duration;
+
+    dispatchEvent(new ActorEvent(HURT));
   }
 }
 

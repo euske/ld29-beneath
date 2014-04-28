@@ -123,6 +123,12 @@ public class Scene extends Sprite
     return _player;
   }
 
+  // collectibles
+  public function get collectibles():int
+  {
+    return _collectibles;
+  }
+
   // tilemap
   public function get tilemap():TileMap
   {

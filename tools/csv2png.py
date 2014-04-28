@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+# CSV->PNG conversion tool.
+#   usage: python csv2png.py output.png input.csv
+#
+#   WARNING: output.png is overwritten without notice!
+
 import sys
 import csv
 import pygame

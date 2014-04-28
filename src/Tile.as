@@ -7,19 +7,20 @@ import flash.geom.Rectangle;
 Notable Numbers:
 	Random gravestone sprites: 66 to 73
 	Lava animation: 55 to 60
-	Spikes: 81 & 82 (floor & ceiling)
-	Undiggable rocks: 82 & 83
-	Collectable bones: 84 (+more later)
-	Decorations: NOT YET
+	Rain animation: 107 to 110 (works very similar to lava, but decorative only)
+	Spikes: 83 & 84 (floor & ceiling)
+	Undiggable rocks: 85 & 86
+	Collectable bones: 87 to 95 (most are blank right now)
+	Decorations: 96 to 106
 */
 /*
 Spawn Tiles:
 	Gravestone: 75
 	Player: 76
-	Enemy: 77
-	Undiggable: 78
-	Collectable: 79
-	Food: 80
+	Enemies: 77 to 79
+	Undiggable: 80
+	Collectable: 81
+	Food: 82
 */
 
 public class Tile
@@ -71,7 +72,7 @@ public class Tile
 
   // Colletibles.
   public static const ITEM_BEGIN:int = 87;
-  public static const ITEM_END:int = 99;
+  public static const ITEM_END:int = 95;
 
   // Tiles where things can spawn (treated as empty).
   public static function isSpawn(i:int):Boolean

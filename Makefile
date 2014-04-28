@@ -35,7 +35,7 @@ get_f:
 PYTHON=python
 LAME=lame
 CSV2PNG=$(PYTHON) tools/csv2png.py
-MKSKIN=$(PYTHON) tools/mkskin.py
+CATIMAGE=$(PYTHON) tools/catimage.py
 
 .SUFFIXES: .png .csv .wav .mp3
 
@@ -45,21 +45,24 @@ MKSKIN=$(PYTHON) tools/mkskin.py
 .wav.mp3:
 	$(LAME) $< $@
 
-assets: assets/levels/tilemap.png \
-	assets/levels/dirtmap.png \
+assets: assets/levels/tilemap1.png \
+	assets/levels/dirtmap1.png \
 	assets/skinset.png \
 	assets/sounds/dig.mp3 \
 	assets/sounds/jump.mp3 \
 	assets/sounds/hurt.mp3 \
 	assets/sounds/collect.mp3 \
 	assets/sounds/bombtick.mp3 \
-	assets/sounds/explosion.mp3
+	assets/sounds/explosion.mp3 \
+	assets/sounds/unbreakable.mp3
 
-assets/levels/tilemap.png: assets/levels/tilemap.csv
-assets/levels/dirtmap.png: assets/levels/dirtmap.csv
+assets/levels/tilemap1.png: assets/levels/mapCSV_Group1_tilemap1.csv
+	$(CSV2PNG) $< $@
+assets/levels/dirtmap1.png: assets/levels/mapCSV_Group1_dirtmap1.csv
+	$(CSV2PNG) $< $@
 
 assets/skinset.png: assets/characters/necrobot_*.png
-	$(MKSKIN) $@ assets/characters/necrobot_front.png \
+	$(CATIMAGE) -p -o $@ assets/characters/necrobot_front.png \
 		assets/characters/necrobot_nodig.png \
 		assets/characters/necrobot_walk.png \
 		assets/characters/necrobot_ladder.png \
@@ -73,3 +76,4 @@ assets/sounds/hurt.mp3: assets/sounds/hurt.wav
 assets/sounds/collect.mp3: assets/sounds/collect.wav
 assets/sounds/bombtick.mp3: assets/sounds/bombtick.wav
 assets/sounds/explosion.mp3: assets/sounds/explosion.wav
+assets/sounds/unbreakable.mp3: assets/sounds/unbreakable.wav
