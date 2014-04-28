@@ -70,6 +70,7 @@ public class Player extends Actor
     vx = 0;
     vy = 0;
     skinId = Skin.PLAYER_FRONT;
+
   }
 
   // canGrabLadder()
@@ -88,6 +89,12 @@ public class Player extends Actor
   public function isLanded():Boolean
   {
     return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isBlockingOnTop);
+  }
+
+  // bounds: the character hitbox (in the world)
+  public override function get bounds():Rectangle
+  {
+    return new Rectangle(pos.x-6, pos.y-4, 12, 12);
   }
 
   // digging

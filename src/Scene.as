@@ -199,8 +199,8 @@ public class Scene extends Sprite
     // Render each actor.
     for each (var actor:Actor in _actors) {
       var p:Point = translatePoint(actor.pos);
-      actor.skin.x = p.x+actor.frame.x;
-      actor.skin.y = p.y+actor.frame.y;
+      actor.skin.x = p.x+actor.skinBounds.x;
+      actor.skin.y = p.y+actor.skinBounds.y;
     }
 
     // Refresh the map if needed.

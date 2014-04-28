@@ -13,10 +13,8 @@ public class Actor extends EventDispatcher
   // Event types.
   public static const DIE:String = "Actor.DIE";
 
-  // Topleft position.
+  // Character position.
   public var pos:Point;
-  // Character boundary (relative to pos).
-  public var frame:Rectangle;
 
   private var _skin:Bitmap;
   private var _active:Boolean;
@@ -35,7 +33,6 @@ public class Actor extends EventDispatcher
     _skin = new Bitmap(new BitmapData(scene.tilesize, scene.tilesize));
     _skin.visible = false;
     pos = new Point(0, 0);
-    frame = new Rectangle(-scene.tilesize/2, -scene.tilesize/2, scene.tilesize, scene.tilesize);
   }
 
   // active: true if the actor is already uncovered on a map.
@@ -62,22 +59,24 @@ public class Actor extends EventDispatcher
     _skin.bitmapData.copyPixels(skinsetImage.bitmapData, src, new Point());
   }
 
+  // skinBounds: Character boundary (relative to pos).
+  public function get skinBounds():Rectangle
+  {
+    return new Rectangle(-_scene.tilesize/2, -_scene.tilesize/2, 
+			 scene.tilesize, scene.tilesize);
+  }
+
   // scene: the container object.
   public function get scene():Scene
   {
     return _scene;
   }
 
-  // bounds: the character boundary (in the world)
-  public function get bounds():Rectangle
+  // bounds: the character hitbox (in the world)
+  public virtual function get bounds():Rectangle
   {
-    return new Rectangle(pos.x+frame.x, pos.y+frame.y, 
-			 frame.width, frame.height);
-  }
-  public function set bounds(value:Rectangle):void
-  {
-    frame = new Rectangle(value.x-pos.x, value.y-pos.y,
-			  value.width, value.height);
+    return new Rectangle(pos.x-_scene.tilesize/2, pos.y+_scene.tilesize/2,
+			 _scene.tilesize, _scene.tilesize);
   }
 
   // move(dx, dy)
