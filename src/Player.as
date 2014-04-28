@@ -43,6 +43,11 @@ public class Player extends Actor
   private static const DigSoundClass:Class;
   private static const digSound:Sound = new DigSoundClass();
 
+  // DigGrave sound
+  [Embed(source="../assets/sounds/diggrave.mp3", mimeType="audio/mpeg")]
+  private static const DigGraveSoundClass:Class;
+  private static const digGraveSound:Sound = new DigGraveSoundClass();
+
   // Unbreakable
   [Embed(source="../assets/sounds/unbreakable.mp3", mimeType="audio/mpeg")]
   private static const UnbreakableSoundClass:Class;
@@ -181,11 +186,17 @@ public class Player extends Actor
     _vg = (_grabbing)? 0 : dy;
     move(dx, dy);
 
+    // Hurt if touching something bad.
     if (hasDeadly()) {
-      // Touching something bad.
       hurt();
     }
 
+    // Auto-collect thigns.
+    if (scene.tilemap.isRawTileByPoint(pos, Tile.isCollectible)) {
+      eat();
+    }
+
+    // Dig stuff.
     var r:Rectangle = bounds.clone();
     r.inflate(inset_dig, inset_dig);
     if (0 < scene.tilemap.digTileByRect(r)) {
@@ -233,11 +244,19 @@ public class Player extends Actor
   {
     if (scene.tilemap.isRawTileByPoint(pos, Tile.isGrave)) {
       scene.tilemap.setRawTileByPoint(pos, Tile.GRAVE_TRACE);
-      collectSound.play();
+      digGraveSound.play();
       dispatchEvent(new ActorEvent(SCORE));
       return true;
     }
     return false;
+  }
+
+  // eat(): just ate something
+  public function eat():void
+  {
+    scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
+    collectSound.play();       // XXX
+    //dispatchEvent(new ActorEvent(SCORE));
   }
 
   // hurt()

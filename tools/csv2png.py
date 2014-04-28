@@ -16,6 +16,11 @@ GRAVE_BEGIN = 66
 GRAVE_END = 73
 GRAVE_TRACE = 74
 
+# SPAWN_ITEM should be replaced with random items.
+SPAWN_ITEM = 81
+ITEM_BEGIN = 87
+ITEM_END = 90
+
 # UNDIGGABLE should be replaced with rocks.
 UNDIGGABLE = 80
 DIRT_BEGIN = 2
@@ -74,6 +79,8 @@ def main(argv):
                     tv = random.randrange(ROCK_BEGIN, ROCK_END+1)
                 elif tv == SPAWN_GRAVE:
                     tv = random.randrange(GRAVE_BEGIN, GRAVE_END+1)
+                elif tv == SPAWN_ITEM:
+                    tv = random.randrange(ITEM_BEGIN, ITEM_END+1)
                 i = tv
             elif mode == 'D':
                 # convert dirts

@@ -51,7 +51,8 @@ public class Tile
   public static const GRAVE_TRACE:int = 74;
 
   // Spawn tiles.
-  public static const SPAWN_GRAVE:int = 75; // Replaced with GRAVE_BEGIN...GRAVE_END tiles.
+  public static const SPAWN_GRAVE:int = 75; // unused.
+
   public static const SPAWN_PLAYER:int = 76; // These tiles are drawn in the tilemap for reference...
   public static const SPAWN_ENEMY1:int = 77; // ...but should be invisible in the game.
   public static const SPAWN_ENEMY2:int = 78; // ...but should be invisible in the game.
@@ -95,8 +96,7 @@ public class Tile
 
   public static function isCollectible(i:int):Boolean
   {
-    return (i == GRAVE_TRACE ||
-	    (ITEM_BEGIN <= i && i <= ITEM_END));
+    return (ITEM_BEGIN <= i && i <= ITEM_END);
   }
 
   // Deadly tiles (e.g. lava).

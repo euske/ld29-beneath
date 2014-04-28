@@ -19,7 +19,8 @@ ASSETS=levels/tilemap1.png \
 	sounds/collect.mp3 \
 	sounds/bombtick.mp3 \
 	sounds/explosion.mp3 \
-	sounds/unbreakable.mp3
+	sounds/unbreakable.mp3 \
+	sounds/diggrave.mp3
 
 all: $(ASSETS)
 
@@ -27,9 +28,9 @@ clean:
 	-$(RM) $(ASSETS)
 
 levels/tilemap1.png: levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
-	$(CSV2PNG) -T -o $@ $?
+	$(CSV2PNG) -T -o $@ levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
 levels/dirtmap1.png: levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
-	$(CSV2PNG) -D -o $@ $?
+	$(CSV2PNG) -D -o $@ levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
 
 skinset.png: characters/necrobot_*.png
 	$(CATIMAGE) -p -o $@ characters/necrobot_front.png \
@@ -47,3 +48,4 @@ sounds/collect.mp3: sounds/collect.wav
 sounds/bombtick.mp3: sounds/bombtick.wav
 sounds/explosion.mp3: sounds/explosion.wav
 sounds/unbreakable.mp3: sounds/unbreakable.wav
+sounds/diggrave.mp3: sounds/diggrave.wav
