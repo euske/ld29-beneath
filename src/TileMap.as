@@ -77,8 +77,8 @@ public class TileMap
     return _bitmap.getPixel(x, y);
   }
 
-  // getDirt(x, y)
-  public function getDirt(x:int, y:int):int
+  // getDirtTile(x, y)
+  public function getDirtTile(x:int, y:int):int
   {
     if (x < 0 || _dirtmap.width <= x || 
 	y < 0 || _dirtmap.height <= y) {
@@ -87,20 +87,10 @@ public class TileMap
     return _dirtmap.getPixel(x, y);
   }
 
-  // setDirt(x, y)
-  public function setDirt(x:int, y:int, i:int):void
-  {
-    if (x < 0 || _dirtmap.width <= x || 
-	y < 0 || _dirtmap.height <= y) {
-      return;
-    }
-    _dirtmap.setPixel(x, y, i);
-  }
-
   // digTile(x, y): set the tile value of pixel at (x,y).
   public function digTile(x:int, y:int):Boolean
   {
-    var i:int = getDirt(x, y);
+    var i:int = getDirtTile(x, y);
     if (!Tile.isDiggable(i)) return false;
     _dirtmap.setPixel(x, y, 0);
     changed = true;
@@ -127,7 +117,7 @@ public class TileMap
   {
     var i:int = getRawTile(x, y);
     if (Tile.isUndiggable(i)) return Tile.UNDIGGABLE;
-    var j:int = getDirt(x, y);
+    var j:int = getDirtTile(x, y);
     return (j != 0)? j : i;
   }
 

@@ -43,6 +43,11 @@ public class Player extends Actor
   private static const DigSoundClass:Class;
   private static const digSound:Sound = new DigSoundClass();
 
+  // Unbreakable
+  [Embed(source="../assets/sounds/unbreakable.mp3", mimeType="audio/mpeg")]
+  private static const UnbreakableSoundClass:Class;
+  private static const unbreakableSound:Sound = new UnbreakableSoundClass();
+
   // Collect sound
   [Embed(source="../assets/sounds/collect.mp3", mimeType="audio/mpeg")]
   private static const CollectSoundClass:Class;

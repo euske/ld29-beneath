@@ -82,7 +82,7 @@ public class Scene extends Sprite
     addChild(_tileimage);
     addChild(_actorlayer);
     addChild(_dirtimage);
-    addChild(_maskimage);
+    //addChild(_maskimage);
   }
 
   // open()
@@ -99,7 +99,7 @@ public class Scene extends Sprite
     _player = new Player(this);
     _player.activate();
     add(_player);
-    _collectibles = 0;
+
     placeActors();
   }
 
@@ -256,10 +256,12 @@ public class Scene extends Sprite
 	var x:int = r.x+dx;
 	var dst:Point = new Point(dx*_tilesize, dy*_tilesize);
 	var i:int = _tilemap.getRawTile(x, y);
+	// render the normal tile layer.
 	if (0 <= i && Tile.getFluid(i, -1) < 0) {
 	  _tileimage.bitmapData.copyPixels(_tileset, getTileSrcRect(i), dst);
 	}
-	i = _tilemap.getDirt(x, y);
+	// render the dirt layer.
+	i = _tilemap.getDirtTile(x, y);
 	if (0 <= i) {
 	  _dirtimage.bitmapData.copyPixels(_tileset, getTileSrcRect(i), dst);
 	}
@@ -390,6 +392,7 @@ public class Scene extends Sprite
   // placeActors()
   private function placeActors():void
   {
+    _collectibles = 0;
     for (var y:int = 0; y < _tilemap.height; y++) {
       for (var x:int = 0; x < _tilemap.width; x++) {
 	var i:int = _tilemap.getRawTile(x, y);

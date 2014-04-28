@@ -73,6 +73,10 @@ public class Tile
   // Colletibles.
   public static const ITEM_BEGIN:int = 87;
   public static const ITEM_END:int = 95;
+  
+  // Decorations.
+  public static const DECO_BEGIN:int = 96;
+  public static const DECO_END:int = 106;
 
   // Tiles where things can spawn (treated as empty).
   public static function isSpawn(i:int):Boolean
@@ -138,7 +142,8 @@ public class Tile
 	    isGrave(i) ||
 	    isSpawn(i) || 
 	    isCollectible(i) ||
-	    isDeadly(i));
+	    isDeadly(i) ||
+		(DECO_BEGIN <= i && i <= DECO_END));
   }
   public static function isBlockingAlways(i:int):Boolean
   {

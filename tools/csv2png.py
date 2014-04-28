@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # CSV->PNG conversion tool.
-#   usage: python csv2png.py output.png input.csv
+#   usage: python csv2png.py input.csv output.png
 #
 #   WARNING: output.png is overwritten without notice!
 
