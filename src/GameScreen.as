@@ -253,7 +253,7 @@ public class GameScreen extends Screen
     case Keyboard.ENTER:
     case 88:			// X
     case 90:			// Z
-      _player.jump();
+      _player.jumping = true;
       break;
 
     case 77:			// M
@@ -285,6 +285,13 @@ public class GameScreen extends Screen
     case 83:			// S
     case 74:			// J
       _player.vy = 0;
+      break;
+
+    case Keyboard.SPACE:
+    case Keyboard.ENTER:
+    case 88:			// X
+    case 90:			// Z
+      _player.jumping = false;
       break;
 
     case Keyboard.SHIFT:

@@ -426,7 +426,7 @@ public class Scene extends Sprite
 	  actor = new FlyingEnemy(this, +1);
 	  break;
 
-	case Tile.SPAWN_CAKE:
+	case Tile.SPAWN_FOOD:
 	  actor = new RoboCake(this, +1);
 	  break;
 

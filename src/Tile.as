@@ -10,8 +10,8 @@ Notable Numbers:
 	Rain animation: 107 to 110 (works very similar to lava, but decorative only)
 	Spikes: 83 & 84 (floor & ceiling)
 	Undiggable rocks: 85 & 86
-	Collectable bones: 87 to 95 (most are blank right now)
-	Decorations: 96 to 106
+	Collectable bones: 87 to 93
+	Decorations: 94 to 106
 */
 /*
 Spawn Tiles:
@@ -62,7 +62,7 @@ public class Tile
   // Unused.
   public static const UNDIGGABLE:int = 80; // unused. (stop sign)
   public static const SPAWN_ITEM:int = 81; // unused. (money bag)
-  public static const SPAWN_CAKE:int = 82; // unused. (the word food)
+  public static const SPAWN_FOOD:int = 82; // unused. (the word food)
 
   // Deadly tiles again.
   public static const SPIKE_BEGIN:int = 83;
@@ -74,10 +74,10 @@ public class Tile
 
   // Colletibles.
   public static const ITEM_BEGIN:int = 87;
-  public static const ITEM_END:int = 95;
+  public static const ITEM_END:int = 93;
   
   // Decorations.
-  public static const DECO_BEGIN:int = 96;
+  public static const DECO_BEGIN:int = 94;
   public static const DECO_END:int = 106;
 
   // Tiles where things can spawn (treated as empty).
@@ -85,7 +85,6 @@ public class Tile
   {
     return (i == SPAWN_PLAYER || 
 	    (SPAWN_ENEMY1 <= i && i <= SPAWN_ENEMY2) ||
-	    i == SPAWN_CAKE ||
 	    i == SPAWN_GRAVE ||
 	    i == SPAWN_ITEM ||
 	    i == SPAWN_FOOD);

@@ -17,13 +17,14 @@ public class Player extends Actor
   // the way the player wants to move.
   public var vx:int;
   public var vy:int;
-  public var jumping:Boolean;
 
   public const max_health:int = 5;
   public const speed_walking:int = 4;
   public const speed_digging:int = 1;
   public const gravity:int = 1;
-  public const jumpacc:int = -10;
+  public const jumpdur_long:int = 4;
+  public const jumpacc_long:int = -10;
+  public const jumpacc_short:int = -6;
   public const maxspeed_normal:int = +10;
   public const maxspeed_digging:int = +2;
   public const inv_duration:int = 24; // in frames.
@@ -32,7 +33,7 @@ public class Player extends Actor
   private var _vg:int;		// speed by gravity.
   private var _digging:Boolean;
   private var _jumping:Boolean;
-  private var _jumpstr:int;
+  private var _jumpdur:int;
   private var _grabbing:Boolean;
 
   private var _skin_adjust:int;	// 0: right, 1: left
@@ -102,13 +103,17 @@ public class Player extends Actor
     _digging = v;
   }
 
-  // jump()
-  public function jump():void
+  // jumping
+  public function set jumping(v:Boolean):void
   {
-    if (isLanded() || _grabbing) {
-      _jumping = true;
-      _grabbing = false;
-      jumpSound.play();
+    if (v) {
+      if (isLanded() || _grabbing) {
+	_grabbing = false;
+	_jumping = true;
+	_jumpdur = 1;
+      }
+    } else {
+      _jumping = false;
     }
   }
 
@@ -146,6 +151,23 @@ public class Player extends Actor
     var fx:Function = Tile.isBlockingNormally;
     var fy:Function = null;
 
+    var jumpacc:int = 0;
+    if (0 < _jumpdur) {
+      if (_jumping) {
+	// still pressed.
+	_jumpdur++;
+	if (jumpdur_long < _jumpdur) {
+	  // pressed long enough.
+	  _jumpdur = 0;
+	  jumpacc = jumpacc_long;
+	}
+      } else {
+	// released.
+	_jumpdur = 0;
+	jumpacc = jumpacc_short;
+      }
+    }
+
     if (_grabbing) {
       // grabbing a ladder.
       if (vy != 0) {
@@ -154,11 +176,11 @@ public class Player extends Actor
       	fy = Tile.isBlockingOnLadder;
       }
       tdyOfDoom = vy*speed;
-    } else if (_jumping) {
+    } else if (jumpacc != 0) {
       // jumping.
-      _jumping = false;
       fy = Tile.isBlockingNormally;
       tdyOfDoom = jumpacc;
+      jumpSound.play();
     } else {
       // free fall.
       if (0 < vy) {
