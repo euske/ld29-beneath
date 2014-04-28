@@ -1,4 +1,4 @@
-package {
+ package {
 
 import flash.events.EventDispatcher;
 import flash.display.Bitmap;

@@ -59,6 +59,12 @@ public class Skin
     return MOLE_RUNNING + phase*2;
   }
 
+  public static function roboCake(phase:int):int
+  {
+    phase = phase % ROBOCAKE_PHASES;
+    return ROBOCAKE + phase*2;
+  }
+
 }
 
 }

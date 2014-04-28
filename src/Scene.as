@@ -425,8 +425,9 @@ public class Scene extends Sprite
 	case Tile.SPAWN_ENEMY2:
 	  actor = new FlyingEnemy(this, +1);
 	  break;
-	case Tile.SPAWN_ENEMY3:
-	  actor = new StickingEnemy(this, +1, 0);
+
+	case Tile.SPAWN_CAKE:
+	  actor = new RoboCake(this, +1);
 	  break;
 
 	}

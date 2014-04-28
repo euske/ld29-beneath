@@ -17,6 +17,7 @@ public class Player extends Actor
   public var vx:int;
   public var vy:int;
 
+  public const max_health:int = 5;
   public const speed_walking:int = 4;
   public const speed_digging:int = 1;
   public const gravity:int = 1;
@@ -59,6 +60,11 @@ public class Player extends Actor
   [Embed(source="../assets/sounds/collect.mp3", mimeType="audio/mpeg")]
   private static const CollectSoundClass:Class;
   private static const collectSound:Sound = new CollectSoundClass();
+
+  // Powerup sound
+  [Embed(source="../assets/sounds/powerup.mp3", mimeType="audio/mpeg")]
+  private static const PowerupSoundClass:Class;
+  private static const powerupSound:Sound = new PowerupSoundClass();
 
   // Hurt sound
   [Embed(source="../assets/sounds/hurt.mp3", mimeType="audio/mpeg")]
@@ -253,9 +259,10 @@ public class Player extends Actor
   {
     //trace("collide: "+actor);
     if (actor is RunningEnemy ||
-	actor is FlyingEnemy ||
-	actor is StickingEnemy) {
+	actor is FlyingEnemy) {
       hurt();
+    } else if (actor is RoboCake) {
+      eat(actor);
     }
   }
 
@@ -272,13 +279,22 @@ public class Player extends Actor
     return false;
   }
 
-  // loot(): just ate something.
+  // loot(): gotz something.
   public function loot():void
   {
     scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
     collectSound.play();
     // XXX WHAT DO
     //dispatchEvent(new ActorEvent(SCORE));
+  }
+
+  // eat(actor): just ate something.
+  public function eat(actor:Actor):void
+  {
+    scene.remove(actor);
+    powerupSound.play();
+    health++;
+    health = Math.min(health, max_health);
   }
 
   // checkDig(): make a little beep if the direction is not diggable.

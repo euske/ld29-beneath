@@ -20,7 +20,8 @@ ASSETS=levels/tilemap1.png \
 	sounds/bombtick.mp3 \
 	sounds/explosion.mp3 \
 	sounds/unbreakable.mp3 \
-	sounds/diggrave.mp3
+	sounds/diggrave.mp3 \
+	sounds/powerup.mp3
 
 all: $(ASSETS)
 
@@ -45,3 +46,4 @@ sounds/bombtick.mp3: sounds/bombtick.wav
 sounds/explosion.mp3: sounds/explosion.wav
 sounds/unbreakable.mp3: sounds/unbreakable.wav
 sounds/diggrave.mp3: sounds/diggrave.wav
+sounds/powerup.mp3: sounds/powerup.wav

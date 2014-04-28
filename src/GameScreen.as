@@ -91,7 +91,7 @@ public class GameScreen extends Screen
 	];
 
     _status = new Status();
-    _status.level = 0;		// initial level (should be 1).
+    _status.level = 1;		// initial level (should be 1).
     _width = width;
     _height = height;
   }
@@ -119,7 +119,6 @@ public class GameScreen extends Screen
 
     _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
     _status.collected = 0;
-    _status.health = _player.health;
     _status.time = 0;
     _clock = 0;
 
@@ -182,6 +181,7 @@ public class GameScreen extends Screen
       }
     } else {
       _status.time = (getTimer() - _starttime)/1000;
+      _status.health = _player.health;
       _status.update();
       
       _scene.uncoverMap(_player.bounds, 32);
@@ -296,7 +296,6 @@ public class GameScreen extends Screen
 
   private function onPlayerHurt(e:ActorEvent):void
   {
-    _status.health = _player.health;
     if (_player.health == 0) {
       // DEAD
       dispatchEvent(new ScreenEvent(MenuScreen));
