@@ -31,6 +31,7 @@ public class Player extends Actor
   private var _grabbing:Boolean;
 
   private var _phase:int;
+  private var _skinAdjust:int;	// 0: right, 1: left
   private var _invincible:int;	// >0: temp. invincibility
 
   // Jump sound
@@ -200,7 +201,7 @@ public class Player extends Actor
 
     // Auto-collect thigns.
     if (scene.tilemap.isRawTileByPoint(pos, Tile.isCollectible)) {
-      eat();
+      loot();
     }
 
     // Dig stuff.
@@ -213,13 +214,14 @@ public class Player extends Actor
     // skin animation.
     _phase++;
     if (0 < _invincible) {
-      skinId = Skin.playerHurting(_phase) + ((vx<0)? 1 : 0);
+      skinId = Skin.playerHurting(_phase) + _skinAdjust;
     } else if (_digging) {
-      skinId = Skin.playerDigging(_phase) + ((vx<0)? 1 : 0);
-    } else if (vx != 0) {
-      skinId = Skin.playerWalking(_phase) + ((vx<0)? 1 : 0);
-    } else if (vy != 0) {
+      skinId = Skin.playerDigging(_phase) + _skinAdjust;
+    } else if (_grabbing && vy != 0) {
       skinId = Skin.playerClimbing(_phase);
+    } else if (vx != 0) {
+      _skinAdjust = ((0 < vx)? 0 : 1);
+      skinId = Skin.playerWalking(_phase) + _skinAdjust;
     }
 
     // blinking.
@@ -258,12 +260,23 @@ public class Player extends Actor
     return false;
   }
 
-  // eat(): just ate something
-  public function eat():void
+  // loot(): just ate something.
+  public function loot():void
   {
     scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
     collectSound.play();       // XXX
     //dispatchEvent(new ActorEvent(SCORE));
+  }
+
+  // checkDig(): make a little beep if the direction is not diggable.
+  public function checkDig():void
+  {
+    var dx:int = vx * speed_digging;
+    var dy:int = vy * speed_digging;
+    if (_digging &&
+	scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingAlways)) {
+      unbreakableSound.play();
+    }
   }
 
   // hurt()

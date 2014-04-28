@@ -50,18 +50,17 @@ def main(argv):
     import getopt
     import fileinput
     def usage():
-        print 'usage: %s [-D|-T] [-o output] tilemap.csv dirtmap.csv' % argv[0]
+        print 'usage: %s {-D output|-T output} tilemap.csv dirtmap.csv' % argv[0]
         return 100
     try:
-        (opts, args) = getopt.getopt(argv[1:], 'DTo:')
+        (opts, args) = getopt.getopt(argv[1:], 'D:T:')
     except getopt.GetoptError:
         return usage()
-    mode = 'T'
-    outpath = 'out.png'
+    mode = None
     for (k, v) in opts:
-        if k == '-D': mode = 'D'
-        elif k == '-T': mode = 'T'
-        elif k == '-o': outpath = v
+        if k == '-D': mode = 'D'; outpath = v
+        elif k == '-T': mode = 'T'; outpath = v
+    if mode is None: return usage();
     #
     (tilemap,(w0,h0)) = load_csv(args.pop(0))
     (dirtmap,(w1,h1)) = load_csv(args.pop(0))
@@ -84,8 +83,6 @@ def main(argv):
                 i = tv
             elif mode == 'D':
                 # convert dirts
-                if is_undiggable(tv):
-                    dv = 0
                 i = dv
             img.set_at((x,y), colors[i])
     pygame.image.save(img, outpath)

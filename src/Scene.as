@@ -18,7 +18,6 @@ public class Scene extends Sprite
   private var _fluidimage:Bitmap;
   private var _tileimage:Bitmap;
   private var _actorlayer:Sprite;
-  private var _dirtimage:Bitmap;
   private var _maskimage:Bitmap;
   private var _maprect:Rectangle;
 
@@ -57,7 +56,6 @@ public class Scene extends Sprite
     _fluidimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _tileimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _actorlayer = new Sprite();
-    _dirtimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _maskimage = new Bitmap(new BitmapData(tw, th, true, 0x00000000));
     _maprect = new Rectangle(0, 0,
 			     _tiledata.width*tilesize,
@@ -73,7 +71,6 @@ public class Scene extends Sprite
     _fluidimage.mask = clipping;
     _tileimage.mask = clipping;
     _actorlayer.mask = clipping;
-    _dirtimage.mask = clipping;
     _maskimage.mask = clipping;
 
     addChild(clipping);
@@ -81,7 +78,6 @@ public class Scene extends Sprite
     addChild(_fluidimage);
     addChild(_tileimage);
     addChild(_actorlayer);
-    addChild(_dirtimage);
     addChild(_maskimage);
     _maskon = true;
   }
@@ -229,8 +225,6 @@ public class Scene extends Sprite
     _fluidimage.y = by;
     _tileimage.x = bx;
     _tileimage.y = by;
-    _dirtimage.x = bx;
-    _dirtimage.y = by;
     _maskimage.x = bx;
     _maskimage.y = by;
   }
@@ -261,7 +255,6 @@ public class Scene extends Sprite
   {
     var area:Rectangle = new Rectangle(0, 0, _tileimage.width, _tileimage.height);
     _tileimage.bitmapData.fillRect(area, 0x00000000);
-    _dirtimage.bitmapData.fillRect(area, 0x00000000);
     for (var dy:int = 0; dy <= r.height; dy++) {
       var y:int = r.y+dy;
       for (var dx:int = 0; dx <= r.width; dx++) {
@@ -270,12 +263,18 @@ public class Scene extends Sprite
 	var i:int = _tilemap.getRawTile(x, y);
 	// render the normal tile layer.
 	if (0 <= i && Tile.getFluid(i, -1) < 0) {
-	  _tileimage.bitmapData.copyPixels(_tileset, getTileSrcRect(i), dst);
+	  if (!Tile.isUndiggable(i)) {
+	    _tileimage.bitmapData.copyPixels(_tileset, getTileSrcRect(i), dst);
+	  }
 	}
 	// render the dirt layer.
-	i = _tilemap.getDirtTile(x, y);
-	if (0 <= i) {
-	  _dirtimage.bitmapData.copyPixels(_tileset, getTileSrcRect(i), dst);
+	var j:int = _tilemap.getDirtTile(x, y);
+	if (0 < j) {
+	  _tileimage.bitmapData.copyPixels(_tileset, getTileSrcRect(j), dst);
+	}
+	if (Tile.isUndiggable(i)) {
+	  _tileimage.bitmapData.copyPixels(_tileset, getTileSrcRect(i), dst, 
+					   null, null, true);
 	}
       }
     }

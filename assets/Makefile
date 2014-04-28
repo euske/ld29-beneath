@@ -28,9 +28,9 @@ clean:
 	-$(RM) $(ASSETS)
 
 levels/tilemap1.png: levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
-	$(CSV2PNG) -T -o $@ levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
+	$(CSV2PNG) -T $@ levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
 levels/dirtmap1.png: levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
-	$(CSV2PNG) -D -o $@ levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
+	$(CSV2PNG) -D $@ levels/mapCSV_Group1_tilemap1.csv levels/mapCSV_Group1_dirtmap1.csv
 
 skinset.png: characters/necrobot_*.png
 	$(CATIMAGE) -p -o $@ characters/necrobot_front.png \

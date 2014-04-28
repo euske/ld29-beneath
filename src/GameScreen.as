@@ -68,7 +68,7 @@ public class GameScreen extends Screen
     _player.addEventListener(Player.HURT, onPlayerHurt);
     _player.addEventListener(Player.SCORE, onPlayerScore);
 
-    _status.collectibles = _scene.collectibles;
+    _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
     _status.score = 0;
     _status.health = _player.health;
     _status.time = 0;
@@ -132,12 +132,14 @@ public class GameScreen extends Screen
     case 65:			// A
     case 72:			// H
       _player.vx = -1;
+      _player.checkDig();
       break;
 
     case Keyboard.RIGHT:
     case 68:			// D
     case 76:			// L
       _player.vx = +1;
+      _player.checkDig();
       break;
 
     case Keyboard.UP:
@@ -145,6 +147,7 @@ public class GameScreen extends Screen
     case 75:			// K
       if (!_player.collect()) {
 	_player.vy = -1;
+	_player.checkDig();
       }
       break;
 
@@ -153,12 +156,14 @@ public class GameScreen extends Screen
     case 74:			// J
       if (!_player.collect()) {
 	_player.vy = +1;
+	_player.checkDig();
       }
       break;
 
     case Keyboard.SHIFT:
     case Keyboard.CONTROL:
       _player.digging = true;
+      _player.checkDig();
       break;
 
     case Keyboard.SPACE:
@@ -230,7 +235,7 @@ import baseui.Font;
 class Status extends Sprite
 {
   public var score:int;
-  public var collectibles:int;
+  public var goal:int;
   public var health:int;
   public var time:int;
 
@@ -243,14 +248,14 @@ class Status extends Sprite
 
   public function Status()
   {
-    _text = Font.createText("HEALTH: XX  SCORE: XX/XX  TIME: XXX", 0xffffff, 0, 2);
+    _text = Font.createText("HEALTH: XX  GRAVE: XX/XX  TIME: XXX", 0xffffff, 0, 2);
     addChild(_text)
   }
 
   public function update():void
   {
     var text:String = ("HEALTH: "+Utils.format(health, 2)+
-		       "  SCORE: "+Utils.format(score, 2)+"/"+Utils.format(collectibles, 2)+
+		       "  GRAVE: "+Utils.format(score, 2)+"/"+Utils.format(goal, 2)+
 		       "  TIME: "+Utils.format(time, 3));
     Font.renderText(_text.bitmapData, text);
   }

@@ -30,6 +30,7 @@ public class Tile
   public static const NONE:int = 0;
 
   // Dirt tiles (diggable).
+  public static const DIRT_BKGND:int = 2; // a dirt tile drawn behind unbreakable things.
   public static const DIRT_BEGIN:int = 2;
   public static const DIRT_END:int = 53;
 
