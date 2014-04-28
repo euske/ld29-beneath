@@ -31,7 +31,6 @@ public class Player extends Actor
   private var _jumping:Boolean;
   private var _grabbing:Boolean;
 
-  private var _phase:int;
   private var _skin_adjust:int;	// 0: right, 1: left
   private var _invincible:int;	// >0: invincibility counter.
   private var _dig_slowness:int; // >0: slowness because of digging.
@@ -105,9 +104,9 @@ public class Player extends Actor
   }
 
   // update()
-  public override function update():void
+  public override function update(phase:int):void
   {
-    super.update();
+    super.update(phase);
     //trace("v="+vx+","+vy);
 
     // Turn on/off the Ladder behavoir.
@@ -234,19 +233,18 @@ public class Player extends Actor
     }
 
     // Animate the skin.
-    _phase++;
     if (0 < _invincible) {
-      skinId = Skin.playerHurting(_phase) + _skin_adjust;
-    } else if (_digging) {
+      skinId = Skin.playerHurting(phase) + _skin_adjust;
+    } else if (0 < _dig_slowness) {
       if (vx != 0) {
 	_skin_adjust = ((0 < vx)? 0 : 1);
       }
-      skinId = Skin.playerDigging(_phase) + _skin_adjust;
+      skinId = Skin.playerDigging(phase) + _skin_adjust;
     } else if (_grabbing && vy != 0) {
-      skinId = Skin.playerClimbing(_phase);
+      skinId = Skin.playerClimbing(phase);
     } else if (vx != 0) {
       _skin_adjust = ((0 < vx)? 0 : 1);
-      skinId = Skin.playerWalking(_phase) + _skin_adjust;
+      skinId = Skin.playerWalking(phase) + _skin_adjust;
     }
   }
 
@@ -266,6 +264,7 @@ public class Player extends Actor
   {
     if (scene.tilemap.isRawTileByPoint(pos, Tile.isGrave)) {
       scene.tilemap.setRawTileByPoint(pos, Tile.GRAVE_TRACE);
+      _dig_slowness = dig_duration;
       digGraveSound.play();
       dispatchEvent(new ActorEvent(SCORE));
       return true;

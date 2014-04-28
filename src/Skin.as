@@ -17,7 +17,11 @@ public class Skin
 
   public static const PLAYER_CHEERING:int = 28;
 
-  public static const ROBOCAKE:int = 36;
+  public static const MOLE_RUNNING:int = 36;
+  public static const MOLE_RUNNING_PHASES:int = 3;
+
+  public static const ROBOCAKE:int = 42;
+  public static const ROBOCAKE_PHASES:int = 4;
 
   public static function playerWalking(phase:int):int
   {
@@ -40,6 +44,12 @@ public class Skin
   public static function playerHurting(phase:int):int
   {
     return PLAYER_HURTING;
+  }
+
+  public static function moleRunning(phase:int):int
+  {
+    phase = phase % MOLE_RUNNING_PHASES;
+    return MOLE_RUNNING + phase*2;
   }
 
 }

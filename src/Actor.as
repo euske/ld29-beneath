@@ -110,7 +110,7 @@ public class Actor extends EventDispatcher
   }
 
   // update(): called at every frame.
-  public virtual function update():void
+  public virtual function update(phase:int):void
   {
   }
 

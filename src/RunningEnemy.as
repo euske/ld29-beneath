@@ -25,15 +25,17 @@ public class RunningEnemy extends Actor
 	    scene.tilemap.hasCollisionByRect(r, 0, 1, Tile.isBlockingOnTop));
   }
 
-  public override function update():void
+  public override function update(phase:int):void
   {
-    super.update();
+    super.update(phase);
+
     var dx:int = _vx*speed;
     if (isMovable(dx, 0)) {
       move(dx, 0);
     } else {
       _vx = -_vx;
     }
+    skinId = Skin.moleRunning(phase)+((0 < _vx)? 0 : 1);
   }
 }
 

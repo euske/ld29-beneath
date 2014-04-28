@@ -26,9 +26,10 @@ public class StickingEnemy extends Actor
 	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingNormally));
   }
 
-  public override function update():void
+  public override function update(phase:int):void
   {
-    super.update();
+    super.update(phase);
+
     var dx:int = _vx*speed;
     var dy:int = _vy*speed;
     if (isMovable(dx, dy)) {

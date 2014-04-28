@@ -140,6 +140,7 @@ public class Tile
   { 
     return (i == NONE || 
 	    i == LADDER || 
+	    i == GRAVE_TRACE ||
 	    isGrave(i) ||
 	    isSpawn(i) || 
 	    isCollectible(i) ||

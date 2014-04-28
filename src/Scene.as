@@ -173,7 +173,7 @@ public class Scene extends Sprite
   }
 
   // update()
-  public function update():void
+  public function update(phase:int):void
   {
     for (var i:int = 0; i < _actors.length; i++) {
       var actor:Actor = _actors[i];
@@ -185,7 +185,7 @@ public class Scene extends Sprite
 	  a.collide(actor);
 	}
       }
-      actor.update();
+      actor.update(phase);
     }
   }
 

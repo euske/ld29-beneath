@@ -23,9 +23,9 @@ public class FlyingEnemy extends Actor
 	    !scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingNormally));
   }
 
-  public override function update():void
+  public override function update(phase:int):void
   {
-    super.update();
+    super.update(phase);
     var dy:int = _vy*speed;
     if (isMovable(0, dy)) {
       move(0, dy);

@@ -38,8 +38,8 @@ public class GameScreen extends Screen
   private var _scene:Scene;
   private var _player:Player;
   private var _music:SoundLoop;
-  private var _phase:int;
   private var _starttime:uint;
+  private var _phase:int;
 
   public function GameScreen(width:int, height:int)
   {
@@ -117,10 +117,10 @@ public class GameScreen extends Screen
     _status.time = (getTimer() - _starttime)/1000;
     _status.update();
 
-    _scene.update();
     _scene.uncoverMap(_player.bounds, 32);
     _scene.setCenter(_player.pos, 50, 50);
     _scene.paint(_phase);
+    _scene.update(_phase);
     _phase++;
   }
 

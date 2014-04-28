@@ -39,6 +39,7 @@ skinset.png: characters/necrobot_*.png
 		characters/necrobot_ladder.png \
 		characters/necrobot_damage.png \
 		characters/necrobot_cheer.png \
+		characters/mole_wheel.png \
 		characters/robocake_blink.png
 
 sounds/dig.mp3: sounds/dig.wav
