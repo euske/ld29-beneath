@@ -23,20 +23,33 @@ public class GameOverScreen extends Screen
 
   private const deathScreenImage:Bitmap = new DeathScreenImageCls();
   private var _channel:SoundChannel = null;
+  private var _width:int;
+  private var _height:int;
 
   public function GameOverScreen(width:int, height:int)
   {
     deathScreenImage.width *= 2;
     deathScreenImage.height *= 2;
     deathScreenImage.x = (width-deathScreenImage.width)/2;
-    deathScreenImage.y = (height-deathScreenImage.height)/2;
+    deathScreenImage.y = (height-deathScreenImage.height)/2-50;
     addChild(deathScreenImage);
+    _width = width;
+    _height = height;
   }
 
   // open()
   public override function open():void
   {
     super.open();
+
+    var text:Bitmap;
+    text = Font.createText("FINAL SCORE: "+Utils.format(sharedInfo.score,3)+
+			   "\nTOTAL TIME:  "+Utils.format(sharedInfo.time,3), 
+			   0xffffff, 8, 2);
+    text.x = Math.floor(_width-text.width)/2;
+    text.y = _height-text.height-64;
+    addChild(text);
+
     _channel = gameOverSound.play();
   }
 

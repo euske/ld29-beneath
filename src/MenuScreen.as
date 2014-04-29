@@ -27,6 +27,9 @@ public class MenuScreen extends Screen
   private static const logoImageCls:Class;
   [Embed(source="../assets/titles/skelebot_drawn.png", mimeType="image/png")]
   private static const skelebotImageCls:Class;
+  [Embed(source="../assets/titles/credits_logo.png", mimeType="image/png")]
+  private static const creditsImageCls:Class;
+
   // Background image:
   [Embed(source="../assets/background.png", mimeType="image/png")]
   private static const BackgroundImageCls:Class;
@@ -34,8 +37,10 @@ public class MenuScreen extends Screen
   private const bgimage:Bitmap = new BackgroundImageCls();
   private const skelebotImage:Bitmap = new skelebotImageCls();
   private const logoImage:Bitmap = new logoImageCls();
+  private const creditsImage:Bitmap = new creditsImageCls();
   private var _channel:SoundChannel = null;
   private var _menu:Menu;
+  private var _level:int;
 
   private const LEVELS:Array = [ "LEVEL 1", "LEVEL 2", "LEVEL 3" ];
 
@@ -44,6 +49,12 @@ public class MenuScreen extends Screen
     bgimage.width *= 2;
     bgimage.height *= 2;
     addChild(bgimage);
+
+    creditsImage.width *= 2;
+    creditsImage.height *= 2;
+    creditsImage.x = width-creditsImage.width-8;
+    creditsImage.y = height-creditsImage.height-8;
+    addChild(creditsImage);
 
     skelebotImage.width *= 0.7;
     skelebotImage.height *= 0.7;
@@ -77,7 +88,7 @@ public class MenuScreen extends Screen
     sharedInfo = new SharedInfo();
 
     _channel = titleScreenMusic.play();
-    _menu.paint(sharedInfo.level);
+    _menu.paint(_level);
   }
 
   // close()
@@ -97,20 +108,20 @@ public class MenuScreen extends Screen
     case Keyboard.UP:
     case 87:			// W
     case 75:			// K
-      if (0 < sharedInfo.level) {
-	sharedInfo.level--;
+      if (0 < _level) {
+	_level--;
 	beepSound.play();
-	_menu.paint(sharedInfo.level);
+	_menu.paint(_level);
       }
       break;
 
     case Keyboard.DOWN:
     case 83:			// S
     case 74:			// J
-      if (sharedInfo.level < (LEVELS.length-1)) {
-	sharedInfo.level++;
+      if (_level < (LEVELS.length-1)) {
+	_level++;
 	beepSound.play();
-	_menu.paint(sharedInfo.level);
+	_menu.paint(_level);
       }
       break;
 
@@ -119,6 +130,7 @@ public class MenuScreen extends Screen
     case 88:			// X
     case 90:			// Z
       beepSound.play();
+      sharedInfo.level = _level+1;
       dispatchEvent(new ScreenEvent(GameScreen));
       break;
 

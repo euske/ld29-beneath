@@ -105,7 +105,7 @@ public class GameScreen extends Screen
   // open()
   public override function open():void
   {
-    var level:int = sharedInfo.level+1;
+    var level:int = sharedInfo.level;
     var info:LevelInfo = LEVELS[level];
     var tilemapImage:Bitmap = new info.tilemap;
     var dirtmapImage:Bitmap = new info.dirtmap;
@@ -128,7 +128,7 @@ public class GameScreen extends Screen
     _status.level = level;
     _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
     _status.collected = 0;
-    _status.bones = 0;
+    _status.bones = sharedInfo.score;
     _status.time = 0;
     _clock = 0;
 
@@ -311,14 +311,6 @@ public class GameScreen extends Screen
     }
   }
 
-  private function onPlayerHurt(e:ActorEvent):void
-  {
-    if (_player.health == 0) {
-      // DEAD
-      dispatchEvent(new ScreenEvent(GameOverScreen));
-    }
-  }
-
   private function onPlayerCollect(e:ActorEvent):void
   {
     _status.collected++;
@@ -337,9 +329,24 @@ public class GameScreen extends Screen
     _status.bones++;
   }
 
+  private function onPlayerHurt(e:ActorEvent):void
+  {
+    if (_player.health == 0) {
+      // DEAD
+      sharedInfo.level = _status.level;
+      sharedInfo.score = _status.bones;
+      sharedInfo.time += _status.time;
+      //dispatchEvent(new ScreenEvent(EndingScreen));
+      dispatchEvent(new ScreenEvent(GameOverScreen));
+    }
+  }
+
   private function onNextLevel():void
   {
     _status.level++;
+    sharedInfo.level = _status.level;
+    sharedInfo.score = _status.bones;
+    sharedInfo.time += _status.time;
     if (LEVELS.length <= _status.level) {
       dispatchEvent(new ScreenEvent(EndingScreen));
     } else {

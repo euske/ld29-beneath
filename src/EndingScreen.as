@@ -23,20 +23,33 @@ public class EndingScreen extends Screen
 
   private const endingImage:Bitmap = new EndingImageCls();
   private var _channel:SoundChannel = null;
+  private var _width:int;
+  private var _height:int;
 
   public function EndingScreen(width:int, height:int)
   {
     endingImage.width *= 2;
     endingImage.height *= 2;
     endingImage.x = (width-endingImage.width)/2;
-    endingImage.y = (height-endingImage.height)/2;
+    endingImage.y = (height-endingImage.height)/2-50;
     addChild(endingImage);
+    _width = width;
+    _height = height;
   }
 
   // open()
   public override function open():void
   {
     super.open();
+
+    var text:Bitmap;
+    text = Font.createText("FINAL SCORE: "+Utils.format(sharedInfo.score,3)+
+			   "\nTOTAL TIME:  "+Utils.format(sharedInfo.time,3), 
+			   0xffffff, 8, 2);
+    text.x = Math.floor(_width-text.width)/2;
+    text.y = _height-text.height-80;
+    addChild(text);
+
     _channel = endingSound.play();
   }
 

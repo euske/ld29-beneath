@@ -9,11 +9,13 @@ public class FlyingEnemy extends Actor
 {
   public const speed:int = 3;
 
+  public var _vx:int;
   public var _vy:int;
 
-  public function FlyingEnemy(scene:Scene, vy:int)
+  public function FlyingEnemy(scene:Scene, vx:int, vy:int)
   {
     super(scene);
+    _vx = vx;
     _vy = vy;
   }
 
@@ -27,10 +29,12 @@ public class FlyingEnemy extends Actor
   {
     super.update(phase);
 
+    var dx:int = _vx*speed;
     var dy:int = _vy*speed;
-    if (isMovable(0, dy)) {
-      move(0, dy);
+    if (isMovable(dx, dy)) {
+      move(dx, dy);
     } else {
+      _vx = -_vx;
       _vy = -_vy;
     }
 

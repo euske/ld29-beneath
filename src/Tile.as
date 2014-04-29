@@ -57,7 +57,7 @@ public class Tile
   public static const SPAWN_PLAYER:int = 76; // These tiles are drawn in the tilemap for reference...
   public static const SPAWN_ENEMY1:int = 77; // ...but should be invisible in the game.
   public static const SPAWN_ENEMY2:int = 78; // ...but should be invisible in the game.
-//  public static const SPAWN_ENEMY3:int = 79; // enemy 3 no longer exists, do not use.
+  public static const SPAWN_ENEMY3:int = 79; // enemy 3 no longer exists, do not use.
 
   // Unused.
   public static const UNDIGGABLE:int = 80; // unused. (stop sign)
@@ -87,7 +87,7 @@ public class Tile
   public static function isSpawn(i:int):Boolean
   {
     return (i == SPAWN_PLAYER || 
-	    (SPAWN_ENEMY1 <= i && i <= SPAWN_ENEMY2) ||
+	    (SPAWN_ENEMY1 <= i && i <= SPAWN_ENEMY3) ||
 	    i == SPAWN_GRAVE ||
 	    i == SPAWN_ITEM ||
 	    i == SPAWN_FOOD);

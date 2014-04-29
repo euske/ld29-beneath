@@ -346,7 +346,7 @@ public class Scene extends Sprite
 	var x:int = r.x+dx;
 	var dst:Rectangle = new Rectangle(dx*_tilesize, dy*_tilesize, _tilesize, _tilesize);
 	if (_maskmap.getMask(x, y) <= 0) {
-	  _maskimage.bitmapData.fillRect(dst, 0xff000000);
+	  _maskimage.bitmapData.fillRect(dst, 0xff001122);
 	}
       }
     }
@@ -431,7 +431,10 @@ public class Scene extends Sprite
 	  actor = new RunningEnemy(this, +1);
 	  break;
 	case Tile.SPAWN_ENEMY2:
-	  actor = new FlyingEnemy(this, +1);
+	  actor = new FlyingEnemy(this, 0, +1);
+	  break;
+	case Tile.SPAWN_ENEMY3:
+	  actor = new FlyingEnemy(this, +1, 0);
 	  break;
 
 	case Tile.SPAWN_FOOD:
