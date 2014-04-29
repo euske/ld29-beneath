@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>NecRobot</title>
+	<meta name="description" content="" />
+	
+	<script src="js/swfobject.js"></script>
+	<script>
+		var flashvars = {
+		};
+		var params = {
+			menu: "false",
+			scale: "noScale",
+			allowFullscreen: "false",
+			allowScriptAccess: "always",
+			bgcolor: "",
+			wmode: "direct" // can cause issues with FP settings & webcam
+		};
+		var attributes = {
+			id:"beneath"
+		};
+		swfobject.embedSWF(
+			"beneath.swf", 
+			"altContent", "640", "480", "10.0.0", 
+			"expressInstall.swf", 
+			flashvars, params, attributes);
+	</script>
+	<style>
+		html, body { height:100%; }
+		body { width:640px; margin-top:5%; padding:3px; background-color: #222; margin-left:auto; margin-right:auto; position:relative; box-shadow: 4px 4px 8px #333; text-color: #EEE; }
+	    #text { margin-top:3px; text-align:center; font-family: Verdana, Geneva, sans-serif; color: #AAA; font-size:10px; }
+	    #story { margin-top:3px; text-align:left; font-family: Verdana, Geneva, sans-serif; color: #AAA; font-size:10px; }
+	</style>
+</head>
+<body>
+	<div id="altContent">
+		<h1>NecRobot can't run without Flash, silly</h1>
+		<p><a href="http://www.adobe.com/go/getflashplayer">Get Adobe Flash player</a></p>
+	</div>
+    <div id="text"><h3>Controls:</h3><p>
+    Left and Right Arrow Keys to Move<br />
+    Spacebar to Jump<br />
+    Up and Down Arrow Keys to Climb Ladders<br />
+    Hold Shift while moving to Dig<br />
+    Press the Up Arrow Key while standing in front of a grave to loot it<br />
+    Esc to Restart</div>
+    <div id="text"><h3>Objectives:</h3><p>
+    Loot all of the gravestones to win the game and be best NecRobot!<br />
+    Bonus Nuts, Bolts, and Bones are buried around for score<br />
+    Heal damage by eating Cakebots<br />
+    <i>Watch out for Robo-critters and Lava!</i><br />
+    Every level has a secret couch, can you find them all?
+    </div>
+    <div id="text"><h3>Credits:</h3>
+    <i>Code</i> - Euske<br />
+    <i>Art</i> - Crystalhawk, Zarkith<br />
+    <i>Tunes</i> - Fond3ll<br />
+    </div>
+    <div id="text"><h3>Backstory:</h3><p>
+    <b>TL;DR You're a robot trying to become human via the dark arts of Necromancy</b>
+    </div>
+    <div id="story">
+    There once was a scientist named Facer Oogar. His now former assistant, Booky Blue, had died in a freak hitchhiker/gas giant accident while making Dr. Oogar's morning soup. This was on a Tuesday.<br />
+Dr. Oogar was beside himself with grief and decided that he had to become crazy in order to find a way to bring her back, because all great scientists are crazy.<br />
+Craziness ensued and Dr. Oogar started doing multiple, if not more, horrific experiments on helpless animals and homeless stinky bums with dry elbows.<br />
+<p>
+Dr. Oogar's father was at this point in time (this was the following Saturday) sleeping in a closet at a beachside hotel in Ohio. He somehow died from this.<br />
+Facer Oogar was almost halfway done with his experiments when he suddenly got the telegram about his father's untimely death. <br />He decided that maybe he should try to revive the two people he loved the most,
+thus creating a robot necromancer he named HANKobot.
+<p>
+HANKobot was programmed with one single mission; to dig up graves and find skeletal remains to use in a necromancer ritual,
+bringing Dr. Oogar's father and his soon-not-to-be former assistant back from the dead. But something went terribly wrong...
+<p>
+HANKobot decided that he wanted to become human, why not? He killed Dr. Oogar with a forklift in his sleep and stole the body parts and bones so he could use
+Dr. Oogar's laboratory - after office hours - to create an abomination (with bolts in its neck cuz having bolts in your neck is cool),
+so that he he could transfer his consciousness into it and live out the rest of his days as a low-IQ Average Joe on minimal wage.
+</div>
+</body>
+</html>
