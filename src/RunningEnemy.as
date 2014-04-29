@@ -7,7 +7,7 @@ import flash.geom.Rectangle;
 // 
 public class RunningEnemy extends Actor
 {
-  public const speed:int = 8;
+  public const speed:int = 4;
 
   public var _vx:int;
 

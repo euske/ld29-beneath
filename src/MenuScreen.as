@@ -130,6 +130,7 @@ public class MenuScreen extends Screen
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
+import flash.geom.ColorTransform;
 import baseui.Font;
 
 class Menu extends Sprite
@@ -142,7 +143,7 @@ class Menu extends Sprite
     _levels = levels;
     _choices = new Array();
     for (var i:int = 0; i < _levels.length; i++) {
-      var text:Bitmap = Font.createText(_levels[i], 0xff0000, 2, 2);
+      var text:Bitmap = Font.createText(_levels[i], 0xffffff, 2, 2);
       text.y = i*32;
       addChild(text);
       _choices.push(text);
@@ -152,9 +153,11 @@ class Menu extends Sprite
   public function paint(level:int):void
   {
     for (var i:int = 0; i < _levels.length; i++) {
-      var color:uint = (level == i)? 0xffff00 : 0xffffff;
+      var color:uint = (level == i)? 0xff0000 : 0xffffff;
       var text:Bitmap = _choices[i];
-      //Font.createText(_levels[i], color, 2, 2);
+      var ct:ColorTransform = new ColorTransform();
+      ct.color = color;
+      text.bitmapData.colorTransform(text.bitmapData.rect, ct);
     }
   }
 

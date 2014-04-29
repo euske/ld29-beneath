@@ -315,7 +315,7 @@ public class GameScreen extends Screen
   {
     if (_player.health == 0) {
       // DEAD
-      dispatchEvent(new ScreenEvent(MenuScreen));
+      dispatchEvent(new ScreenEvent(GameOverScreen));
     }
   }
 
@@ -341,8 +341,7 @@ public class GameScreen extends Screen
   {
     _status.level++;
     if (LEVELS.length <= _status.level) {
-      // XXX ENDING
-      dispatchEvent(new ScreenEvent(MenuScreen));
+      dispatchEvent(new ScreenEvent(EndingScreen));
     } else {
       close();
       open();
