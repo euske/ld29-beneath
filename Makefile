@@ -5,6 +5,7 @@ RSYNC=/usr/bin/rsync \
 	--exclude local/ \
 	--exclude tmp/ \
 	--exclude obj/ \
+	--exclude screenshots/ \
 	--exclude Makefile \
 	--exclude '.??*' \
 	--exclude '*~'
@@ -12,7 +13,7 @@ RSYNC=/usr/bin/rsync \
 PROJECT=beneath
 
 DROPBOXBASE=$$HOME/Dropbox/ld29
-WWWBASE=tabesugi:public/file/ludumdare.tabesugi.net/$(PROJECT)
+WWWBASE=tabesugi:public/file/ludumdare.tabesugi.net/necrobot
 
 all: 
 
