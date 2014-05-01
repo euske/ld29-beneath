@@ -27,6 +27,19 @@ public class Main extends Sprite
   // Main()
   public function Main()
   {
+    if (stage) {
+      onAddedToStage(null);
+    } else {
+      addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+    }
+  }
+
+  private function onAddedToStage(e:Event):void
+  {
+    if (e != null) {
+      removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+    }
+
     stage.scaleMode = StageScaleMode.NO_SCALE;
     stage.addEventListener(Event.ACTIVATE, OnActivate);
     stage.addEventListener(Event.DEACTIVATE, OnDeactivate);
@@ -47,7 +60,7 @@ public class Main extends Sprite
 
     init();
   }
-
+  
   // log(x)
   public static function log(... args):void
   {
