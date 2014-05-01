@@ -3,6 +3,7 @@ package {
 import flash.display.Sprite;
 import flash.display.Shape;
 import flash.display.StageScaleMode;
+import flash.display.StageAlign;
 import flash.display.DisplayObject;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
@@ -14,7 +15,8 @@ import baseui.ScreenEvent;
 
 //  Main 
 //
-[SWF(width="640", height="480", backgroundColor="#000000", frameRate=24)]
+[Frame(factoryClass="Preloader")]
+[SWF(width="640", height="480", backgroundColor="#222222", frameRate=24)]
 public class Main extends Sprite
 {
   private static var _logger:TextField;
@@ -41,6 +43,7 @@ public class Main extends Sprite
     }
 
     stage.scaleMode = StageScaleMode.NO_SCALE;
+    stage.align = StageAlign.TOP_LEFT;
     stage.addEventListener(Event.ACTIVATE, OnActivate);
     stage.addEventListener(Event.DEACTIVATE, OnDeactivate);
     stage.addEventListener(Event.ENTER_FRAME, OnEnterFrame);
