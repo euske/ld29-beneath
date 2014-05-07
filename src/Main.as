@@ -30,7 +30,7 @@ public class Main extends Sprite
   public function Main()
   {
     if (stage) {
-      onAddedToStage(null);
+      init();
     } else {
       addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
     }
@@ -38,12 +38,13 @@ public class Main extends Sprite
 
   private function onAddedToStage(e:Event):void
   {
-    if (e != null) {
-      removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-    }
+    removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+    init();
+  }
 
-    stage.scaleMode = StageScaleMode.NO_SCALE;
-    stage.align = StageAlign.TOP_LEFT;
+  // init()
+  protected virtual function init():void
+  {
     stage.addEventListener(Event.ACTIVATE, OnActivate);
     stage.addEventListener(Event.DEACTIVATE, OnDeactivate);
     stage.addEventListener(Event.ENTER_FRAME, OnEnterFrame);
@@ -61,7 +62,7 @@ public class Main extends Sprite
 
     _pausescreen = new PauseScreen(stage.stageWidth, stage.stageHeight);
 
-    init();
+    reset();
   }
   
   // log(x)
@@ -165,7 +166,7 @@ public class Main extends Sprite
 
     case Keyboard.ESCAPE:	// Esc
     case 81:			// Q
-      init();
+      reset();
       break;
 
     default:
@@ -184,8 +185,8 @@ public class Main extends Sprite
     }
   }
 
-  // init()
-  protected virtual function init():void
+  // reset()
+  protected virtual function reset():void
   {
     setScreen(createScreen(MenuScreen));
   }

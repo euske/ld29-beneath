@@ -16,19 +16,25 @@ import flash.utils.getDefinitionByName;
 //
 public class Preloader extends MovieClip
 {
-  public static const PROGRESS_COLOR:uint = 0xeeeeee;
-  public static const BYTES_TOTAL:uint = 5000000;
+  public static const BYTES_TOTAL:uint = 6000000;
 
+  private var _width:int;
+  private var _height:int;
+  private var _color:uint;
   private var _progress:Shape;
   
-  public function Preloader():void 
+  public function Preloader(width:int=320, height:int=8, color:uint=0xeeeeee):void 
   {
     stage.scaleMode = StageScaleMode.NO_SCALE;
     stage.align = StageAlign.TOP_LEFT;
 
+    _width = width;
+    _height = height;
+    _color = color;
+
     _progress = new Shape();
     _progress.graphics.beginFill(0, 0);
-    _progress.graphics.drawRect(0, 0, stage.stageWidth/2, 8);
+    _progress.graphics.drawRect(0, 0, _width, _height);
     _progress.x = (stage.stageWidth - _progress.width)/2;
     _progress.y = (stage.stageHeight - _progress.height)/2;
     addChild(_progress);
@@ -48,9 +54,9 @@ public class Preloader extends MovieClip
   {
     trace("bytesLoaded: "+e.bytesLoaded+"/"+e.bytesTotal);
     var total:uint = (e.bytesTotal)? e.bytesTotal : BYTES_TOTAL;
-    var p:Number = (e.bytesLoaded / total);
-    _progress.graphics.beginFill(PROGRESS_COLOR);
-    _progress.graphics.drawRect(0, 0, Math.floor(_progress.width*p), 8);
+    var w:int = Math.floor(_width * e.bytesLoaded / total);
+    _progress.graphics.beginFill(_color);
+    _progress.graphics.drawRect(0, 0, Math.max(0, Math.min(w, _width)), _height);
   }
 
   private function onComplete(e:Event):void 
