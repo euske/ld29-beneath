@@ -8,9 +8,10 @@ RSYNC=/usr/bin/rsync \
 	--exclude screenshots/ \
 	--exclude Makefile \
 	--exclude '.??*' \
+	--exclude '*.bak' \
 	--exclude '*~'
 
-PROJECT=beneath
+PROJECT=beneath_post-compo
 
 DROPBOXBASE=$$HOME/Dropbox/ld29
 WWWBASE=tabesugi:public/file/ludumdare.tabesugi.net/necrobot
