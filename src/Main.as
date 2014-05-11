@@ -188,7 +188,7 @@ public class Main extends Sprite
   // reset()
   protected virtual function reset():void
   {
-    setScreen(createScreen(MenuScreen));
+    setScreen(createScreen(TitleScreen));
   }
 
 }

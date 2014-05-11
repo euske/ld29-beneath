@@ -3,8 +3,6 @@ TODO rules: assign a unique ID to every item and NEVER change it once assigned, 
 	Title Screen Tweaks:
 ------------------------------------------------------------------------------------------------	
 
-#2. Diagonally scrolling background effect
-
 #3. Replace Level 1/2/3 select with Level Select/Instructions/Options/Credits
 
 #4. Use the cheer animation to illustrate which menu option is selected
@@ -84,3 +82,5 @@ how it looks.
 
 #1. Minor BUG: Title music doesn't pause when the game is paused. (Maybe turn off the pause
 screen completely when on the title screen?)
+
+#2. Diagonally scrolling background effect

@@ -10,9 +10,9 @@ import baseui.Screen;
 import baseui.ScreenEvent;
 import baseui.SoundLoop;
 
-//  MenuScreen
+//  TitleScreen
 // 
-public class MenuScreen extends Screen
+public class TitleScreen extends Screen
 {
   // Musics
   [Embed(source="../assets/music/Title_Screen.mp3", mimeType="audio/mpeg")]
@@ -46,7 +46,7 @@ public class MenuScreen extends Screen
 
   private const LEVELS:Array = [ "LEVEL 1", "LEVEL 2", "LEVEL 3" ];
 
-  public function MenuScreen(width:int, height:int)
+  public function TitleScreen(width:int, height:int)
   {
     _bgimage = new BackgroundImageCls();
     _bgimage.width *= 2;

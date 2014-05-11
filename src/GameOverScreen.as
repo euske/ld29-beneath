@@ -71,7 +71,7 @@ public class GameOverScreen extends Screen
     case Keyboard.ENTER:
     case 88:			// X
     case 90:			// Z
-      dispatchEvent(new ScreenEvent(MenuScreen));
+      dispatchEvent(new ScreenEvent(TitleScreen));
       break;
 
     }
