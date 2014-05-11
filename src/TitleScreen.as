@@ -44,7 +44,7 @@ public class TitleScreen extends Screen
   private var _level:int;
   private var _clock:int;
 
-  private static const TWEEN_START:int = 40;
+  private static const TWEEN_START:int = 20;
   private static const LEVELS:Array = [ "LEVEL 1", "LEVEL 2", "LEVEL 3" ];
 
   public function TitleScreen(width:int, height:int)

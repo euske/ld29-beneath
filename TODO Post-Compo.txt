@@ -5,12 +5,17 @@ TODO rules: assign a unique ID to every item and NEVER change it once assigned, 
 
 #3. Replace Level 1/2/3 select with Level Select/Instructions/Options/Credits
 
+#3.5 Add level select, instructions, and credits screens. (Maybe not options if we can't think of
+any options we would need)
+
 #4. Use the cheer animation to illustrate which menu option is selected
 
 #5. Add a graphic on the right side to fill the space. (When there is one)
 
 #6. Version number in bottom corner (e.g. Post-Compo v0.02 or something)
 
+#25.5 (See #25) Maybe "zing" him in sooner and add a white flash to class it all up? Also we should
+see how it looks with the skelebot_drawn_small version. (Polish; Low Priority)
 
 	Levels:
 ------------------------------------------------------------------------------------------------

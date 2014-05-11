@@ -23,7 +23,7 @@ public class Player extends Actor
   public const speed_digging:int = 1;
   public const gravity:int = 1;
   public const jumpdur_long:int = 3;
-  public const jumpacc_long:int = -10;
+  public const jumpacc_long:int = -6;
   public const jumpacc_short:int = -6;
   public const maxspeed_normal:int = +10;
   public const maxspeed_digging:int = +2;
@@ -110,7 +110,7 @@ public class Player extends Actor
       if (isLanded() || _grabbing) {
 	_grabbing = false;
 	_jumping = true;
-	_jumpdur = 1;
+	_jumpdur = 0;
       }
     } else {
       _jumping = false;
@@ -152,20 +152,16 @@ public class Player extends Actor
     var fy:Function = null;
 
     var jumpacc:int = 0;
-    if (0 < _jumpdur) {
-      if (_jumping) {
-	// still pressed.
-	_jumpdur++;
-	if (jumpdur_long < _jumpdur) {
-	  // pressed long enough.
-	  _jumpdur = 0;
-	  jumpacc = jumpacc_long;
-	}
-      } else {
-	// released.
-	_jumpdur = 0;
+    if (_jumping) {
+      if (_jumpdur == 0) {
+	// short jump.
 	jumpacc = jumpacc_short;
+	jumpSound.play();
+      } else if (_jumpdur == jumpdur_long) {
+	// long jump.
+	jumpacc = jumpacc_long;
       }
+      _jumpdur++;
     }
 
     if (_grabbing) {
@@ -180,7 +176,6 @@ public class Player extends Actor
       // jumping.
       fy = Tile.isBlockingNormally;
       tdyOfDoom = jumpacc;
-      jumpSound.play();
     } else {
       // free fall.
       if (0 < vy) {
