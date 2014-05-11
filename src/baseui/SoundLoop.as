@@ -8,6 +8,7 @@ public class SoundLoop
 {
   private var _sound:Sound;
   private var _channel:SoundChannel;
+  private var _position:Number;
 
   public function SoundLoop(sound:Sound)
   {
@@ -32,16 +33,15 @@ public class SoundLoop
   public function pause():void
   {
     if (_channel != null) {
-      _channel.stop();
+      _position = _channel.position;
+      stop();
     }
   }
 
   public function resume():void
   {
-    if (_channel != null) {
-      var position:Number = _channel.position;
-      stop();
-      start(position);
+    if (_channel == null) {
+      start(_position);
     }
   }
 

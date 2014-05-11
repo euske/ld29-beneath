@@ -8,6 +8,7 @@ import flash.media.SoundChannel;
 import baseui.Font;
 import baseui.Screen;
 import baseui.ScreenEvent;
+import baseui.SoundLoop;
 
 //  MenuScreen
 // 
@@ -38,7 +39,7 @@ public class MenuScreen extends Screen
   private const skelebotImage:Bitmap = new skelebotImageCls();
   private const logoImage:Bitmap = new logoImageCls();
   private const creditsImage:Bitmap = new creditsImageCls();
-  private var _channel:SoundChannel = null;
+  private var _musicloop:SoundLoop;
   private var _menu:Menu;
   private var _level:int;
 
@@ -78,6 +79,8 @@ public class MenuScreen extends Screen
     text.x = Math.floor(width-text.width)/2;
     text.y = height-50;
     addChild(text);
+
+    _musicloop = new SoundLoop(titleScreenMusic);
   }
 
   // open()
@@ -87,7 +90,7 @@ public class MenuScreen extends Screen
 
     sharedInfo = new SharedInfo();
 
-    _channel = titleScreenMusic.play();
+    _musicloop.start();
     _menu.paint(_level);
   }
 
@@ -95,10 +98,19 @@ public class MenuScreen extends Screen
   public override function close():void
   {
     super.close();
-    if (_channel != null) {
-      _channel.stop();
-      _channel = null;
-    }
+    _musicloop.stop();
+  }
+
+  // pause()
+  public override function pause():void
+  {
+    _musicloop.pause();
+  }
+
+  // resume()
+  public override function resume():void
+  {
+    _musicloop.resume();
   }
 
   // keydown(keycode)

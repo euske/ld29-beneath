@@ -14,7 +14,7 @@ RSYNC=/usr/bin/rsync \
 PROJECT=beneath_post-compo
 
 DROPBOXBASE=$$HOME/Dropbox/ld29
-WWWBASE=tabesugi:public/file/ludumdare.tabesugi.net/necrobot
+WWWBASE=tabesugi:public/file/ludumdare.tabesugi.net/necrobot_postcompo
 
 all: 
 

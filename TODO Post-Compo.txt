@@ -3,9 +3,6 @@ TODO rules: assign a unique ID to every item and NEVER change it once assigned, 
 	Title Screen Tweaks:
 ------------------------------------------------------------------------------------------------	
 
-#1. Minor BUG: Title music doesn't pause when the game is paused. (Maybe turn off the pause
-screen completely when on the title screen?)
-
 #2. Diagonally scrolling background effect
 
 #3. Replace Level 1/2/3 select with Level Select/Instructions/Options/Credits
@@ -14,63 +11,76 @@ screen completely when on the title screen?)
 
 #5. Add a graphic on the right side to fill the space. (When there is one)
 
-#6. Version number in bottom corner (e.g. Post-Compo v0.02 or something)
-
 #25. the necrobot guy should be popped into the screen like Zing!
+
+#6. Version number in bottom corner (e.g. Post-Compo v0.02 or something)
 
 
 	Levels:
 ------------------------------------------------------------------------------------------------
 
-#7. More levels! Probably gonna add at least two, but probably three.
-
 #8. Move lava, graves, collectibles, etc. to separate tilesets. Makes it easier to add stuff
-without having to move all of the tiles over.
+without having to move all of the tiles over. [Files are separated, just need code to match]
 
 #9. Spawn enemies on map load, not just when the player sees the spawner.
 
+#14. Fog of War improvements: Larger uncovering radius in open caves; Tiles at the edge of the
+uncovering radius have partial opacity instead of full transparency.
+
 #10. Spike spawner that chooses rendered tile and collisions based on nearby tiles.
 
-#11. Graphics BUG: Lava rendering improperly on tiles next to it in certain circumstances.
-(Might need to draw multiple rects on tiles next to lava instead of just one)
+#15. Rain Effect. (All rows of tiles above and including where an invisible tile render just like
+how lava does, but with rain tiles)
 
 #12. Play a random voice sound clip once per level when the player touches a trigger.
 (Tile 106 in the compo version)
 
 #13. Level Transition effect. (Fade to black? Horizontal wipe? Something else?)
 
-#14. Fog of War improvements: Larger uncovering radius in open caves; Tiles at the edge of the
-uncovering radius have partial opacity instead of full transparency.
-
-#15. Rain Effect. (All rows of tiles above and including where an invisible tile render just like
-how lava does, but with rain tiles)
+#11. Graphics BUG: Lava rendering improperly on tiles next to it in certain circumstances.
+(Might need to draw multiple rects on tiles next to lava instead of just one)
 
 #16. Water & Water Physics. (Just for the player, no need to go overboard with fluid simulation)
+(Renders like lava, but maybe make slightly translucent? Will edit liquid.png if necessary)
 (Probably should save this for if we remake it after post-compo)
 
 
 	Other:
 ------------------------------------------------------------------------------------------------
 
-#17. Icon for graves looted instead of just saying "Graves"
+#24. Fix the slight lag when jumping. (Don't wait a long press, alter the velocity in-air instead)
 
-#18. Should robot-cake even move like enemies? I guess we could just set their speed to 0 and see
-how it looks.
-
-#19. Collectibles floating animation (bob up and down 1 or 2 pixels)
+#27. BUG: Digging under an enemy when they're on a single tile gets them stuck in midair! Should
+either give them gravity or kill them.
 
 #20. Minor BUG: Level complete cheer animation can be invisible if you finish a level while
 in invincibility frames.
+
+#7. Implement heart animation (pulled from old TODO)
+ symbols.png has 4 frames and two animations for the hearts:
+  - 0 and 1 alternating (like lava) (only for the rightmost filled heart; the rest just sit on 1)
+  - When you get hit, go to 2, then 3, then stop animating.
+  - When you heal (food pickup), go back to 0 and resume the first animation.
+
+#19. Collectibles floating animation (bob up and down 1 or 2 pixels)
 
 #21. Loop title and win screen music. (Fond3ll would have to separate out the voice clips first)
 
 #22. Randomize graves/rocks/collectibles on runtime instead of compiling.
 
-#23. Win/Lose screen art. (Like the title screen one, if CrystalHawk wants to make 'em)
+#17. Icon for graves looted instead of just saying "Graves"
 
-#24. Fix the slight lag when jumping. (Don't wait a long press, alter the velocity in-air instead)
+#18. Should robot-cake even move like enemies? I guess we could just set their speed to 0 and see
+how it looks.
+
+#26. Sound effects for: splashing in water & lava + landing on dirt and platforms + climbing ladders
+
+#23. Win/Lose screen art. (Like the title screen one, if CrystalHawk wants to make 'em)
 
 
 	COMPLETED:
 ------------------------------------------------------------------------------------------------
 
+
+#1. Minor BUG: Title music doesn't pause when the game is paused. (Maybe turn off the pause
+screen completely when on the title screen?)
