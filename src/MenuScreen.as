@@ -25,31 +25,33 @@ public class MenuScreen extends Screen
 
   // Images
   [Embed(source="../assets/titles/NecRobot_logo.png", mimeType="image/png")]
-  private static const logoImageCls:Class;
+  private static const LogoImageCls:Class;
   [Embed(source="../assets/titles/skelebot_drawn.png", mimeType="image/png")]
-  private static const skelebotImageCls:Class;
+  private static const SkelebotImageCls:Class;
   [Embed(source="../assets/titles/credits_logo.png", mimeType="image/png")]
-  private static const creditsImageCls:Class;
+  private static const CreditsImageCls:Class;
 
   // Background image:
-  [Embed(source="../assets/background.png", mimeType="image/png")]
+  [Embed(source="../assets/titles/title_background.png", mimeType="image/png")]
   private static const BackgroundImageCls:Class;
 
-  private const bgimage:Bitmap = new BackgroundImageCls();
-  private const skelebotImage:Bitmap = new skelebotImageCls();
-  private const logoImage:Bitmap = new logoImageCls();
-  private const creditsImage:Bitmap = new creditsImageCls();
+  private const skelebotImage:Bitmap = new SkelebotImageCls();
+  private const logoImage:Bitmap = new LogoImageCls();
+  private const creditsImage:Bitmap = new CreditsImageCls();
+  private var _bgimage:Bitmap;
   private var _musicloop:SoundLoop;
   private var _menu:Menu;
   private var _level:int;
+  private var _i:int;
 
   private const LEVELS:Array = [ "LEVEL 1", "LEVEL 2", "LEVEL 3" ];
 
   public function MenuScreen(width:int, height:int)
   {
-    bgimage.width *= 2;
-    bgimage.height *= 2;
-    addChild(bgimage);
+    _bgimage = new BackgroundImageCls();
+    _bgimage.width *= 2;
+    _bgimage.height *= 2;
+    addChild(_bgimage);
 
     creditsImage.width *= 2;
     creditsImage.height *= 2;
@@ -111,6 +113,15 @@ public class MenuScreen extends Screen
   public override function resume():void
   {
     _musicloop.resume();
+  }
+
+  // update()
+  public override function update():void
+  {
+    var d:Number = (_i % 32);
+    _bgimage.x = -d;
+    _bgimage.y = -d;
+    _i++;
   }
 
   // keydown(keycode)
