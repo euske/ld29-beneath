@@ -26,47 +26,43 @@ public class TitleScreen extends Screen
   // Images
   [Embed(source="../assets/titles/NecRobot_logo.png", mimeType="image/png")]
   private static const LogoImageCls:Class;
+  private static const logoImage:Bitmap = new LogoImageCls();
   [Embed(source="../assets/titles/skelebot_drawn.png", mimeType="image/png")]
   private static const SkelebotImageCls:Class;
+  private static const skelebotImage:Bitmap = new SkelebotImageCls();
   [Embed(source="../assets/titles/credits_logo.png", mimeType="image/png")]
   private static const CreditsImageCls:Class;
+  private static const creditsImage:Bitmap = new CreditsImageCls();
 
   // Background image:
   [Embed(source="../assets/titles/title_background.png", mimeType="image/png")]
   private static const BackgroundImageCls:Class;
+  private static const backgroundImage:Bitmap = new BackgroundImageCls();
 
-  private const skelebotImage:Bitmap = new SkelebotImageCls();
-  private const logoImage:Bitmap = new LogoImageCls();
-  private const creditsImage:Bitmap = new CreditsImageCls();
-  private var _bgimage:Bitmap;
   private var _musicloop:SoundLoop;
   private var _menu:Menu;
   private var _level:int;
-  private var _i:int;
+  private var _clock:int;
 
-  private const LEVELS:Array = [ "LEVEL 1", "LEVEL 2", "LEVEL 3" ];
+  private static const TWEEN_START:int = 40;
+  private static const LEVELS:Array = [ "LEVEL 1", "LEVEL 2", "LEVEL 3" ];
 
   public function TitleScreen(width:int, height:int)
   {
-    _bgimage = new BackgroundImageCls();
-    _bgimage.width *= 2;
-    _bgimage.height *= 2;
-    addChild(_bgimage);
+    scale(backgroundImage, 2);
+    addChild(backgroundImage);
 
-    creditsImage.width *= 2;
-    creditsImage.height *= 2;
+    scale(creditsImage, 2);
     creditsImage.x = width-creditsImage.width-8;
     creditsImage.y = height-creditsImage.height-8;
     addChild(creditsImage);
 
-    skelebotImage.width *= 0.7;
-    skelebotImage.height *= 0.7;
-    skelebotImage.x = 10;
+    scale(skelebotImage, 0.7);
+    skelebotImage.x = width;
     skelebotImage.y = height-skelebotImage.height-20;
     addChild(skelebotImage);
 
-    logoImage.width *= 2;
-    logoImage.height *= 2;
+    scale(logoImage, 2);
     logoImage.x = (width-logoImage.width)/2;
     logoImage.y = 20;
     addChild(logoImage);
@@ -83,6 +79,13 @@ public class TitleScreen extends Screen
     addChild(text);
 
     _musicloop = new SoundLoop(titleScreenMusic);
+  }
+
+  // scale a bitmap.
+  private function scale(bitmap:Bitmap, n:Number):void
+  {
+    bitmap.width = bitmap.bitmapData.width * n;
+    bitmap.height = bitmap.bitmapData.height * n;
   }
 
   // open()
@@ -118,10 +121,17 @@ public class TitleScreen extends Screen
   // update()
   public override function update():void
   {
-    var d:Number = (_i % 32);
-    _bgimage.x = -d;
-    _bgimage.y = -d;
-    _i++;
+    var d:Number = (_clock % 32);
+    backgroundImage.x = -d;
+    backgroundImage.y = -d;
+
+    if (TWEEN_START < _clock) {
+      var x:Number = (_clock-TWEEN_START)/8.0;
+      x = Math.abs(Math.exp(-x*3)*Math.cos(x*x*4));
+      skelebotImage.x = 10+x*320;
+    }
+
+    _clock++;
   }
 
   // keydown(keycode)

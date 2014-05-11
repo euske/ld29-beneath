@@ -9,8 +9,6 @@ TODO rules: assign a unique ID to every item and NEVER change it once assigned, 
 
 #5. Add a graphic on the right side to fill the space. (When there is one)
 
-#25. the necrobot guy should be popped into the screen like Zing!
-
 #6. Version number in bottom corner (e.g. Post-Compo v0.02 or something)
 
 
@@ -84,3 +82,5 @@ how it looks.
 screen completely when on the title screen?)
 
 #2. Diagonally scrolling background effect
+
+#25. the necrobot guy should be popped into the screen like Zing!
