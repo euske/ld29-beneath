@@ -144,7 +144,6 @@ public class GameScreen extends Screen
     _scene.open();
 
     _player = _scene.player;
-    _player.health = 3;
     _player.addEventListener(Player.HURT, onPlayerHurt);
     _player.addEventListener(Player.COLLECT, onPlayerCollect);
     _player.addEventListener(Player.SCORE, onPlayerScore);

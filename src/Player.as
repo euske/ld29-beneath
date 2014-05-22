@@ -11,13 +11,8 @@ public class Player extends Actor
   public static const HURT:String = "Player.HURT";
   public static const COLLECT:String = "Player.COLLECT";
   public static const SCORE:String = "Player.SCORE";
-
-  public var health:int;
-
-  // the way the player wants to move.
-  public var vx:int;
-  public var vy:int;
-
+  
+  public const start_health:int = 3;
   public const max_health:int = 5;
   public const speed_walking:int = 4;
   public const speed_digging:int = 1;
@@ -30,11 +25,13 @@ public class Player extends Actor
   public const inv_duration:int = 24; // in frames.
   public const dig_duration:int = 12; // in frames.
 
+  private var _health:int;	// the player's health.
+  private var _vx:int, _vy:int;	// the way the player wants to move.
   private var _vg:int;		// speed by gravity.
-  private var _digging:Boolean;
-  private var _jumping:Boolean;
-  private var _jumpdur:int;
-  private var _grabbing:Boolean;
+  private var _digging:Boolean;	// true when the player is digging.
+  private var _jumping:Boolean;	// true when the player is jumping.
+  private var _jumpdur:int;	// jumping duration.
+  private var _grabbing:Boolean; // true when the player is grabbing a ladder.
 
   private var _skin_adjust:int;	// 0: right, 1: left
   private var _invincible:int;	// >0: invincibility counter.
@@ -79,37 +76,76 @@ public class Player extends Actor
   public function Player(scene:Scene)
   {
     super(scene);
-    vx = 0;
-    vy = 0;
     setSkinId(Skin.PLAYER_FRONT);
+    _vx = 0;
+    _vy = 0;
+    _vg = 0;
+    _digging = false;
+    _jumping = false;
+    _grabbing = false;
+    _health = start_health;
   }
 
-  // isLanded()
+  // isLanded(): true if the player is landed.
   public function isLanded():Boolean
   {
     return scene.tilemap.hasCollisionByRect(bounds, 0, 1, Tile.isBlockingOnTop);
   }
 
-  // bounds: the character hitbox (in the world)
+  // bounds: slightly smaller hitbox.
   public override function get bounds():Rectangle
   {
     return new Rectangle(pos.x-6, pos.y-4, 12, 12);
   }
 
-  // digging
+  // player health.
+  public function get health():int
+  {
+    return _health;
+  }
+
+  // vx, vy: the direction the player's heading.
+  public function get vx():int
+  {
+    return _vx;
+  }
+  public function set vx(v:int):void
+  {
+    _vx = v;
+  }
+  public function get vy():int
+  {
+    return _vy;
+  }
+  public function set vy(v:int):void
+  {
+    _vy = v;
+  }
+
+  // digging: true if the player is digging.
+  public function get digging():Boolean
+  {
+    return _digging;
+  }
   public function set digging(v:Boolean):void
   {
     _digging = v;
   }
 
-  // jumping
+  // jumping: true if the player is jumping.
+  public function get jumping():Boolean
+  {
+    return _jumping;
+  }
   public function set jumping(v:Boolean):void
   {
     if (v) {
+      // Only possible when landed or grabbing a ladder.
       if (isLanded() || _grabbing) {
-	_grabbing = false;
 	_jumping = true;
 	_jumpdur = 0;
+	// ungrab the ladder (if any).
+	_grabbing = false;
       }
     } else {
       _jumping = false;
@@ -120,11 +156,11 @@ public class Player extends Actor
   public override function update(phase:int):void
   {
     super.update(phase);
-    //trace("v="+vx+","+vy);
+    //trace("v="+_vx+","+_vy);
 
     // Turn on/off the Ladder behavoir.
     if (scene.tilemap.hasTileByRect(bounds, Tile.isGrabbable)) {
-      if (vy != 0) {
+      if (_vy != 0) {
 	// Start grabbing the tile.
 	_grabbing = true;
       }
@@ -141,7 +177,7 @@ public class Player extends Actor
     }
 
     // (tdx,tdy): the amount that the character should move.
-    var tdxOfDoom:int = vx*speed;
+    var tdxOfDoom:int = _vx*speed;
     var tdyOfDoom:int = 0;
     // (dy,dy): the amount that the character actually moved.
     var dx:int = 0;
@@ -165,19 +201,19 @@ public class Player extends Actor
 
     if (_grabbing) {
       // grabbing a ladder.
-      if (vy != 0) {
+      if (_vy != 0) {
 	fy = Tile.isBlockingNormally;
       } else {
       	fy = Tile.isBlockingOnLadder;
       }
-      tdyOfDoom = vy*speed;
+      tdyOfDoom = _vy*speed;
     } else if (jumpacc != 0) {
       // jumping.
       fy = Tile.isBlockingNormally;
       tdyOfDoom = jumpacc;
     } else {
       // free fall.
-      if (0 < vy) {
+      if (0 < _vy) {
 	fy = Tile.isBlockingNormally;
       } else {
 	fy = Tile.isBlockingOnTop;
@@ -209,15 +245,16 @@ public class Player extends Actor
     tdyOfDoom -= v.y;
 
     // Digging.
-    if (_digging && (vx != 0 || vy != 0)) {
+    if (_digging && (_vx != 0 || _vy != 0)) {
       // Dig stuff.
-      if (vy != 0) {
+      if (_vy != 0) {
 	tdxOfDoom = 0;
       } else {
 	tdyOfDoom = 0;
       }
       v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					   tdxOfDoom, tdyOfDoom, Tile.isBlockingAlways);
+					   tdxOfDoom, tdyOfDoom, 
+					   Tile.isBlockingAlways);
       dx += v.x;
       dy += v.y;
       tdxOfDoom -= v.x;
@@ -261,19 +298,19 @@ public class Player extends Actor
     if (0 < _invincible) {
       setSkinId(Skin.playerHurting(phase) + _skin_adjust);
     } else if (0 < _dig_slowness) {
-      if (vx != 0) {
-	_skin_adjust = ((0 < vx)? 0 : 1);
+      if (_vx != 0) {
+	_skin_adjust = ((0 < _vx)? 0 : 1);
       }
       setSkinId(Skin.playerDigging(phase) + _skin_adjust);
-    } else if (_grabbing && vy != 0) {
+    } else if (_grabbing && _vy != 0) {
       setSkinId(Skin.playerClimbing(phase));
-    } else if (vx != 0) {
-      _skin_adjust = ((0 < vx)? 0 : 1);
+    } else if (_vx != 0) {
+      _skin_adjust = ((0 < _vx)? 0 : 1);
       setSkinId(Skin.playerWalking(phase) + _skin_adjust);
     }
   }
 
-  // collide(actor)
+  // collide(actor): called when the player hits something.
   public override function collide(actor:Actor):void
   {
     //trace("collide: "+actor);
@@ -285,7 +322,7 @@ public class Player extends Actor
     }
   }
 
-  // collect(): try to open the chest.
+  // collect(): try to open the chest/tombstone.
   public function collect():Boolean
   {
     if (scene.tilemap.isRawTileByPoint(pos, Tile.isGrave)) {
@@ -298,28 +335,11 @@ public class Player extends Actor
     return false;
   }
 
-  // loot(): gotz something.
-  public function loot():void
-  {
-    scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
-    collectSound.play();
-    dispatchEvent(new ActorEvent(SCORE));
-  }
-
-  // eat(actor): just ate something.
-  public function eat(actor:Actor):void
-  {
-    scene.remove(actor);
-    powerupSound.play();
-    health++;
-    health = Math.min(health, max_health);
-  }
-
   // checkDig(): make a little beep if the direction is not diggable.
   public function checkDig():void
   {
-    var dx:int = vx * speed_digging;
-    var dy:int = vy * speed_digging;
+    var dx:int = _vx * speed_digging;
+    var dy:int = _vy * speed_digging;
     if (_digging &&
 	scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingAlways)) {
       unbreakableSound.play();
@@ -332,13 +352,30 @@ public class Player extends Actor
     setSkinId(Skin.playerCheering(phase));
   }
 
+  // loot(): gotz something.
+  private function loot():void
+  {
+    scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
+    collectSound.play();
+    dispatchEvent(new ActorEvent(SCORE));
+  }
+
+  // eat(actor): just ate something.
+  private function eat(actor:Actor):void
+  {
+    scene.remove(actor);
+    powerupSound.play();
+    _health++;
+    _health = Math.min(_health, max_health);
+  }
+
   // hurt()
   private function hurt():void
   {
     if (0 < _invincible) return;
 
     hurtSound.play();
-    health--;
+    _health--;
     _invincible = inv_duration;
 
     dispatchEvent(new ActorEvent(HURT));
