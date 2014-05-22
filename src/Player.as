@@ -10,7 +10,7 @@ public class Player extends Actor
 {
   public static const HURT:String = "Player.HURT";
   public static const COLLECT:String = "Player.COLLECT";
-  public static const SCORE:String = "Player.SCORE";
+  public static const LOOT:String = "Player.LOOT";
   
   public const start_health:int = 3;
   public const max_health:int = 5;
@@ -357,7 +357,7 @@ public class Player extends Actor
   {
     scene.tilemap.setRawTileByPoint(pos, Tile.NONE);
     collectSound.play();
-    dispatchEvent(new ActorEvent(SCORE));
+    dispatchEvent(new ActorEvent(LOOT));
   }
 
   // eat(actor): just ate something.
@@ -369,13 +369,14 @@ public class Player extends Actor
     _health = Math.min(_health, max_health);
   }
 
-  // hurt()
+  // hurt(): the player is hurt.
   private function hurt():void
   {
     if (0 < _invincible) return;
 
     hurtSound.play();
     _health--;
+    // Become invincible for a moment.
     _invincible = inv_duration;
 
     dispatchEvent(new ActorEvent(HURT));

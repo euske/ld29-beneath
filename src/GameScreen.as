@@ -70,23 +70,23 @@ public class GameScreen extends Screen
   private static const WinningMusicCls:Class;
   private static const winningMusic:Sound = new WinningMusicCls();
 
-  private const win_duration:int = 60;
+  private const win_duration:int = 60; // pause after win (in frames)
 
-  private var _width:int;
-  private var _height:int;
-  private var _status:Status;
-  private var _splash:Splash;
+  private var _width:int;	// Screen width.
+  private var _height:int;	// Screen height.
+  private var _status:Status;	// Status text.
+  private var _splash:Splash;	// Splash screen.
 
-  private var LEVELS:Array;
+  private var LEVELS:Array;	// Levels (wanted to make this static but couldn't)
 
   /// Game-related functions
 
-  private var _scene:Scene;
+  private var _scene:Scene;	// Scrolling display.
   private var _player:Player;
   private var _musicloop:SoundLoop;
-  private var _starttime:uint;
-  private var _winning:int;
-  private var _clock:int;
+  private var _starttime:uint;	// the time the scene started.
+  private var _winning:int;	// >0 if the winning animation is being played.
+  private var _clock:int;	// current time.
 
   public function GameScreen(width:int, height:int)
   {
@@ -127,10 +127,11 @@ public class GameScreen extends Screen
   }
 
   // open()
+  //   is called at initialization of each level.
   public override function open():void
   {
-    var level:int = sharedInfo.level;
-    var info:LevelInfo = LEVELS[level];
+    var level:int = sharedInfo.level; // current level.
+    var info:LevelInfo = LEVELS[level]; // get the title & music, etc.
     var tilemapImage:Bitmap = new info.tilemap;
     var dirtmapImage:Bitmap = new info.dirtmap;
     var music:Sound = (info.music == null)? null : new info.music;
@@ -146,13 +147,15 @@ public class GameScreen extends Screen
     _player = _scene.player;
     _player.addEventListener(Player.HURT, onPlayerHurt);
     _player.addEventListener(Player.COLLECT, onPlayerCollect);
-    _player.addEventListener(Player.SCORE, onPlayerScore);
+    _player.addEventListener(Player.LOOT, onPlayerLoot);
 
     _status.level = level;
-    _status.goal = Math.floor(_scene.collectibles*0.75); // 75% thing
+    // a level is considered cleared when the player collects 75% of the objects.
+    _status.goal = Math.floor(_scene.collectibles*0.75);
     _status.collected = 0;
     _status.bones = sharedInfo.score;
     _status.time = 0;
+
     _clock = 0;
 
     if (music != null) {
@@ -160,8 +163,7 @@ public class GameScreen extends Screen
     }
 
     // Create a splash screen.
-    _splash = new Splash(_width, _height);
-    _splash.title = info.name;
+    _splash = new Splash(_width, _height, info.name);
     _splash.addEventListener(Splash.END, onSplashEnd);
 
     addChild(_scene);
@@ -172,7 +174,9 @@ public class GameScreen extends Screen
   // close()
   public override function close():void
   {
-    removeChild(_splash);
+    if (_splash != null) {
+      removeChild(_splash);
+    }
     removeChild(_scene);
     removeChild(_status);
 
@@ -198,10 +202,11 @@ public class GameScreen extends Screen
     }
   }
 
-  // update()
+  // update(): called at every frame.
   public override function update():void
   {
-    if (_splash.alive) {
+    if (_splash != null) {
+      // Nothing moves when the splash screen is displayed.
       _splash.update(_clock);
 
     } else if (0 < _winning) {
@@ -212,11 +217,16 @@ public class GameScreen extends Screen
       if (_winning == 0) {
 	onNextLevel();
       }
+
     } else {
+      // The actual game is running.
+
+      // Update the status display.
       _status.time = (getTimer() - _starttime)/1000;
       _status.health = _player.health;
       _status.update();
       
+      // Scroll the scene, move the characters.
       _scene.uncoverMap(_player.bounds, 32);
       _scene.setCenter(_player.pos, 50, 50);
       _scene.paint(_clock);
@@ -226,11 +236,11 @@ public class GameScreen extends Screen
     _clock++;
   }
 
-  // keydown(keycode)
+  // keydown(keycode): called when a key is pressed.
   public override function keydown(keycode:int):void
   {
-    if (_splash.alive) {
-      _splash.alive = false;
+    if (_splash != null) {
+      _splash.finish();
       return;
     }
 
@@ -280,16 +290,16 @@ public class GameScreen extends Screen
       _player.jumping = true;
       break;
 
-    case 77:			// M
+    case 77:			// M (for debugging)
       _scene.toggleMask();
       break;
-    case 78:			// N
+    case 78:			// N (for debugging)
       onNextLevel();
       break;
     }
   }
 
-  // keyup(keycode)
+  // keyup(keycode): called when a key is released.
   public override function keyup(keycode:int):void 
   {
     switch (keycode) {
@@ -325,20 +335,27 @@ public class GameScreen extends Screen
     }
   }
 
+  // onSplashEnd: called when the splash screen closes.
   private function onSplashEnd(e:Event):void
   {
-    _splash.visible = false;	
+    // remove the splash screen.
+    if (_splash != null) {
+      removeChild(_splash);
+      _splash = null;
+    }
+    // Start the game music.
     _starttime = getTimer();
     if (_musicloop != null) {
       _musicloop.start();
     }
   }
 
+  // onPlayerCollect: called when the player collects a thing.
   private function onPlayerCollect(e:ActorEvent):void
   {
     _status.collected++;
     if (_status.goal <= _status.collected) {
-      // WIN
+      // Goal achieved! Do the winning animation.
       _winning = win_duration;
       if (_musicloop != null) {
 	_musicloop.stop();
@@ -347,15 +364,17 @@ public class GameScreen extends Screen
     }
   }
 
-  private function onPlayerScore(e:ActorEvent):void
+  // onPlayerLoot: called when the player loots a thing.
+  private function onPlayerLoot(e:ActorEvent):void
   {
     _status.bones++;
   }
 
+  // onPlayerHurt: called when the player is hurt.
   private function onPlayerHurt(e:ActorEvent):void
   {
     if (_player.health == 0) {
-      // DEAD
+      // Player health reached 0 - DEAD!
       sharedInfo.level = _status.level;
       sharedInfo.score = _status.bones;
       sharedInfo.time += _status.time;
@@ -364,15 +383,21 @@ public class GameScreen extends Screen
     }
   }
 
+  // onNextLevel: called when the winning animation is finished.
   private function onNextLevel():void
   {
+    // Advance the level.
     _status.level++;
+    // Update the shared info.
     sharedInfo.level = _status.level;
     sharedInfo.score = _status.bones;
     sharedInfo.time += _status.time;
+
     if (LEVELS.length <= _status.level) {
+      // All the level are cleared!
       dispatchEvent(new ScreenEvent(EndingScreen));
     } else {
+      // Go to the next level.
       close();
       open();
     }
@@ -389,6 +414,8 @@ import flash.geom.Rectangle;
 import flash.geom.Point;
 import baseui.Font;
 
+//  LevelInfo:
+//  a structure that holds metadata about a level.
 class LevelInfo extends Object
 {
   public var name:String;
@@ -405,47 +432,41 @@ class LevelInfo extends Object
   }
 }
 
+//  Splash screen
+//
 class Splash extends Sprite
 {
   public static const END:String = "Splash.END";
 
-  private var _alive:Boolean;
+  public const splash_duration:int = 48; // splash pause
 
-  public function Splash(width:int, height:int)
+  public function Splash(width:int, height:int, title:String)
   {
     graphics.beginFill(0);
     graphics.drawRect(0, 0, width, height);
-    _alive = true;
-  }
 
-  public function set title(v:String):void
-  {
-    var text:Bitmap = Font.createText(v, 0xffffff, 16, 3);
+    var text:Bitmap = Font.createText(title, 0xffffff, 16, 3);
     text.x = (width-text.width)/2;
     text.y = (height-text.height)/2;
     addChild(text);
   }
 
-  public function get alive():Boolean
+  // Finish the splash screen.
+  public function finish():void
   {
-    return _alive;
-  }
-
-  public function set alive(v:Boolean):void
-  {
-    if (_alive && !v) {
-      dispatchEvent(new Event(END));
-    }
-    _alive = v;
+    dispatchEvent(new Event(END));
   }
 
   public function update(clock:int):void
   {
-    alive = (clock < 48);
+    if (splash_duration <= clock) {
+      finish();
+    }
   }
-
 }
 
+//  Status display
+//  
 class Status extends Sprite
 {
   public var level:int;
@@ -488,7 +509,7 @@ class Status extends Sprite
 	slapSymbol(x, 2);	// empty heart.
       }
     }
-	slapSymbol(7, 6);		// grave.
+    slapSymbol(7, 6);		// grave.
     slapSymbol(15, 4);		// bone.
     slapSymbol(20, 5);		// time.
   }

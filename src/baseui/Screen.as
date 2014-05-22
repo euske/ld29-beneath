@@ -6,6 +6,7 @@ import flash.display.Sprite;
 //
 public class Screen extends Sprite
 {
+  // sharedInfo: information shared between different Screens.
   public var sharedInfo:Object;
 
   // open()
