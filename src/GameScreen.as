@@ -27,12 +27,12 @@ public class GameScreen extends Screen
   private static const Level2TilemapImageCls:Class;
   [Embed(source="../assets/levels/tilemap3.png", mimeType="image/png")]
   private static const Level3TilemapImageCls:Class;
-/*  [Embed(source="../assets/levels/tilemap4.png", mimeType="image/png")]
+  [Embed(source="../assets/levels/tilemap4.png", mimeType="image/png")]
   private static const Level4TilemapImageCls:Class;
   [Embed(source="../assets/levels/tilemap5.png", mimeType="image/png")]
   private static const Level5TilemapImageCls:Class;
   [Embed(source="../assets/levels/tilemap6.png", mimeType="image/png")]
-  private static const Level6TilemapImageCls:Class;	*/
+  private static const Level6TilemapImageCls:Class;
 
   // DirtMap image:
   [Embed(source="../assets/levels/dirtmap0.png", mimeType="image/png")]
@@ -43,12 +43,12 @@ public class GameScreen extends Screen
   private static const Level2DirtmapImageCls:Class;
   [Embed(source="../assets/levels/dirtmap3.png", mimeType="image/png")]
   private static const Level3DirtmapImageCls:Class;
-/*  [Embed(source="../assets/levels/dirtmap4.png", mimeType="image/png")]
+  [Embed(source="../assets/levels/dirtmap4.png", mimeType="image/png")]
   private static const Level4DirtmapImageCls:Class;
   [Embed(source="../assets/levels/dirtmap5.png", mimeType="image/png")]
   private static const Level5DirtmapImageCls:Class;
   [Embed(source="../assets/levels/dirtmap6.png", mimeType="image/png")]
-  private static const Level6DirtmapImageCls:Class;	*/
+  private static const Level6DirtmapImageCls:Class;
 
   // Musics
   [Embed(source="../assets/music/Level2.mp3", mimeType="audio/mpeg")]
@@ -107,7 +107,7 @@ public class GameScreen extends Screen
 		      Level3TilemapImageCls,
 		      Level3DirtmapImageCls,
 		      Level2MusicCls),
-/*	new LevelInfo("LEVEL 4\n<LEVEL NAME>",
+	new LevelInfo("LEVEL 4\n<LEVEL NAME>",
 		      Level4TilemapImageCls,
 		      Level4DirtmapImageCls,
 		      Level2MusicCls), 
@@ -118,7 +118,7 @@ public class GameScreen extends Screen
 	new LevelInfo("LEVEL 6\nHOT N' BOTHERED",
 		      Level6TilemapImageCls,
 		      Level6DirtmapImageCls,
-		      Level3MusicCls),	*/
+		      Level3MusicCls), 
 	];
 
     _width = width;

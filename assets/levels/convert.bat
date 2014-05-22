@@ -15,4 +15,13 @@ python ..\..\tools\csv2png.py -D dirtmap2.png mapCSV_Group1_tilemap2.csv mapCSV_
 python ..\..\tools\csv2png.py -T tilemap3.png mapCSV_Group1_tilemap3.csv mapCSV_Group1_dirtmap3.csv
 python ..\..\tools\csv2png.py -D dirtmap3.png mapCSV_Group1_tilemap3.csv mapCSV_Group1_dirtmap3.csv
 
+python ..\..\tools\csv2png.py -T tilemap4.png mapCSV_Group1_tilemap4.csv mapCSV_Group1_dirtmap4.csv
+python ..\..\tools\csv2png.py -D dirtmap4.png mapCSV_Group1_tilemap4.csv mapCSV_Group1_dirtmap4.csv
+
+python ..\..\tools\csv2png.py -T tilemap5.png mapCSV_Group1_tilemap5.csv mapCSV_Group1_dirtmap5.csv
+python ..\..\tools\csv2png.py -D dirtmap5.png mapCSV_Group1_tilemap5.csv mapCSV_Group1_dirtmap5.csv
+
+python ..\..\tools\csv2png.py -T tilemap6.png mapCSV_Group1_tilemap6.csv mapCSV_Group1_dirtmap6.csv
+python ..\..\tools\csv2png.py -D dirtmap6.png mapCSV_Group1_tilemap6.csv mapCSV_Group1_dirtmap6.csv
+
 pause
