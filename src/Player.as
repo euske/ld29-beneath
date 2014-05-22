@@ -23,7 +23,7 @@ public class Player extends Actor
   public const speed_digging:int = 1;
   public const gravity:int = 1;
   public const jumpdur_long:int = 3;
-  public const jumpacc_long:int = -6;
+  public const jumpacc_long:int = -8;
   public const jumpacc_short:int = -6;
   public const maxspeed_normal:int = +10;
   public const maxspeed_digging:int = +2;
@@ -81,8 +81,7 @@ public class Player extends Actor
     super(scene);
     vx = 0;
     vy = 0;
-    skinId = Skin.PLAYER_FRONT;
-
+    setSkinId(Skin.PLAYER_FRONT);
   }
 
   // isLanded()
@@ -251,7 +250,7 @@ public class Player extends Actor
       if (_invincible == 0) {
 	// End blinking.
 	skin.alpha = 1.0;
-	skinId = 0;
+	setSkinId(0);
       } else {
 	var b:Boolean = ((_invincible % 4) < 2);
 	skin.alpha = (b)? 0.0 : 1.0;
@@ -260,17 +259,17 @@ public class Player extends Actor
 
     // Animate the skin.
     if (0 < _invincible) {
-      skinId = Skin.playerHurting(phase) + _skin_adjust;
+      setSkinId(Skin.playerHurting(phase) + _skin_adjust);
     } else if (0 < _dig_slowness) {
       if (vx != 0) {
 	_skin_adjust = ((0 < vx)? 0 : 1);
       }
-      skinId = Skin.playerDigging(phase) + _skin_adjust;
+      setSkinId(Skin.playerDigging(phase) + _skin_adjust);
     } else if (_grabbing && vy != 0) {
-      skinId = Skin.playerClimbing(phase);
+      setSkinId(Skin.playerClimbing(phase));
     } else if (vx != 0) {
       _skin_adjust = ((0 < vx)? 0 : 1);
-      skinId = Skin.playerWalking(phase) + _skin_adjust;
+      setSkinId(Skin.playerWalking(phase) + _skin_adjust);
     }
   }
 
@@ -330,7 +329,7 @@ public class Player extends Actor
   // cheer(): cheering dance.
   public function cheer(phase:int):void
   {
-    skinId = Skin.playerCheering(phase);
+    setSkinId(Skin.playerCheering(phase));
   }
 
   // hurt()

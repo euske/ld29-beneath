@@ -8,6 +8,8 @@ TODO rules: assign a unique ID to every item and NEVER change it once assigned, 
 #3.5 Add level select, instructions, and credits screens. (Maybe not options if we can't think of
 any options we would need)
 
+#3.5.5 Lock unplayed levels from being selected and save player's unlock progress & top score.
+
 #4. Use the cheer animation to illustrate which menu option is selected
 
 #5. Add a graphic on the right side to fill the space. (When there is one)
@@ -22,6 +24,7 @@ see how it looks with the skelebot_drawn_small version. (Polish; Low Priority)
 
 #8. Move lava, graves, collectibles, etc. to separate tilesets. Makes it easier to add stuff
 without having to move all of the tiles over. [Files are separated, just need code to match]
+(Might need an additional tile layer for decorations, rendered beneath characters & graves)
 
 #9. Spawn enemies on map load, not just when the player sees the spawner.
 
@@ -49,13 +52,14 @@ how lava does, but with rain tiles)
 	Other:
 ------------------------------------------------------------------------------------------------
 
-#24. Fix the slight lag when jumping. (Don't wait a long press, alter the velocity in-air instead)
-
-#27. BUG: Digging under an enemy when they're on a single tile gets them stuck in midair! Should
+#27. BUG: Digging under an enemy/robocake when they're on a single tile gets them stuck in midair! Should
 either give them gravity or kill them.
 
 #20. Minor BUG: Level complete cheer animation can be invisible if you finish a level while
 in invincibility frames.
+
+#28. Increase the distance between the player and the edge of the screen before the camera starts
+to scroll by about 1 or maybe 2 or 3 tiles.
 
 #7. Implement heart animation (pulled from old TODO)
  symbols.png has 4 frames and two animations for the hearts:
@@ -67,12 +71,7 @@ in invincibility frames.
 
 #21. Loop title and win screen music. (Fond3ll would have to separate out the voice clips first)
 
-#22. Randomize graves/rocks/collectibles on runtime instead of compiling.
-
-#17. Icon for graves looted instead of just saying "Graves"
-
-#18. Should robot-cake even move like enemies? I guess we could just set their speed to 0 and see
-how it looks.
+#22. Randomize graves/rocks/collectibles on runtime instead of buildtime.
 
 #26. Sound effects for: splashing in water & lava + landing on dirt and platforms + climbing ladders
 
@@ -82,10 +81,17 @@ how it looks.
 	COMPLETED:
 ------------------------------------------------------------------------------------------------
 
-
 #1. Minor BUG: Title music doesn't pause when the game is paused. (Maybe turn off the pause
 screen completely when on the title screen?)
 
 #2. Diagonally scrolling background effect
 
 #25. the necrobot guy should be popped into the screen like Zing!
+
+#24. Fix the slight lag when jumping. (Don't wait a long press, alter the velocity in-air instead)
+[Jump Velocity is more or less back to what it used to be (~3 tiles max, 1 tile min)]
+
+#18. Should robot-cake even move like enemies? I guess we could just set their speed to 0 and see
+how it looks. (Looks fine to me, second opinions?)
+
+#17. Icon for graves looted instead of just saying "Graves"

@@ -27,6 +27,12 @@ public class GameScreen extends Screen
   private static const Level2TilemapImageCls:Class;
   [Embed(source="../assets/levels/tilemap3.png", mimeType="image/png")]
   private static const Level3TilemapImageCls:Class;
+/*  [Embed(source="../assets/levels/tilemap4.png", mimeType="image/png")]
+  private static const Level4TilemapImageCls:Class;
+  [Embed(source="../assets/levels/tilemap5.png", mimeType="image/png")]
+  private static const Level5TilemapImageCls:Class;
+  [Embed(source="../assets/levels/tilemap6.png", mimeType="image/png")]
+  private static const Level6TilemapImageCls:Class;	*/
 
   // DirtMap image:
   [Embed(source="../assets/levels/dirtmap0.png", mimeType="image/png")]
@@ -37,6 +43,12 @@ public class GameScreen extends Screen
   private static const Level2DirtmapImageCls:Class;
   [Embed(source="../assets/levels/dirtmap3.png", mimeType="image/png")]
   private static const Level3DirtmapImageCls:Class;
+/*  [Embed(source="../assets/levels/dirtmap4.png", mimeType="image/png")]
+  private static const Level4DirtmapImageCls:Class;
+  [Embed(source="../assets/levels/dirtmap5.png", mimeType="image/png")]
+  private static const Level5DirtmapImageCls:Class;
+  [Embed(source="../assets/levels/dirtmap6.png", mimeType="image/png")]
+  private static const Level6DirtmapImageCls:Class;	*/
 
   // Musics
   [Embed(source="../assets/music/Level2.mp3", mimeType="audio/mpeg")]
@@ -83,18 +95,30 @@ public class GameScreen extends Screen
 		      Level0TilemapImageCls,
 		      Level0DirtmapImageCls,
 		      null),
-	new LevelInfo("LEVEL 1\nTHE QUEST BEGINS",
+	new LevelInfo("LEVEL 1\nEASY PEASY",
 		      Level1TilemapImageCls,
 		      Level1DirtmapImageCls,
 		      Level1MusicCls),
-	new LevelInfo("LEVEL 2\nGRAVEYARD?\n MORE LIKE CAVEYARD!",
+	new LevelInfo("LEVEL 2\nTHE QUEST BEGINS",
 		      Level2TilemapImageCls,
 		      Level2DirtmapImageCls,
-		      Level2MusicCls),
-	new LevelInfo("LEVEL 3\nHOT N' BOTHERED",
+		      Level1MusicCls),
+	new LevelInfo("LEVEL 3\nGRAVEYARD?\n MORE LIKE CAVEYARD!",
 		      Level3TilemapImageCls,
 		      Level3DirtmapImageCls,
+		      Level2MusicCls),
+/*	new LevelInfo("LEVEL 4\n<LEVEL NAME>",
+		      Level4TilemapImageCls,
+		      Level4DirtmapImageCls,
+		      Level2MusicCls), 
+	new LevelInfo("LEVEL 5\nWELCOME TO MELTING",
+		      Level5TilemapImageCls,
+		      Level5DirtmapImageCls,
 		      Level3MusicCls),
+	new LevelInfo("LEVEL 6\nHOT N' BOTHERED",
+		      Level6TilemapImageCls,
+		      Level6DirtmapImageCls,
+		      Level3MusicCls),	*/
 	];
 
     _width = width;
@@ -444,7 +468,7 @@ class Status extends Sprite
     graphics.beginFill(0, 0.5);
     graphics.drawRect(0, 0, width, 32);
     //                       012345678901234567890123456789
-    _text = Font.createText("HHHHH  GRAVE:NN/NN  XNN  XNNN", 0xffffff, 0, 2);
+    _text = Font.createText("HHHHH  XNN/NN  XNN  XNNN", 0xffffff, 0, 2);
     _text.x = (width-_text.width)/2;
     _text.y = 8;
     addChild(_text)
@@ -452,7 +476,7 @@ class Status extends Sprite
 
   public function update():void
   {
-    var text:String = ("XXXXX  GRAVE:"+Utils.format(collected, 2)+
+    var text:String = ("XXXXX  X"+Utils.format(collected, 2)+
 		       "/"+Utils.format(goal, 2)+
 		       "  X"+Utils.format(bones, 2)+
 		       "  X"+Utils.format(time, 3));
@@ -465,8 +489,9 @@ class Status extends Sprite
 	slapSymbol(x, 2);	// empty heart.
       }
     }
-    slapSymbol(20, 4);		// bone.
-    slapSymbol(25, 5);		// time.
+	slapSymbol(7, 6);		// grave.
+    slapSymbol(15, 4);		// bone.
+    slapSymbol(20, 5);		// time.
   }
 
   private function slapSymbol(x:int, i:int):void

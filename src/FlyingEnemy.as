@@ -38,7 +38,7 @@ public class FlyingEnemy extends Actor
       _vy = -_vy;
     }
 
-    skinId = Skin.spinBatFlying(phase);
+    setSkinId(Skin.spinBatFlying(phase));
   }
 }
 

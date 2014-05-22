@@ -10,10 +10,7 @@ import flash.geom.Rectangle;
 //
 public class Actor extends EventDispatcher
 {
-  // Event types.
-  public static const DIE:String = "Actor.DIE";
-
-  // Character position.
+  // Center position.
   public var pos:Point;
 
   private var _skin:Bitmap;
@@ -35,41 +32,16 @@ public class Actor extends EventDispatcher
     pos = new Point(0, 0);
   }
 
-  // active: true if the actor is already uncovered on a map.
-  public function get active():Boolean // 
-  {
-    return _active;
-  }
-
-  // skin: actual Flash object to display.
-  public function get skin():Bitmap
-  {
-    return _skin;
-  }
-  public function set skin(v:Bitmap):void
-  {
-    var src:Rectangle = new Rectangle(0, 0, v.width, v.height);
-    _skin.bitmapData.copyPixels(v.bitmapData, src, new Point());
-  }
-
-  // skinId
-  public function set skinId(i:int):void
-  {
-    var src:Rectangle = new Rectangle(i*scene.tilesize, 0, scene.tilesize, scene.tilesize);
-    _skin.bitmapData.copyPixels(skinsetImage.bitmapData, src, new Point());
-  }
-
-  // skinBounds: Character boundary (relative to pos).
-  public function get skinBounds():Rectangle
-  {
-    return new Rectangle(-_scene.tilesize/2, -_scene.tilesize/2, 
-			 scene.tilesize, scene.tilesize);
-  }
-
   // scene: the container object.
   public function get scene():Scene
   {
     return _scene;
+  }
+
+  // active: true if the actor is already uncovered on a map.
+  public function get active():Boolean // 
+  {
+    return _active;
   }
 
   // bounds: the character hitbox (in the world)
@@ -79,6 +51,19 @@ public class Actor extends EventDispatcher
 			 pos.y-_scene.tilesize/2,
 			 _scene.tilesize, 
 			 _scene.tilesize);
+  }
+
+  // skin: actual Flash object to display.
+  public function get skin():Bitmap
+  {
+    return _skin;
+  }
+
+  // skinBounds: Character boundary (relative to pos).
+  public function get skinBounds():Rectangle
+  {
+    return new Rectangle(-_scene.tilesize/2, -_scene.tilesize/2, 
+			 scene.tilesize, scene.tilesize);
   }
 
   // move(dx, dy)
@@ -91,6 +76,13 @@ public class Actor extends EventDispatcher
   public function getMovedBounds(dx:int, dy:int):Rectangle
   {
     return Utils.moveRect(bounds, dx, dy);
+  }
+
+  // setSkinId: changes the character apparence.
+  public function setSkinId(i:int):void
+  {
+    var src:Rectangle = new Rectangle(i*scene.tilesize, 0, scene.tilesize, scene.tilesize);
+    _skin.bitmapData.copyPixels(skinsetImage.bitmapData, src, new Point());
   }
 
   // isMovable(dx, dy)

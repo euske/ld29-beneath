@@ -35,8 +35,22 @@ public class Scene extends Sprite
   [Embed(source="../assets/background.png", mimeType="image/png")]
   private static const BackgroundImageCls:Class;
 
-  // TileSet image:
-  [Embed(source="../assets/tileset.png", mimeType="image/png")]
+  // TileSet images:
+/*
+  [Embed(source = "../assets/dirtset.png", mimeType = "image/png")]
+  private static const DirtsetImageCls:Class;
+  private static const dirtsetImage:Bitmap = new DirtsetImageCls();
+  [Embed(source = "../assets/collectables.png", mimeType = "image/png")]
+  private static const CollectImageCls:Class;
+  private static const collectImage:Bitmap = new CollectImageCls();
+  [Embed(source = "../assets/gravestones.png", mimeType = "image/png")]
+  private static const GravesImageCls:Class;
+  private static const gravesImage:Bitmap = new GravesImageCls();
+  [Embed(source = "../assets/liquid.png", mimeType = "image/png")]
+  private static const LiquidImageCls:Class;
+  private static const liquidImage:Bitmap = new LiquidImageCls();
+*/ 
+  [Embed(source="../assets/tilemap.png", mimeType="image/png")]		//Change back to tileset when TODO:Levels #8 is done
   private static const TilesetImageCls:Class;
   private static const tilesetImage:Bitmap = new TilesetImageCls();
 

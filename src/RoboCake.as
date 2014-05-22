@@ -7,7 +7,7 @@ import flash.geom.Rectangle;
 // 
 public class RoboCake extends Actor
 {
-  public const speed:int = 1;
+  public const speed:int = 0;
 
   public var _vx:int;
 
@@ -35,7 +35,7 @@ public class RoboCake extends Actor
     } else {
       _vx = -_vx;
     }
-    skinId = Skin.roboCake(phase)+((0 < _vx)? 0 : 1);
+    setSkinId(Skin.roboCake(phase)+((0 < _vx)? 0 : 1));
   }
 }
 
