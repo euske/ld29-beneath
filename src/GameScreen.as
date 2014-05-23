@@ -211,7 +211,7 @@ public class GameScreen extends Screen
 
     } else if (0 < _winning) {
       // In winning situation, only move the player animation.
-      _player.cheer(_clock);
+      _player.update(_clock);
       _scene.paint(_clock);
       _winning--;
       if (_winning == 0) {
@@ -357,6 +357,7 @@ public class GameScreen extends Screen
     if (_status.goal <= _status.collected) {
       // Goal achieved! Do the winning animation.
       _winning = win_duration;
+      _player.cheer();
       if (_musicloop != null) {
 	_musicloop.stop();
       }

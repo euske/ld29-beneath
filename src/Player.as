@@ -32,6 +32,7 @@ public class Player extends Actor
   private var _jumping:Boolean;	// true when the player is jumping.
   private var _jumpdur:int;	// jumping duration.
   private var _grabbing:Boolean; // true when the player is grabbing a ladder.
+  private var _cheering:Boolean; // true when the player is doing winning animation.
 
   private var _skin_adjust:int;	// 0: right, 1: left
   private var _invincible:int;	// >0: invincibility counter.
@@ -157,6 +158,13 @@ public class Player extends Actor
   {
     super.update(phase);
     //trace("v="+_vx+","+_vy);
+
+    if (_cheering) {
+      // do the cheering dance.
+      skin.alpha = 1.0;
+      setSkinId(Skin.playerCheering(phase));
+      return;
+    }
 
     // Turn on/off the Ladder behavoir.
     if (scene.tilemap.hasTileByRect(bounds, Tile.isGrabbable)) {
@@ -287,7 +295,7 @@ public class Player extends Actor
       if (_invincible == 0) {
 	// End blinking.
 	skin.alpha = 1.0;
-	setSkinId(0);
+	setSkinId(Skin.PLAYER_FRONT);
       } else {
 	var b:Boolean = ((_invincible % 4) < 2);
 	skin.alpha = (b)? 0.0 : 1.0;
@@ -346,10 +354,10 @@ public class Player extends Actor
     }
   }
 
-  // cheer(): cheering dance.
-  public function cheer(phase:int):void
+  // cheer(): start the winning animation.
+  public function cheer():void
   {
-    setSkinId(Skin.playerCheering(phase));
+    _cheering = true;
   }
 
   // loot(): gotz something.

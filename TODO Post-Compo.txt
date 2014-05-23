@@ -55,9 +55,6 @@ how lava does, but with rain tiles)
 #27. BUG: Digging under an enemy/robocake when they're on a single tile gets them stuck in midair! Should
 either give them gravity or kill them.
 
-#20. Minor BUG: Level complete cheer animation can be invisible if you finish a level while
-in invincibility frames.
-
 #28. Increase the distance between the player and the edge of the screen before the camera starts
 to scroll by about 1 or maybe 2 or 3 tiles.
 
@@ -95,3 +92,6 @@ screen completely when on the title screen?)
 how it looks. (Looks fine to me, second opinions?)
 
 #17. Icon for graves looted instead of just saying "Graves"
+
+#20. Minor BUG: Level complete cheer animation can be invisible if you finish a level while
+in invincibility frames.
