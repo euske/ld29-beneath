@@ -154,7 +154,9 @@ public class GameScreen extends Screen
     _status.goal = Math.floor(_scene.collectibles*0.75);
     _status.collected = 0;
     _status.bones = sharedInfo.score;
+    _status.health = _player.health;
     _status.time = 0;
+    _status.update();
 
     _clock = 0;
 
@@ -164,7 +166,7 @@ public class GameScreen extends Screen
 
     // Create a splash screen.
     _splash = new Splash(_width, _height, info.name);
-    _splash.addEventListener(Splash.END, onSplashEnd);
+    _splash.addEventListener(Splash.FINISH, onSplashFinished);
 
     addChild(_scene);
     addChild(_status);
@@ -223,7 +225,6 @@ public class GameScreen extends Screen
 
       // Update the status display.
       _status.time = (getTimer() - _starttime)/1000;
-      _status.health = _player.health;
       _status.update();
       
       // Scroll the scene, move the characters.
@@ -330,8 +331,8 @@ public class GameScreen extends Screen
     }
   }
 
-  // onSplashEnd: called when the splash screen closes.
-  private function onSplashEnd(e:Event):void
+  // onSplashFinished: called when the splash screen closes.
+  private function onSplashFinished(e:Event):void
   {
     // remove the splash screen.
     if (_splash != null) {
@@ -369,6 +370,9 @@ public class GameScreen extends Screen
   // onPlayerHurt: called when the player is hurt.
   private function onPlayerHurt(e:ActorEvent):void
   {
+    // Update the status.
+    _status.health = _player.health;
+
     if (_player.health == 0) {
       // Player health reached 0 - DEAD!
       sharedInfo.level = _status.level;
@@ -432,7 +436,7 @@ class LevelInfo extends Object
 //
 class Splash extends Sprite
 {
-  public static const END:String = "Splash.END";
+  public static const FINISH:String = "Splash.FINISH";
 
   public const splash_duration:int = 48; // splash pause
 
@@ -450,7 +454,7 @@ class Splash extends Sprite
   // Finish the splash screen.
   public function finish():void
   {
-    dispatchEvent(new Event(END));
+    dispatchEvent(new Event(FINISH));
   }
 
   public function update(clock:int):void
