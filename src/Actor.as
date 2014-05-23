@@ -78,6 +78,43 @@ public class Actor extends EventDispatcher
     return Utils.moveRect(bounds, dx, dy);
   }
 
+  // getMovableDistance(v0, hitx, hity)
+  //   Moves the actor by v0 until it hits something (determined by hitx and hity).
+  //   Return: the amount the character moved.
+  //   NOTICE: v0 is altered! (it will have the remaining amount.)
+  public function getMovableDistance(v0:Point, hitx:Function, hity:Function):Point
+  {
+    // v1: the amount that the character actually moved.
+    var v1:Point = new Point();
+    var t:Point;
+
+    // try moving diagonally first.
+    t = scene.tilemap.getCollisionByRect(bounds, //=getMovedBounds(v1.x,v1.y), 
+					 v0.x, v0.y, hity);
+    v1.x += t.x;
+    v1.y += t.y;
+    v0.x -= t.x;
+    v0.y -= t.y;
+
+    // try moving left/right.
+    t = scene.tilemap.getCollisionByRect(getMovedBounds(v1.x,v1.y), 
+					 v0.x, 0, hitx);
+    v1.x += t.x;
+    v1.y += t.y;
+    v0.x -= t.x;
+    v0.y -= t.y;
+
+    // try moving up/down.
+    t = scene.tilemap.getCollisionByRect(getMovedBounds(v1.x,v1.y), 
+					 0, v0.y, hity);
+    v1.x += t.x;
+    v1.y += t.y;
+    v0.x -= t.x;
+    v0.y -= t.y;
+
+    return v1;
+  }
+
   // setSkinId: changes the character apparence.
   public function setSkinId(i:int):void
   {

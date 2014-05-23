@@ -58,7 +58,7 @@ public class Player extends Actor
   private static const UnbreakableSoundClass:Class;
   private static const unbreakableSound:Sound = new UnbreakableSoundClass();
 
-  // Collect sound
+  // Loot sound
   [Embed(source="../assets/sounds/collect.mp3", mimeType="audio/mpeg")]
   private static const CollectSoundClass:Class;
   private static const collectSound:Sound = new CollectSoundClass();
@@ -152,15 +152,15 @@ public class Player extends Actor
       _jumping = false;
     }
   }
-
+  
   // update()
   public override function update(phase:int):void
   {
     super.update(phase);
     //trace("v="+_vx+","+_vy);
 
+    // Handle the cheering dance.
     if (_cheering) {
-      // do the cheering dance.
       skin.alpha = 1.0;
       setSkinId(Skin.playerCheering(phase));
       return;
@@ -177,23 +177,7 @@ public class Player extends Actor
       _grabbing = false;
     }
 
-    // Moving.
-    var speed:int = (_digging || 0 < _dig_slowness)? speed_digging : speed_walking;
-    var maxspeed:int = (0 < _dig_slowness)? maxspeed_digging : maxspeed_normal;
-    if (0 < _dig_slowness) {
-      _dig_slowness--;
-    }
-
-    // (tdx,tdy): the amount that the character should move.
-    var tdxOfDoom:int = _vx*speed;
-    var tdyOfDoom:int = 0;
-    // (dy,dy): the amount that the character actually moved.
-    var dx:int = 0;
-    var dy:int = 0;
-    // (fx,fy): hit detection function.
-    var fx:Function = Tile.isBlockingNormally;
-    var fy:Function = null;
-
+    // Handle jumping.
     var jumpacc:int = 0;
     if (_jumping) {
       if (_jumpdur == 0) {
@@ -207,79 +191,75 @@ public class Player extends Actor
       _jumpdur++;
     }
 
+    // Slow down when the character is digging.
+    var speed:int = (_digging || 0 < _dig_slowness)? speed_digging : speed_walking;
+    var maxspeed:int = (0 < _dig_slowness)? maxspeed_digging : maxspeed_normal;
+    if (0 < _dig_slowness) {
+      _dig_slowness--;
+    }
+
+    // Handle moving.
+
+    // (hitx,hity): hit detection function.
+    var hitx:Function = Tile.isBlockingNormally;
+    var hity:Function = null;
+    // moveOfDoom: the amount that the character should move.
+    var moveOfDoom:Point = new Point(_vx*speed, 0);
+
     if (_grabbing) {
       // grabbing a ladder.
       if (_vy != 0) {
-	fy = Tile.isBlockingNormally;
+	hity = Tile.isBlockingNormally;
       } else {
-      	fy = Tile.isBlockingOnLadder;
+      	hity = Tile.isBlockingOnLadder;
       }
-      tdyOfDoom = _vy*speed;
+      moveOfDoom.y = _vy*speed;
     } else if (jumpacc != 0) {
       // jumping.
-      fy = Tile.isBlockingNormally;
-      tdyOfDoom = jumpacc;
+      hity = Tile.isBlockingNormally;
+      moveOfDoom.y = jumpacc;
     } else {
       // free fall.
       if (0 < _vy) {
-	fy = Tile.isBlockingNormally;
+	hity = Tile.isBlockingNormally;
       } else {
-	fy = Tile.isBlockingOnTop;
+	hity = Tile.isBlockingOnTop;
       }
-      tdyOfDoom = Math.min(_vg+gravity, maxspeed);
+      moveOfDoom.y = Math.min(_vg+gravity, maxspeed);
     }
 
-    var v:Point;
-    // try moving diagonally first.
-    v = scene.tilemap.getCollisionByRect(bounds, //=getMovedBounds(dx,dy), 
-					 tdxOfDoom, tdyOfDoom, fy);
-    dx += v.x;
-    dy += v.y;
-    tdxOfDoom -= v.x;
-    tdyOfDoom -= v.y;
-    // try moving left/right.
-    v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 tdxOfDoom, 0, fx);
-    dx += v.x;
-    dy += v.y;
-    tdxOfDoom -= v.x;
-    tdyOfDoom -= v.y;
-    // try moving up/down.
-    v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					 0, tdyOfDoom, fy);
-    dx += v.x;
-    dy += v.y;
-    tdxOfDoom -= v.x;
-    tdyOfDoom -= v.y;
+    // Try moving & falling. (moveOfDoom will be changed)
+    var v1:Point = getMovableDistance(moveOfDoom, hitx, hity);
 
-    // Digging.
+    // Handle digging (this should be done after moving!).
     if (_digging && (_vx != 0 || _vy != 0)) {
       // Dig stuff.
       if (_vy != 0) {
-	tdxOfDoom = 0;
+	moveOfDoom.x = 0;
       } else {
-	tdyOfDoom = 0;
+	moveOfDoom.y = 0;
       }
-      v = scene.tilemap.getCollisionByRect(getMovedBounds(dx,dy), 
-					   tdxOfDoom, tdyOfDoom, 
-					   Tile.isBlockingAlways);
-      dx += v.x;
-      dy += v.y;
-      tdxOfDoom -= v.x;
-      tdyOfDoom -= v.y;
-      var r:Rectangle = getMovedBounds(dx,dy);
+      var v:Point = scene.tilemap.getCollisionByRect(getMovedBounds(v1.x,v1.y), 
+						     moveOfDoom.x, moveOfDoom.y, 
+						     Tile.isBlockingAlways);
+      v1.x += v.x;
+      v1.y += v.y;
+      moveOfDoom.x -= v.x;
+      moveOfDoom.y -= v.y;
+      var r:Rectangle = getMovedBounds(v1.x,v1.y);
+      // Check if the digging is successful.
       if (0 < scene.tilemap.digTileByRect(r)) {
 	digSound.play();
-	dx = dy = 0;
+	v1.x = v1.y = 0;
 	_dig_slowness = dig_duration;
       }
     }
 
-    // Compute vertical velocity.
-    _vg = (_grabbing)? 0 : dy;
-    move(dx, dy);
+    // Save the vertical speed (for next frame of falling).
+    _vg = (_grabbing)? 0 : v1.y;
+    move(v1.x, v1.y);
 
-    // Auto-collect thigns.
+    // Auto-loot things.
     if (scene.tilemap.isRawTileByPoint(pos, Tile.isCollectible)) {
       loot();
     }
