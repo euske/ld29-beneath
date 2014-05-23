@@ -34,7 +34,7 @@ public class Player extends Actor
   private var _grabbing:Boolean; // true when the player is grabbing a ladder.
   private var _cheering:Boolean; // true when the player is doing winning animation.
 
-  private var _skin_adjust:int;	// 0: right, 1: left
+  private var _skin_vx:int;	// skin direction.
   private var _invincible:int;	// >0: invincibility counter.
   private var _dig_slowness:int; // >0: slowness because of digging.
 
@@ -304,17 +304,17 @@ public class Player extends Actor
 
     // Animate the skin.
     if (0 < _invincible) {
-      setSkinId(Skin.playerHurting(phase) + _skin_adjust);
+      setSkinId(Skin.playerHurting(phase, _skin_vx));
     } else if (0 < _dig_slowness) {
       if (_vx != 0) {
-	_skin_adjust = ((0 < _vx)? 0 : 1);
+	_skin_vx = _vx;
       }
-      setSkinId(Skin.playerDigging(phase) + _skin_adjust);
+      setSkinId(Skin.playerDigging(phase, _skin_vx));
     } else if (_grabbing && _vy != 0) {
       setSkinId(Skin.playerClimbing(phase));
     } else if (_vx != 0) {
-      _skin_adjust = ((0 < _vx)? 0 : 1);
-      setSkinId(Skin.playerWalking(phase) + _skin_adjust);
+      _skin_vx = _vx;
+      setSkinId(Skin.playerWalking(phase, _skin_vx));
     }
   }
 

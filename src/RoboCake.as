@@ -35,7 +35,7 @@ public class RoboCake extends Actor
     } else {
       _vx = -_vx;
     }
-    setSkinId(Skin.roboCake(phase)+((0 < _vx)? 0 : 1));
+    setSkinId(Skin.roboCake(phase, _vx));
   }
 }
 

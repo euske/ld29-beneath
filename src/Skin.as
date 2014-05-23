@@ -1,5 +1,8 @@
 package {
 
+//  Skin
+//  Defines the skin IDs used for characters.
+//
 public class Skin
 {
   public static const PLAYER_FRONT:int = 0;
@@ -27,16 +30,21 @@ public class Skin
   public static const SPINBAT:int = 50;
   public static const SPINBAT_PHASES:int = 4;
 
-  public static function playerWalking(phase:int):int
+  private static function getLR(vx:int):int
   {
-    phase = phase % PLAYER_WALKING_PHASES; // 0->1->2->3->0
-    return PLAYER_WALKING + phase*2;
+    return (0 < vx)? 0 : 1;
   }
 
-  public static function playerDigging(phase:int):int
+  public static function playerWalking(phase:int, vx:int):int
+  {
+    phase = phase % PLAYER_WALKING_PHASES; // 0->1->2->3->0
+    return PLAYER_WALKING + phase*2 + getLR(vx);
+  }
+
+  public static function playerDigging(phase:int, vx:int):int
   {
     phase = phase % PLAYER_DIGGING_PHASES;
-    return PLAYER_DIGGING + phase*2;
+    return PLAYER_DIGGING + phase*2 + getLR(vx);
   }
 
   public static function playerClimbing(phase:int):int
@@ -45,9 +53,9 @@ public class Skin
     return PLAYER_CLIMBING + phase*2;
   }
   
-  public static function playerHurting(phase:int):int
+  public static function playerHurting(phase:int, vx:int):int
   {
-    return PLAYER_HURTING;
+    return PLAYER_HURTING + getLR(vx);
   }
 
   public static function playerCheering(phase:int):int
@@ -56,16 +64,16 @@ public class Skin
     return PLAYER_CHEERING + phase*2;
   }
 
-  public static function moleRunning(phase:int):int
+  public static function moleRunning(phase:int, vx:int):int
   {
     phase = phase % MOLE_RUNNING_PHASES;
-    return MOLE_RUNNING + phase*2;
+    return MOLE_RUNNING + phase*2 + getLR(vx);
   }
 
-  public static function roboCake(phase:int):int
+  public static function roboCake(phase:int, vx:int):int
   {
     phase = phase % ROBOCAKE_PHASES;
-    return ROBOCAKE + phase*2;
+    return ROBOCAKE + phase*2 + getLR(vx);
   }
 
   public static function spinBatFlying(phase:int):int
@@ -73,7 +81,6 @@ public class Skin
     phase = phase % SPINBAT_PHASES;
     return SPINBAT + phase*2;
   }
-
 }
 
 }

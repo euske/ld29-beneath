@@ -35,7 +35,7 @@ public class RunningEnemy extends Actor
     } else {
       _vx = -_vx;
     }
-    setSkinId(Skin.moleRunning(phase)+((0 < _vx)? 0 : 1));
+    setSkinId(Skin.moleRunning(phase, _vx));
   }
 }
 
