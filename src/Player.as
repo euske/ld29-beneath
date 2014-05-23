@@ -247,11 +247,17 @@ public class Player extends Actor
       moveOfDoom.x -= v.x;
       moveOfDoom.y -= v.y;
       var r:Rectangle = getMovedBounds(v1.x,v1.y);
-      // Check if the digging is successful.
       if (0 < scene.tilemap.digTileByRect(r)) {
+	// Digging was successful.
 	digSound.play();
 	v1.x = v1.y = 0;
 	_dig_slowness = dig_duration;
+      } else if (moveOfDoom.x != 0 || moveOfDoom.y != 0) {
+	// Digging was blocked.
+	if ((phase % 6) == 0) {
+	  // make a little beep.
+	  unbreakableSound.play();
+	}
       }
     }
 
@@ -321,17 +327,6 @@ public class Player extends Actor
       return true;
     }
     return false;
-  }
-
-  // checkDig(): make a little beep if the direction is not diggable.
-  public function checkDig():void
-  {
-    var dx:int = _vx * speed_digging;
-    var dy:int = _vy * speed_digging;
-    if (_digging &&
-	scene.tilemap.hasCollisionByRect(bounds, dx, dy, Tile.isBlockingAlways)) {
-      unbreakableSound.play();
-    }
   }
 
   // cheer(): start the winning animation.

@@ -167,6 +167,13 @@ public class TitleScreen extends Screen
       dispatchEvent(new ScreenEvent(GameScreen));
       break;
 
+    case 84:			// T
+      // Play Level 0 (test level).
+      beepSound.play();
+      sharedInfo.level = 0;
+      dispatchEvent(new ScreenEvent(GameScreen));
+      break;
+
     }
   }
 }

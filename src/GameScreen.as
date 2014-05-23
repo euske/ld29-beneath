@@ -249,14 +249,12 @@ public class GameScreen extends Screen
     case 65:			// A
     case 72:			// H
       _player.vx = -1;
-      _player.checkDig();
       break;
 
     case Keyboard.RIGHT:
     case 68:			// D
     case 76:			// L
       _player.vx = +1;
-      _player.checkDig();
       break;
 
     case Keyboard.UP:
@@ -264,7 +262,6 @@ public class GameScreen extends Screen
     case 75:			// K
       if (!_player.collect()) {
 	_player.vy = -1;
-	_player.checkDig();
       }
       break;
 
@@ -273,14 +270,12 @@ public class GameScreen extends Screen
     case 74:			// J
       if (!_player.collect()) {
 	_player.vy = +1;
-	_player.checkDig();
       }
       break;
 
     case Keyboard.SHIFT:
     case Keyboard.CONTROL:
       _player.digging = true;
-      _player.checkDig();
       break;
 
     case Keyboard.SPACE:
