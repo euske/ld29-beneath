@@ -7,7 +7,8 @@ import flash.geom.Rectangle;
 // 
 public class RoboCake extends Actor
 {
-  public const speed:int = 0;
+  public const speed:int = 1;
+  public const gravity:int = 1;
 
   public var _vx:int;
 
@@ -30,11 +31,15 @@ public class RoboCake extends Actor
     super.update(phase);
 
     var dx:int = _vx*speed;
-    if (isMovable(dx, 0)) {
-      move(dx, 0);
-    } else {
+    if (!isMovable(dx, 0)) {
+      dx = 0;
       _vx = -_vx;
     }
+    var v:Point = getMovableDistance(new Point(dx, gravity), 
+				     Tile.isBlockingNormally, 
+				     Tile.isBlockingOnTop);
+    move(v.x, v.y);
+
     setSkinId(Skin.roboCake(phase, _vx));
   }
 }

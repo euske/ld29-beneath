@@ -52,9 +52,6 @@ how lava does, but with rain tiles)
 	Other:
 ------------------------------------------------------------------------------------------------
 
-#27. BUG: Digging under an enemy/robocake when they're on a single tile gets them stuck in midair! Should
-either give them gravity or kill them.
-
 #28. Increase the distance between the player and the edge of the screen before the camera starts
 to scroll by about 1 or maybe 2 or 3 tiles.
 
@@ -74,12 +71,18 @@ to scroll by about 1 or maybe 2 or 3 tiles.
 
 #23. Win/Lose screen art. (Like the title screen one, if CrystalHawk wants to make 'em)
 
+#29. Dynamically change dirt tiles based on the 8 tiles around them. The dirt map would then end up
+being simplified to about 6 colors. (empty, dirt, and the four colors of grass)
+
+#30. Add a delay before going to Game over screen.
+
 
 	COMPLETED:
 ------------------------------------------------------------------------------------------------
 
 #1. Minor BUG: Title music doesn't pause when the game is paused. (Maybe turn off the pause
 screen completely when on the title screen?)
+ euske: I need a working level for testing!
 
 #2. Diagonally scrolling background effect
 
@@ -95,3 +98,18 @@ how it looks. (Looks fine to me, second opinions?)
 
 #20. Minor BUG: Level complete cheer animation can be invisible if you finish a level while
 in invincibility frames.
+
+#27. BUG: Digging under an enemy/robocake when they're on a single tile gets them stuck in midair! Should either give them gravity or kill them.
+
+
+
+	ONLY WHEN EVERYTHING ELSE ON THE LIST IS DONE:
+------------------------------------------------------------------------------------------------
+
+#101. PROCEDURALLY GENERATED LEVELS
+
+#102. Brainstorm possible powerups
+
+#102.5. Implement said powerups
+
+#103. General polishing (mostly sound and graphics)
