@@ -9,6 +9,7 @@ import flash.geom.Rectangle;
 public class Player extends Actor
 {
   public static const HURT:String = "Player.HURT";
+  public static const DIE:String = "Player.DIE";
   public static const COLLECT:String = "Player.COLLECT";
   public static const LOOT:String = "Player.LOOT";
   
@@ -153,6 +154,16 @@ public class Player extends Actor
     }
   }
   
+  // cheering: true if the player is winning.
+  public function get cheering():Boolean
+  {
+    return _cheering;
+  }
+  public function set cheering(v:Boolean):void
+  {
+    _cheering = v;
+  }
+
   // update()
   public override function update(phase:int):void
   {
@@ -282,6 +293,10 @@ public class Player extends Actor
 	// End blinking.
 	skin.alpha = 1.0;
 	setSkinId(Skin.PLAYER_FRONT);
+	if (_health == 0) {
+	  // DEAD!
+	  die();
+	}
       } else {
 	var b:Boolean = ((_invincible % 4) < 2);
 	skin.alpha = (b)? 0.0 : 1.0;
@@ -329,12 +344,6 @@ public class Player extends Actor
     return false;
   }
 
-  // cheer(): start the winning animation.
-  public function cheer():void
-  {
-    _cheering = true;
-  }
-
   // loot(): gotz something.
   private function loot():void
   {
@@ -364,6 +373,13 @@ public class Player extends Actor
 
     dispatchEvent(new ActorEvent(HURT));
   }
+
+  // die(): the player died.
+  private function die():void
+  {
+    dispatchEvent(new ActorEvent(DIE));
+  }
+
 }
 
 } // package

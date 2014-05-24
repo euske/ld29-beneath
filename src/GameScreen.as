@@ -70,7 +70,7 @@ public class GameScreen extends Screen
   private static const WinningMusicCls:Class;
   private static const winningMusic:Sound = new WinningMusicCls();
 
-  private const win_duration:int = 60; // pause after win (in frames)
+  private const animu_duration:int = 60; // pause after win/lose (in frames)
 
   private var _width:int;	// Screen width.
   private var _height:int;	// Screen height.
@@ -85,7 +85,7 @@ public class GameScreen extends Screen
   private var _player:Player;
   private var _musicloop:SoundLoop;
   private var _starttime:uint;	// the time the scene started.
-  private var _winning:int;	// >0 if the winning animation is being played.
+  private var _animu:int;	// >0 if a player animation is being played.
   private var _clock:int;	// current time.
 
   public function GameScreen(width:int, height:int)
@@ -146,6 +146,7 @@ public class GameScreen extends Screen
 
     _player = _scene.player;
     _player.addEventListener(Player.HURT, onPlayerHurt);
+    _player.addEventListener(Player.DIE, onPlayerDie);
     _player.addEventListener(Player.COLLECT, onPlayerCollect);
     _player.addEventListener(Player.LOOT, onPlayerLoot);
 
@@ -211,12 +212,12 @@ public class GameScreen extends Screen
       // Nothing moves when the splash screen is displayed.
       _splash.update(_clock);
 
-    } else if (0 < _winning) {
-      // In winning situation, only move the player animation.
+    } else if (0 < _animu) {
+      // Only move the player animation.
       _player.update(_clock);
       _scene.paint(_clock);
-      _winning--;
-      if (_winning == 0) {
+      _animu--;
+      if (_animu == 0) {
 	onNextLevel();
       }
 
@@ -352,8 +353,8 @@ public class GameScreen extends Screen
     _status.collected++;
     if (_status.goal <= _status.collected) {
       // Goal achieved! Do the winning animation.
-      _winning = win_duration;
-      _player.cheer();
+      _animu = animu_duration;
+      _player.cheering = true;
       if (_musicloop != null) {
 	_musicloop.stop();
       }
@@ -372,18 +373,25 @@ public class GameScreen extends Screen
   {
     // Update the status.
     _status.health = _player.health;
-
-    if (_player.health == 0) {
-      // Player health reached 0 - DEAD!
-      sharedInfo.level = _status.level;
-      sharedInfo.score = _status.bones;
-      sharedInfo.time += _status.time;
-      //dispatchEvent(new ScreenEvent(EndingScreen));
-      dispatchEvent(new ScreenEvent(GameOverScreen));
-    }
   }
 
-  // onNextLevel: called when the winning animation is finished.
+  // onPlayerDie: called when the player died.
+  private function onPlayerDie(e:ActorEvent):void
+  {
+    onGameOver();
+  }
+
+  // onGameOver: called when the player died.
+  private function onGameOver():void
+  {
+    sharedInfo.level = _status.level;
+    sharedInfo.score = _status.bones;
+    sharedInfo.time += _status.time;
+    //dispatchEvent(new ScreenEvent(EndingScreen));
+    dispatchEvent(new ScreenEvent(GameOverScreen));
+  }
+
+  // onNextLevel: called when the animation is finished.
   private function onNextLevel():void
   {
     // Advance the level.
