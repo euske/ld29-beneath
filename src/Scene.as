@@ -50,11 +50,11 @@ public class Scene extends Sprite
   private static const LiquidImageCls:Class;
   private static const liquidImage:Bitmap = new LiquidImageCls();
 */ 
-  [Embed(source="../assets/tilemap.png", mimeType="image/png")]		//Change back to tileset when TODO:Levels #8 is done
+  [Embed(source="../assets/tileset.png", mimeType="image/png")]		//Change back to tileset when TODO:Levels #8 is done
   private static const TilesetImageCls:Class;
   private static const tilesetImage:Bitmap = new TilesetImageCls();
 
-  // Scene(w, h, tilemap): set up fixated things.
+  // Scene(w, h, tilesize): set up fixated things.
   public function Scene(w:int, h:int, tilesize:int,
 			tiledata:BitmapData,
 			dirtdata:BitmapData)
@@ -258,7 +258,7 @@ public class Scene extends Sprite
   // createTileSkin(i)
   private function createTileSkin(i:int):Bitmap
   {
-    var src:Rectangle = new Rectangle(i*_tilesize, 0, _tilesize, _tilesize);
+    var src:Rectangle = getTileSrcRect(i);
     var skin:BitmapData = new BitmapData(src.width, src.height);
     skin.copyPixels(_tileset, src, new Point());
     return new Bitmap(skin);
