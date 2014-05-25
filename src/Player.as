@@ -293,7 +293,7 @@ public class Player extends Actor
 	// End blinking.
 	skin.alpha = 1.0;
 	setSkinId(Skin.PLAYER_FRONT);
-	if (_health == 0) {
+	if (_health <= 0) {
 	  // DEAD!
 	  die();
 	}

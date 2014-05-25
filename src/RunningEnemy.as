@@ -8,6 +8,7 @@ import flash.geom.Rectangle;
 public class RunningEnemy extends Actor
 {
   public const speed:int = 4;
+  public const gravity:int = 2;
 
   public var _vx:int;
 
@@ -30,11 +31,15 @@ public class RunningEnemy extends Actor
     super.update(phase);
 
     var dx:int = _vx*speed;
-    if (isMovable(dx, 0)) {
-      move(dx, 0);
-    } else {
+    if (!isMovable(dx, 0)) {
+      dx = 0;
       _vx = -_vx;
     }
+    var v:Point = getMovableDistance(new Point(dx, gravity), 
+				     Tile.isBlockingNormally, 
+				     Tile.isBlockingOnTop);
+    move(v.x, v.y);
+
     setSkinId(Skin.moleRunning(phase, _vx));
   }
 }

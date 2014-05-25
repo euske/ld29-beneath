@@ -378,6 +378,8 @@ public class GameScreen extends Screen
   // onPlayerDie: called when the player died.
   private function onPlayerDie(e:ActorEvent):void
   {
+    // Don't die on the test level.
+    if (sharedInfo.level == 0) return;
     onGameOver();
   }
 
